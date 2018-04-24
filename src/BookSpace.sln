@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.27428.2037
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookSpace.Web", "BookSpace.Web\BookSpace.Web.csproj", "{DF14978B-6B3F-44D7-BDCE-B9891452620B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookSpace.Models", "BookSpace.Models\BookSpace.Models.csproj", "{363709E4-73E7-4589-9FC7-4F07A642344D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookSpace.Data", "BookSpace.Data\BookSpace.Data.csproj", "{A961956E-30CA-4229-A12B-2EFDD712869A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{DF14978B-6B3F-44D7-BDCE-B9891452620B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF14978B-6B3F-44D7-BDCE-B9891452620B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF14978B-6B3F-44D7-BDCE-B9891452620B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{363709E4-73E7-4589-9FC7-4F07A642344D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{363709E4-73E7-4589-9FC7-4F07A642344D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{363709E4-73E7-4589-9FC7-4F07A642344D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{363709E4-73E7-4589-9FC7-4F07A642344D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A961956E-30CA-4229-A12B-2EFDD712869A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A961956E-30CA-4229-A12B-2EFDD712869A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A961956E-30CA-4229-A12B-2EFDD712869A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A961956E-30CA-4229-A12B-2EFDD712869A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
