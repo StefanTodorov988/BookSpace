@@ -8,7 +8,12 @@ namespace BookSpace.Web.Controllers
 {
     public class AdminController : Controller
     {
-        public IActionResult Index()
+        public IActionResult AdminIndex()
+        {
+            return View();
+        }
+
+        public IActionResult EditUsers()
         {
             return View();
         }
