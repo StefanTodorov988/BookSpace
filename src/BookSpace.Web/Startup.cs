@@ -36,7 +36,7 @@ namespace BookSpace.Web
                 .AddDefaultTokenProviders();
 
             services.AddScoped<IDbContext>(serviceProvider => (IDbContext) serviceProvider.GetService(typeof(BookSpaceContext)));
-            services.AddScoped(typeof(IRepository<,>), typeof(BaseRepository<,>));
+            services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
 
             services.AddMvc();
         }

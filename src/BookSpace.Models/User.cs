@@ -7,5 +7,10 @@ namespace BookSpace.Models
 {
     public class User : IdentityUser
     {
+        public User()
+        {
+
+        }
+
     }
 }
