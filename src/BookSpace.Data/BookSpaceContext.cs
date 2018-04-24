@@ -14,6 +14,16 @@ namespace BookSpace.Data
         {
         }
 
+       // public DbSet<Book> Books { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            // Add configurations
+
+            //builder.ApplyConfiguration();
+        }
 
     }
 }

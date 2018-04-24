@@ -1,11 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
+using BookSpace.Data;
+using BookSpace.Data.Contracts;
+using BookSpace.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.WindowsAzure.Storage.Table;
 
 namespace BookSpace.Web
 {
@@ -21,6 +28,16 @@ namespace BookSpace.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<BookSpaceContext>(options => 
+                options.UseSqlServer(Configuration.GetConnectionString("Default")));
+
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<BookSpaceContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddScoped<IDbContext>(serviceProvider => (IDbContext) serviceProvider.GetService(typeof(BookSpaceContext)));
+            services.AddScoped(typeof(IRepository<,>), typeof(BaseRepository<,>));
+
             services.AddMvc();
         }
 
@@ -46,5 +63,7 @@ namespace BookSpace.Web
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
+
+    
     }
 }
