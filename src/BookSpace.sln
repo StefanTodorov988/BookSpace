@@ -3,25 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2037
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookSpace.Web", "BookSpace.Web\BookSpace.Web.csproj", "{DF14978B-6B3F-44D7-BDCE-B9891452620B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookSpace.Models", "BookSpace.Models\BookSpace.Models.csproj", "{363709E4-73E7-4589-9FC7-4F07A642344D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookSpace.Models", "BookSpace.Models\BookSpace.Models.csproj", "{363709E4-73E7-4589-9FC7-4F07A642344D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookSpace.Data", "BookSpace.Data\BookSpace.Data.csproj", "{A961956E-30CA-4229-A12B-2EFDD712869A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookSpace.Data", "BookSpace.Data\BookSpace.Data.csproj", "{A961956E-30CA-4229-A12B-2EFDD712869A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookSpace.Providers", "BookSpace.Providers\BookSpace.Providers.csproj", "{FA1BF250-4D0C-48AB-A25D-55868D54373E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookSpace.Providers", "BookSpace.Providers\BookSpace.Providers.csproj", "{FA1BF250-4D0C-48AB-A25D-55868D54373E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookSpace.BlobStorage", "BookSpace.BlobStorage\BookSpace.BlobStorage.csproj", "{E842D80C-CDCA-4D59-BCCA-B5DE3254A41B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookSpace.BlobStorage", "BookSpace.BlobStorage\BookSpace.BlobStorage.csproj", "{E842D80C-CDCA-4D59-BCCA-B5DE3254A41B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookSpace.CognitiveServices", "BookSpace.CognitiveServices\BookSpace.CognitiveServices.csproj", "{0430DF4E-C37C-408D-8FEC-3E7127ACCA3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookSpace.CognitiveServices", "BookSpace.CognitiveServices\BookSpace.CognitiveServices.csproj", "{0430DF4E-C37C-408D-8FEC-3E7127ACCA3D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookSpace.Repositories", "BookSpace.Repositories\BookSpace.Repositories.csproj", "{06886C57-3A0E-4F06-8429-618B02006E72}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookSpace.Repositories", "BookSpace.Repositories\BookSpace.Repositories.csproj", "{06886C57-3A0E-4F06-8429-618B02006E72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookSpace.Factories", "BookSpace.Factories\BookSpace.Factories.csproj", "{D5FE357F-6C38-411C-B5BF-3DA5E70DBB08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookSpace.Factories", "BookSpace.Factories\BookSpace.Factories.csproj", "{D5FE357F-6C38-411C-B5BF-3DA5E70DBB08}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookSpace.Authentication", "BookSpace.Authentication\BookSpace.Authentication.csproj", "{A8DF3D0F-516C-41C8-998F-E3602D4D4385}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookSpace.Authentication", "BookSpace.Authentication\BookSpace.Authentication.csproj", "{A8DF3D0F-516C-41C8-998F-E3602D4D4385}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookSpace.Common", "BookSpace.Common\BookSpace.Common.csproj", "{3A8D5F83-BB2F-497C-A03A-B96564D9CA13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookSpace.Common", "BookSpace.Common\BookSpace.Common.csproj", "{3A8D5F83-BB2F-497C-A03A-B96564D9CA13}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookSpace.Web", "BookSpace.Web\BookSpace.Web.csproj", "{EF12B3C7-66C7-407A-AEE9-FDA8ECDE207C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{DF14978B-6B3F-44D7-BDCE-B9891452620B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DF14978B-6B3F-44D7-BDCE-B9891452620B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DF14978B-6B3F-44D7-BDCE-B9891452620B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DF14978B-6B3F-44D7-BDCE-B9891452620B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{363709E4-73E7-4589-9FC7-4F07A642344D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{363709E4-73E7-4589-9FC7-4F07A642344D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{363709E4-73E7-4589-9FC7-4F07A642344D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -69,6 +65,10 @@ Global
 		{3A8D5F83-BB2F-497C-A03A-B96564D9CA13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A8D5F83-BB2F-497C-A03A-B96564D9CA13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A8D5F83-BB2F-497C-A03A-B96564D9CA13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF12B3C7-66C7-407A-AEE9-FDA8ECDE207C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF12B3C7-66C7-407A-AEE9-FDA8ECDE207C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF12B3C7-66C7-407A-AEE9-FDA8ECDE207C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF12B3C7-66C7-407A-AEE9-FDA8ECDE207C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

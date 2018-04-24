@@ -2,26 +2,25 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <UserSecretsId>aspnet-BookSpace.Web-0F757762-B487-4F14-9E79-326752065640</UserSecretsId>
   </PropertyGroup>
 
+
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.2" />
+    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.1" />
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BookSpace.Authentication\BookSpace.Authentication.csproj" />
-    <ProjectReference Include="..\BookSpace.BlobStorage\BookSpace.BlobStorage.csproj" />
-    <ProjectReference Include="..\BookSpace.CognitiveServices\BookSpace.CognitiveServices.csproj" />
-    <ProjectReference Include="..\BookSpace.Common\BookSpace.Common.csproj" />
     <ProjectReference Include="..\BookSpace.Data\BookSpace.Data.csproj" />
-    <ProjectReference Include="..\BookSpace.Factories\BookSpace.Factories.csproj" />
     <ProjectReference Include="..\BookSpace.Models\BookSpace.Models.csproj" />
-    <ProjectReference Include="..\BookSpace.Providers\BookSpace.Providers.csproj" />
-    <ProjectReference Include="..\BookSpace.Repositories\BookSpace.Repositories.csproj" />
   </ItemGroup>
 
 </Project>
