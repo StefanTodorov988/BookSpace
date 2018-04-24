@@ -28,19 +28,19 @@ namespace BookSpace.Data
             return await this.dbContext.DbSet<TEntity>().ToListAsync();
         }
 
-        public async Task Add(TEntity entity)
+        public void Add(TEntity entity)
         {
-            await this.dbContext.DbSet<TEntity>().AddAsync(entity);
+             this.dbContext.SetAdded(entity);
         }
 
-        public Task Update(TEntity entity)
+        public void Update(TEntity entity)
         {
-            throw new NotImplementedException();
+           this.dbContext.SetUpdated(entity);
         }
 
-        public Task Delete(TEntity entity)
+        public void Delete(TEntity entity)
         {
-            throw new NotImplementedException();
+            this.dbContext.SetDeleted(entity);
         }
     }
 }
