@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
-using BookSpace.Data;
-using BookSpace.Data.Contracts;
-using BookSpace.Models;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.WindowsAzure.Storage.Table;
+using BookSpace.Web.Models;
+using BookSpace.Web.Services;
+using BookSpace.Data;
+using BookSpace.Models;
 
 namespace BookSpace.Web
 {
@@ -28,15 +27,15 @@ namespace BookSpace.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<BookSpaceContext>(options => 
-                options.UseSqlServer(Configuration.GetConnectionString("Default")));
+            services.AddDbContext<BookSpaceContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<User, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<BookSpaceContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddScoped<IDbContext>(serviceProvider => (IDbContext) serviceProvider.GetService(typeof(BookSpaceContext)));
-            services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
+            // Add application services.
+            services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddMvc();
         }
@@ -48,6 +47,7 @@ namespace BookSpace.Web
             {
                 app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
             else
             {
@@ -56,6 +56,8 @@ namespace BookSpace.Web
 
             app.UseStaticFiles();
 
+            app.UseAuthentication();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -63,7 +65,5 @@ namespace BookSpace.Web
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
-
-    
     }
 }
