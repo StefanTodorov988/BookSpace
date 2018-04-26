@@ -221,7 +221,12 @@ namespace BookSpace.Web.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Username, Email = model.Email };
+                var user = new ApplicationUser {
+                    UserName = model.Username,
+                    Email = model.Email,
+                    UserAccessControl = new BookSpace.Models.UserAccessControlDBModel { RegistrationDate = DateTime.Now }
+                };
+
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

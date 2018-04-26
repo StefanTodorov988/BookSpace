@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 
 namespace BookSpace.Models
@@ -9,24 +7,12 @@ namespace BookSpace.Models
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser
     {
-        private ICollection<BookDBModel> readBooks;
-        private ICollection<BookDBModel> booksToRead;
-        private ICollection<CommentDBModel> comments;
+        public string ProfilePictureUrl { get; set; }
 
-        public ApplicationUser()
-        {
-            this.readBooks = new HashSet<BookDBModel>();
-            this.booksToRead = new HashSet<BookDBModel>();
-        }
+        public UserAccessControlDBModel UserAccessControl { get; set; }
 
-        public virtual ICollection<BookDBModel> ReadBooks { get => readBooks; set => readBooks = value; }
+        public ICollection<BookUser> Books { get; set; }
 
-        public virtual ICollection<BookDBModel> BooksToRead { get => booksToRead; set => booksToRead = value; }
-
-        public virtual ICollection<CommentDBModel> Comments { get => comments; set => comments = value; }
-
-        public bool IsDeleted { get; set; }
-
-
+        public ICollection<CommentDBModel> Comments { get; set; }
     }
 }
