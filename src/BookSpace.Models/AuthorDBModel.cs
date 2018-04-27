@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.ApplicationInsights.Extensibility.Implementation;
+using Microsoft.AspNetCore.Http;
 
 namespace BookSpace.Models
 {
@@ -11,5 +13,6 @@ namespace BookSpace.Models
         public string Name { get; set; }
 
         public ICollection<BookAuthor> AuthorBooks { get; set; }
+
     }
 }

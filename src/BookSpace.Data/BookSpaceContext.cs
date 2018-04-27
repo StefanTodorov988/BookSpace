@@ -1,4 +1,5 @@
-﻿using BookSpace.Data.Contracts;
+﻿using System.Threading.Tasks;
+using BookSpace.Data.Contracts;
 using BookSpace.Models;
 using BookSpace.Models.Configurations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -13,19 +14,19 @@ namespace BookSpace.Data
         {
         }
 
-        public DbSet<AuthorDBModel> Authors { get; set; }
+        public virtual DbSet<AuthorDBModel> Authors { get; set; }
 
-        public DbSet<BookAuthor> BooksAuthors { get; set; }
+        public virtual  DbSet<BookAuthor> BooksAuthors { get; set; }
 
-        public DbSet<BookDBModel> Books { get; set; }
+        public virtual DbSet<BookDBModel> Books { get; set; }
 
-        public DbSet<BookGenre> BooksGenres { get; set; }
+        public virtual DbSet<BookGenre> BooksGenres { get; set; }
 
-        public DbSet<BookUser> BooksUsers { get; set; }
+        public virtual DbSet<BookUser> BooksUsers { get; set; }
 
-        public DbSet<CommentDBModel> Comments { get; set; }
+        public virtual DbSet<CommentDBModel> Comments { get; set; }
 
-        public DbSet<GenreDBModel> Genres { get; set; }
+        public virtual DbSet<GenreDBModel> Genres { get; set; }
 
         //public DbSet<UserAccessControlDBModel> UserAccessControl { get; set; }
 
@@ -50,27 +51,32 @@ namespace BookSpace.Data
             builder.ApplyConfiguration(new BookTagConfiguration());
         }
 
-        public DbSet<TEntity> DbSet<TEntity>() where TEntity : class
+        public virtual DbSet<TEntity> DbSet<TEntity>() where TEntity : class
         {
             return this.Set<TEntity>();
         }
 
-        public void SetAdded<TEntry>(TEntry entity) where TEntry : class
+        public virtual void SetAdded<TEntry>(TEntry entity) where TEntry : class
         {
             var entry = this.Entry(entity);
             entry.State = EntityState.Added;
         }
 
-        public void SetDeleted<TEntry>(TEntry entity) where TEntry : class
+        public virtual void SetDeleted<TEntry>(TEntry entity) where TEntry : class
         {
             var entry = this.Entry(entity);
             entry.State = EntityState.Deleted;
         }
 
-        public void SetUpdated<TEntry>(TEntry entity) where TEntry : class
+        public virtual void SetUpdated<TEntry>(TEntry entity) where TEntry : class
         {
             var entry = this.Entry(entity);
             entry.State = EntityState.Modified;
+        }
+
+        public Task<int> SaveAsync()
+        {
+            return this.SaveChangesAsync();
         }
     }
 }

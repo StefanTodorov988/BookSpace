@@ -11,7 +11,7 @@ namespace BookSpace.Models
 
         public UserAccessControlDBModel UserAccessControl { get; set; }
 
-        public ICollection<BookUser> Books { get; set; }
+        public ICollection<BookUser> BookUsers { get; set; }
 
         public ICollection<CommentDBModel> Comments { get; set; }
     }
