@@ -13,16 +13,17 @@ using BookSpace.Web.Models;
 using BookSpace.Web.Services;
 using BookSpace.Data;
 using BookSpace.Data.Contracts;
+using BookSpace.Factories;
 using BookSpace.Models;
 using BookSpace.Repositories;
 using BookSpace.Repositories.Contracts;
 using Ninject;
+using Ninject.Extensions.Factory;
 
 namespace BookSpace.Web
 {
     public class Startup
     {
-        private IKernel kernel;
 
 
         public Startup(IConfiguration configuration)
@@ -89,6 +90,31 @@ namespace BookSpace.Web
 
             kernel.Load(Assembly.GetExecutingAssembly());
 
+            kernel.Bind<IApplicationUserFactory>()
+                .ToFactory()
+                .InSingletonScope();
 
+            kernel.Bind<IBookFactory>()
+                .ToFactory()
+                .InSingletonScope();
+
+            kernel.Bind<IAuthorFactory>()
+                .ToFactory()
+                .InSingletonScope();
+
+            kernel.Bind<IGenreFactory>()
+                .ToFactory()
+                .InSingletonScope();
+
+            kernel.Bind<ICommentFactory>()
+                .ToFactory()
+                .InSingletonScope();
+
+            kernel.Bind<ITagFactory>()
+                .ToFactory()
+                .InSingletonScope();
+
+            return kernel;
         }
+    }
 }
