@@ -25,6 +25,7 @@ namespace BookSpace.Web
     public class Startup
     {
 
+        private IKernel kernel;
 
         public Startup(IConfiguration configuration)
         {
@@ -61,6 +62,8 @@ namespace BookSpace.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            this.kernel = this.RegisterApplicationComponents(app);
+
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
