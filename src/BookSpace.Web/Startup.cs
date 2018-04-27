@@ -19,13 +19,24 @@ using BookSpace.Repositories;
 using BookSpace.Repositories.Contracts;
 using Ninject;
 using Ninject.Extensions.Factory;
+using Microsoft.AspNetCore.Mvc.ViewFeatures.Internal;
+using System.Threading;
+using Ninject.Activation;
+using Ninject.Infrastructure.Disposal;
+using Microsoft.AspNetCore.Http;
 
 namespace BookSpace.Web
 {
     public class Startup
     {
 
-        private IKernel kernel;
+        private readonly AsyncLocal<Scope> scopeProvider = new AsyncLocal<Scope>();
+        private IKernel kernel { get; set; }
+
+        private object Resolve(Type type) => kernel.Get(type);
+        private object RequestScope(IContext context) => scopeProvider.Value;
+
+        private sealed class Scope : DisposableObject { }
 
         public Startup(IConfiguration configuration)
         {
@@ -46,13 +57,19 @@ namespace BookSpace.Web
 
             //Repositories 
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
-            services.AddSingleton<IApplicationUserRepository, IApplicationUserRepository>();
+            services.AddSingleton<IApplicationUserRepository, ApplicationUserRepository>();
             services.AddSingleton<IBookRepository, BookRepository>();
 
 
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddRequestScopingMiddleware(() => scopeProvider.Value = new Scope());
+            services.AddCustomControllerActivation(Resolve);
+            services.AddCustomViewComponentActivation(Resolve);
+
 
             services.AddMvc();
         }
@@ -91,7 +108,11 @@ namespace BookSpace.Web
         {
             var kernel = new StandardKernel();
 
-            kernel.Load(Assembly.GetExecutingAssembly());
+            foreach (var ctrlType in app.GetControllerTypes())
+            {
+                kernel.Bind(ctrlType).ToSelf().InScope(RequestScope);
+            }
+
 
             kernel.Bind<IApplicationUserFactory>()
                 .ToFactory()
@@ -116,6 +137,8 @@ namespace BookSpace.Web
             kernel.Bind<ITagFactory>()
                 .ToFactory()
                 .InSingletonScope();
+
+            kernel.BindToMethod(app.GetRequestService<IViewBufferScope>);
 
             return kernel;
         }
