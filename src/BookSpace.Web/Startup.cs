@@ -66,10 +66,11 @@ namespace BookSpace.Web
             services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             services.AddRequestScopingMiddleware(() => scopeProvider.Value = new Scope());
+
             services.AddCustomControllerActivation(Resolve);
             services.AddCustomViewComponentActivation(Resolve);
-
 
             services.AddMvc();
         }
@@ -107,6 +108,8 @@ namespace BookSpace.Web
         private IKernel RegisterApplicationComponents(IApplicationBuilder app)
         {
             var kernel = new StandardKernel();
+
+            kernel.Load(new FuncModule());
 
             foreach (var ctrlType in app.GetControllerTypes())
             {
