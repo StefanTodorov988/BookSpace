@@ -15,7 +15,7 @@ namespace BookSpace.Repositories
      
         public ApplicationUser GetUserByUsernameAsync(string username)
         {
-            return this.GetAllAsync().GetAwaiter().GetResult().FirstOrDefault(u => u.UserName == username);
+            return this.GetAsync(u => u.UserName == username ).GetAwaiter().GetResult();
         }
 
         public IEnumerable<ApplicationUser> GetPageOfUsersAscync(int take, int skip)

@@ -7,15 +7,15 @@ namespace BookSpace.Repositories.Contracts
 {
     public interface IBookRepository : IRepository<BookDBModel>
     {
-        BookDBModel GetBookByNameAsync(string name);
+        BookDBModel GetBookByTitleAsync(string title);
         IEnumerable<BookDBModel> GetPageOfBooksAsync(int skip, int take);
-        AuthorDBModel GetBookAuthorAsync(int bookId);
-        GenreDBModel GetBookGenreAsync(int bookId);
-        IEnumerable<CommentDBModel> GetBookCommentsAsync(int bookId);
-        IEnumerable<TagDBModel> GetBookTagsAsync(int bookId);
+        IEnumerable<AuthorDBModel> GetBookAuthorsAsync(string bookId);
+        IEnumerable<GenreDBModel> GetBookGenresAsync(string bookId);
+        IEnumerable<CommentDBModel> GetBookCommentsAsync(string bookId);
+        IEnumerable<TagDBModel> GetBookTagsAsync(string bookId);
 
-        Task CreateBookAsync(BookDBModel book);
-        Task UpdateBookAsync(BookDBModel book);
-        Task RemoveBookAync(int bookId);
+        void CreateBookAsync(BookDBModel book);
+        void UpdateBookAsync(BookDBModel book);
+        void RemoveBookAync(string bookId);
     }
 }

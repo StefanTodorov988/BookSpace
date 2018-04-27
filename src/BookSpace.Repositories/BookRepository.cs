@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
 using BookSpace.Data;
 using BookSpace.Data.Contracts;
 using BookSpace.Models;
@@ -14,49 +12,64 @@ namespace BookSpace.Repositories
         public BookRepository(IDbContext dbContext) : base(dbContext) {}
 
 
-        public BookDBModel GetBookByNameAsync(string name)
+        public BookDBModel GetBookByTitleAsync(string title)
         {
-          // return this.
+            return this.GetAsync(b => b.Title == title).GetAwaiter().GetResult();
         }
 
         public IEnumerable<BookDBModel> GetPageOfBooksAsync(int skip, int take)
         {
-            throw new NotImplementedException();
+            return this.GetAllAsync().GetAwaiter().GetResult()
+                                                  .Skip(skip)
+                                                  .Take(take);
         }
 
-        public AuthorDBModel GetBookAuthorAsync(int bookId)
+        public IEnumerable<AuthorDBModel> GetBookAuthorsAsync(string bookId)
         {
-            throw new NotImplementedException();
+            return this.GetByIdAsync(bookId).GetAwaiter().GetResult()
+                                            .BookAuthors
+                                            .Select(ba => ba.Author)
+                                            .ToList();
         }
 
-        public GenreDBModel GetBookGenreAsync(int bookId)
+        public IEnumerable<GenreDBModel> GetBookGenresAsync(string bookId)
         {
-            throw new NotImplementedException();
+            return this.GetByIdAsync(bookId).GetAwaiter().GetResult()
+                                                         .BookGenres
+                                                         .Select(bg => bg.Genre)
+                                                         .ToList();
         }
 
-        public IEnumerable<CommentDBModel> GetBookCommentsAsync(int bookId)
+        public IEnumerable<CommentDBModel> GetBookCommentsAsync(string bookId)
         {
-            throw new NotImplementedException();
+            return this.GetByIdAsync(bookId).GetAwaiter().GetResult()
+                                                         .Comments
+                                                         .ToList();
         }
 
-        public IEnumerable<TagDBModel> GetBookTagsAsync(int bookId)
+        public IEnumerable<TagDBModel> GetBookTagsAsync(string bookId)
         {
-            throw new NotImplementedException();
+            return this.GetByIdAsync(bookId).GetAwaiter().GetResult()
+                                                         .BookTags
+                                                         .Select(bt => bt.Tag)
+                                                         .ToList();
         }
 
-        public Task CreateBookAsync(BookDBModel book)
+        public async void CreateBookAsync(BookDBModel book)
         {
-            throw new NotImplementedException();
+            await this.AddAsync(book);
+
         }
 
-        public Task UpdateBookAsync(BookDBModel book)
+        public async void UpdateBookAsync(BookDBModel book)
         {
-            throw new NotImplementedException();
+            await this.UpdateAsync(book);
         }
 
-        public Task RemoveBookAync(int bookId)
+        public async void RemoveBookAync(string bookId)
         {
-            throw new NotImplementedException();
+            var bookToRemove = this.GetByIdAsync(bookId).GetAwaiter().GetResult();
+            await this.DeleteAsync(bookToRemove);
         }
     }
 }
