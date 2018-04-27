@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using BookSpace.Web.Models;
 using BookSpace.Web.Services;
 using BookSpace.Data;
+using BookSpace.Data.Contracts;
 using BookSpace.Models;
 
 namespace BookSpace.Web
@@ -33,6 +34,12 @@ namespace BookSpace.Web
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<BookSpaceContext>()
                 .AddDefaultTokenProviders();
+
+            //Add Repositories 
+            services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
+            //services.AddSingleton()
+
+
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();

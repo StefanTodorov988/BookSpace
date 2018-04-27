@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BookSpace.Models.Configurations
 {
-    public class UserAccessControlDBModelConfiguration : IEntityTypeConfiguration<UserAccessControlDBModel>
+    public class UserAccessControlConfiguration : IEntityTypeConfiguration<UserAccessControl>
     {
-        public void Configure(EntityTypeBuilder<UserAccessControlDBModel> builder)
+        public void Configure(EntityTypeBuilder<UserAccessControl> builder)
         {
             builder.ToTable("UserAccessControl");
 
@@ -14,7 +14,7 @@ namespace BookSpace.Models.Configurations
 
             builder.HasOne(u => u.User)
                 .WithOne(u => u.UserAccessControl)
-                .HasForeignKey<UserAccessControlDBModel>(fk => fk.UserId);
+                .HasForeignKey<UserAccessControl>(fk => fk.UserId);
 
             builder.Property(p => p.RegistrationDate)
                 .IsRequired(true)

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BookSpace.Models.Enums;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BookSpace.Models.Configurations
@@ -11,8 +12,6 @@ namespace BookSpace.Models.Configurations
 
             builder.HasKey(pk => new { pk.BookId, pk.UserId });
 
-            builder.Property(p => p.IsRead)
-                .HasDefaultValue(false);
         }
     }
 }

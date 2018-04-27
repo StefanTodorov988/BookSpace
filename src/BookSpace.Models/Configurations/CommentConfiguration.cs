@@ -3,15 +3,15 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BookSpace.Models.Configurations
 {
-    public class CommentDBModelConfiguration : IEntityTypeConfiguration<CommentDBModel>
+    public class CommentConfiguration : IEntityTypeConfiguration<Comment>
     {
-        public void Configure(EntityTypeBuilder<CommentDBModel> builder)
+        public void Configure(EntityTypeBuilder<Comment> builder)
         {
             builder.ToTable("Comments");
 
             builder.HasKey(pk => pk.CommentId);
 
-            builder.Property(p => p.Value)
+            builder.Property(p => p.Content)
                 .IsRequired(true)
                 .IsUnicode(true);
 

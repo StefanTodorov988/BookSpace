@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BookSpace.Models.Configurations
 {
-    public class AuthorDBModelConfiguration : IEntityTypeConfiguration<AuthorDBModel>
+    public class AuthorConfiguration : IEntityTypeConfiguration<Author>
     {
-        public void Configure(EntityTypeBuilder<AuthorDBModel> builder)
+        public void Configure(EntityTypeBuilder<Author> builder)
         {
             builder.ToTable("Authors");
 

@@ -7,7 +7,7 @@ namespace BookSpace.Models.Configurations
     {
         public void Configure(EntityTypeBuilder<ApplicationUser> builder)
         {
-            builder.HasMany(btr => btr.Books)
+            builder.HasMany(btr => btr.BookUsers)
                 .WithOne(bu => bu.User)
                 .HasForeignKey(fk => fk.UserId);
 

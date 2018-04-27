@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookSpace.Data.Contracts
@@ -15,5 +12,7 @@ namespace BookSpace.Data.Contracts
         void SetDeleted<TEntry>(TEntry entity) where TEntry : class;
 
         void SetUpdated<TEntry>(TEntry entity) where TEntry : class;
+
+        Task<int> SaveAsync();
     }
 }

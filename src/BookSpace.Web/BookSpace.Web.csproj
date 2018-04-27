@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\BookSpace.Data\BookSpace.Data.csproj" />
     <ProjectReference Include="..\BookSpace.Models\BookSpace.Models.csproj" />
+    <ProjectReference Include="..\BookSpace.Repositories\BookSpace.Repositories.csproj" />
   </ItemGroup>
 
 </Project>
