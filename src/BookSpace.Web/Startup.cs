@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -13,11 +14,17 @@ using BookSpace.Web.Services;
 using BookSpace.Data;
 using BookSpace.Data.Contracts;
 using BookSpace.Models;
+using BookSpace.Repositories;
+using BookSpace.Repositories.Contracts;
+using Ninject;
 
 namespace BookSpace.Web
 {
     public class Startup
     {
+        private IKernel kernel;
+
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -35,9 +42,10 @@ namespace BookSpace.Web
                 .AddEntityFrameworkStores<BookSpaceContext>()
                 .AddDefaultTokenProviders();
 
-            //Add Repositories 
+            //Repositories 
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
-            //services.AddSingleton()
+            services.AddSingleton<IApplicationUserRepository, IApplicationUserRepository>();
+            services.AddSingleton<IBookRepository, BookRepository>();
 
 
 
@@ -46,6 +54,8 @@ namespace BookSpace.Web
 
             services.AddMvc();
         }
+
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -72,5 +82,13 @@ namespace BookSpace.Web
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
-    }
+
+        private IKernel RegisterApplicationComponents(IApplicationBuilder app)
+        {
+            var kernel = new StandardKernel();
+
+            kernel.Load(Assembly.GetExecutingAssembly());
+
+
+        }
 }
