@@ -39,15 +39,15 @@ namespace BookSpace.Data
             base.OnModelCreating(builder);
 
             builder.ApplyConfiguration(new ApplicationUserConfiguration());
-            builder.ApplyConfiguration(new AuthorDBModelConfiguration());
+            builder.ApplyConfiguration(new AuthorConfiguration());
             builder.ApplyConfiguration(new BookAuthorConfiguration());
-            builder.ApplyConfiguration(new BookDBModelConfiguration());
+            builder.ApplyConfiguration(new BookConfiguration());
             builder.ApplyConfiguration(new BookGenreConfiguration());
             builder.ApplyConfiguration(new BookUserConfiguration());
-            builder.ApplyConfiguration(new CommentDBModelConfiguration());
-            builder.ApplyConfiguration(new GenreDBModelConfiguration());
-            builder.ApplyConfiguration(new UserAccessControlDBModelConfiguration());
-            builder.ApplyConfiguration(new TagDBModelConfiguration());
+            builder.ApplyConfiguration(new CommentConfiguration());
+            builder.ApplyConfiguration(new GenreConfiguration());
+            builder.ApplyConfiguration(new UserAccessControlConfiguration());
+            builder.ApplyConfiguration(new TagConfiguration());
             builder.ApplyConfiguration(new BookTagConfiguration());
         }
 

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BookSpace.Models.Configurations
 {
-    public class UserAccessControlDBModelConfiguration : IEntityTypeConfiguration<UserAccessControl>
+    public class UserAccessControlConfiguration : IEntityTypeConfiguration<UserAccessControl>
     {
         public void Configure(EntityTypeBuilder<UserAccessControl> builder)
         {

@@ -11,7 +11,8 @@ namespace BookSpace.Repositories.Contracts
         IEnumerable<ApplicationUser> GetPageOfUsersAscync(int take, int skip);
         IEnumerable<Book> GetUserReadBooksAsync(string userId);
         IEnumerable<Book> GetUserBooksToReadAsync(string userId);
-        
+        IEnumerable<Book> GetUserFavouriteBooksAsync(string userId);
+
         // TODO : ADD MORE METHODS WHEN NEEDED
     }
 }

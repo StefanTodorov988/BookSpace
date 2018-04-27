@@ -4,6 +4,7 @@ using System.Linq;
 using BookSpace.Data;
 using BookSpace.Data.Contracts;
 using BookSpace.Models;
+using BookSpace.Models.Enums;
 using BookSpace.Repositories.Contracts;
 
 namespace BookSpace.Repositories
@@ -25,14 +26,27 @@ namespace BookSpace.Repositories
 
         public IEnumerable<Book> GetUserReadBooksAsync(string userId)
         {
-            return this.GetByIdAsync(userId).GetAwaiter().GetResult().BookUsers.Select(b => b.Book);
-        }
+            return this.GetByIdAsync(userId).GetAwaiter().GetResult()
+                                                         .BookUsers
+                                                         .Where(bu => bu.State == BookState.Read)
+                                                         .Select(bu => bu.Book);
 
-        // TODO: MAKE THE BUSINESS LOGIC CLEAR
+        }
 
         public IEnumerable<Book> GetUserBooksToReadAsync(string userId)
         {
-            throw new NotImplementedException();
+            return this.GetByIdAsync(userId).GetAwaiter().GetResult()
+                                                         .BookUsers
+                                                         .Where(bu => bu.State == BookState.ToRead)
+                                                         .Select(bu => bu.Book);
+        }
+
+        public IEnumerable<Book> GetUserFavouriteBooksAsync(string userId)
+        {
+            return this.GetByIdAsync(userId).GetAwaiter().GetResult()
+                                                         .BookUsers
+                                                         .Where(bu => bu.State == BookState.Favourite)
+                                                         .Select(bu => bu.Book);
         }
     }
 }
