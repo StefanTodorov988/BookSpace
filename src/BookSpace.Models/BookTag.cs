@@ -3,9 +3,9 @@
     public class BookTag
     {
         public string BookId { get; set; }
-        public virtual Book Book { get; set; }
+        public Book Book { get; set; }
 
         public string TagId { get; set; }
-        public virtual Tag Tag { get; set; }
+        public Tag Tag { get; set; }
     }
 }

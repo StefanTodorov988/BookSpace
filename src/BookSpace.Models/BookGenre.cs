@@ -3,9 +3,9 @@
     public class BookGenre
     {
         public string BookId { get; set; }
-        public virtual Book Book { get; set; }
+        public Book Book { get; set; }
 
         public string GenreId { get; set; }
-        public virtual Genre Genre { get; set; }
+        public Genre Genre { get; set; }
     }
 }

@@ -18,14 +18,14 @@ namespace BookSpace.Models
 
         public string CoverUrl { get; set; }
 
-        public virtual ICollection<Comment> Comments { get; set; }
+        public ICollection<Comment> Comments { get; set; }
 
-        public virtual ICollection<BookUser> BookUsers { get; set; }
+        public ICollection<BookUser> BookUsers { get; set; }
 
-        public virtual ICollection<BookGenre> BookGenres { get; set; }
+        public ICollection<BookGenre> BookGenres { get; set; }
 
-        public virtual ICollection<BookAuthor> BookAuthors { get; set; }
+        public ICollection<BookAuthor> BookAuthors { get; set; }
 
-        public virtual ICollection<BookTag> BookTags { get; set; }
+        public ICollection<BookTag> BookTags { get; set; }
     }
 }
