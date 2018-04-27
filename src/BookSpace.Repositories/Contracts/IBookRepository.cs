@@ -5,17 +5,17 @@ using BookSpace.Models;
 
 namespace BookSpace.Repositories.Contracts
 {
-    public interface IBookRepository : IRepository<BookDBModel>
+    public interface IBookRepository : IRepository<Book>
     {
-        BookDBModel GetBookByTitleAsync(string title);
-        IEnumerable<BookDBModel> GetPageOfBooksAsync(int skip, int take);
-        IEnumerable<AuthorDBModel> GetBookAuthorsAsync(string bookId);
-        IEnumerable<GenreDBModel> GetBookGenresAsync(string bookId);
-        IEnumerable<CommentDBModel> GetBookCommentsAsync(string bookId);
-        IEnumerable<TagDBModel> GetBookTagsAsync(string bookId);
+        Book GetBookByTitleAsync(string title);
+        IEnumerable<Book> GetPageOfBooksAsync(int skip, int take);
+        IEnumerable<Author> GetBookAuthorsAsync(string bookId);
+        IEnumerable<Genre> GetBookGenresAsync(string bookId);
+        IEnumerable<Comment> GetBookCommentsAsync(string bookId);
+        IEnumerable<Tag> GetBookTagsAsync(string bookId);
 
-        void CreateBookAsync(BookDBModel book);
-        void UpdateBookAsync(BookDBModel book);
+        void CreateBookAsync(Book book);
+        void UpdateBookAsync(Book book);
         void RemoveBookAync(string bookId);
     }
 }

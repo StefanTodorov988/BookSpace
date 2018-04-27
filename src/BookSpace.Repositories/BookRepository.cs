@@ -7,24 +7,24 @@ using BookSpace.Repositories.Contracts;
 
 namespace BookSpace.Repositories
 {
-    public class BookRepository :  BaseRepository<BookDBModel>, IBookRepository
+    public class BookRepository :  BaseRepository<Book>, IBookRepository
     {
         public BookRepository(IDbContext dbContext) : base(dbContext) {}
 
 
-        public BookDBModel GetBookByTitleAsync(string title)
+        public Book GetBookByTitleAsync(string title)
         {
             return this.GetAsync(b => b.Title == title).GetAwaiter().GetResult();
         }
 
-        public IEnumerable<BookDBModel> GetPageOfBooksAsync(int skip, int take)
+        public IEnumerable<Book> GetPageOfBooksAsync(int skip, int take)
         {
             return this.GetAllAsync().GetAwaiter().GetResult()
                                                   .Skip(skip)
                                                   .Take(take);
         }
 
-        public IEnumerable<AuthorDBModel> GetBookAuthorsAsync(string bookId)
+        public IEnumerable<Author> GetBookAuthorsAsync(string bookId)
         {
             return this.GetByIdAsync(bookId).GetAwaiter().GetResult()
                                             .BookAuthors
@@ -32,7 +32,7 @@ namespace BookSpace.Repositories
                                             .ToList();
         }
 
-        public IEnumerable<GenreDBModel> GetBookGenresAsync(string bookId)
+        public IEnumerable<Genre> GetBookGenresAsync(string bookId)
         {
             return this.GetByIdAsync(bookId).GetAwaiter().GetResult()
                                                          .BookGenres
@@ -40,14 +40,14 @@ namespace BookSpace.Repositories
                                                          .ToList();
         }
 
-        public IEnumerable<CommentDBModel> GetBookCommentsAsync(string bookId)
+        public IEnumerable<Comment> GetBookCommentsAsync(string bookId)
         {
             return this.GetByIdAsync(bookId).GetAwaiter().GetResult()
                                                          .Comments
                                                          .ToList();
         }
 
-        public IEnumerable<TagDBModel> GetBookTagsAsync(string bookId)
+        public IEnumerable<Tag> GetBookTagsAsync(string bookId)
         {
             return this.GetByIdAsync(bookId).GetAwaiter().GetResult()
                                                          .BookTags
@@ -55,13 +55,13 @@ namespace BookSpace.Repositories
                                                          .ToList();
         }
 
-        public async void CreateBookAsync(BookDBModel book)
+        public async void CreateBookAsync(Book book)
         {
             await this.AddAsync(book);
 
         }
 
-        public async void UpdateBookAsync(BookDBModel book)
+        public async void UpdateBookAsync(Book book)
         {
             await this.UpdateAsync(book);
         }

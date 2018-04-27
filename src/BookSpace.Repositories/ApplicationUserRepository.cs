@@ -23,14 +23,14 @@ namespace BookSpace.Repositories
             return this.GetAllAsync().GetAwaiter().GetResult().Skip(skip).Take(take);
         }
 
-        public IEnumerable<BookDBModel> GetUserReadBooksAsync(string userId)
+        public IEnumerable<Book> GetUserReadBooksAsync(string userId)
         {
             return this.GetByIdAsync(userId).GetAwaiter().GetResult().BookUsers.Select(b => b.Book);
         }
 
         // TODO: MAKE THE BUSINESS LOGIC CLEAR
 
-        public IEnumerable<BookDBModel> GetUserBooksToReadAsync(string userId)
+        public IEnumerable<Book> GetUserBooksToReadAsync(string userId)
         {
             throw new NotImplementedException();
         }

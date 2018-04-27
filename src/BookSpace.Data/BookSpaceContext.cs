@@ -14,19 +14,19 @@ namespace BookSpace.Data
         {
         }
 
-        public virtual DbSet<AuthorDBModel> Authors { get; set; }
+        public virtual DbSet<Author> Authors { get; set; }
 
         public virtual  DbSet<BookAuthor> BooksAuthors { get; set; }
 
-        public virtual DbSet<BookDBModel> Books { get; set; }
+        public virtual DbSet<Book> Books { get; set; }
 
         public virtual DbSet<BookGenre> BooksGenres { get; set; }
 
         public virtual DbSet<BookUser> BooksUsers { get; set; }
 
-        public virtual DbSet<CommentDBModel> Comments { get; set; }
+        public virtual DbSet<Comment> Comments { get; set; }
 
-        public virtual DbSet<GenreDBModel> Genres { get; set; }
+        public virtual DbSet<Genre> Genres { get; set; }
 
         //public DbSet<UserAccessControlDBModel> UserAccessControl { get; set; }
 

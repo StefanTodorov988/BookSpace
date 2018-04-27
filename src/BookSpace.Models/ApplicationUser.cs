@@ -9,10 +9,10 @@ namespace BookSpace.Models
     {
         public string ProfilePictureUrl { get; set; }
 
-        public UserAccessControlDBModel UserAccessControl { get; set; }
+        public virtual UserAccessControl UserAccessControl { get; set; }
 
-        public ICollection<BookUser> BookUsers { get; set; }
+        public virtual ICollection<BookUser> BookUsers { get; set; }
 
-        public ICollection<CommentDBModel> Comments { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }

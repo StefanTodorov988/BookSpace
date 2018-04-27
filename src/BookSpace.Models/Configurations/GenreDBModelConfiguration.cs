@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BookSpace.Models.Configurations
 {
-    public class GenreDBModelConfiguration : IEntityTypeConfiguration<GenreDBModel>
+    public class GenreDBModelConfiguration : IEntityTypeConfiguration<Genre>
     {
-        public void Configure(EntityTypeBuilder<GenreDBModel> builder)
+        public void Configure(EntityTypeBuilder<Genre> builder)
         {
             builder.ToTable("Genres");
 

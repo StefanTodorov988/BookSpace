@@ -9,8 +9,8 @@ namespace BookSpace.Repositories.Contracts
     {
         ApplicationUser GetUserByUsernameAsync(string username);
         IEnumerable<ApplicationUser> GetPageOfUsersAscync(int take, int skip);
-        IEnumerable<BookDBModel> GetUserReadBooksAsync(string userId);
-        IEnumerable<BookDBModel> GetUserBooksToReadAsync(string userId);
+        IEnumerable<Book> GetUserReadBooksAsync(string userId);
+        IEnumerable<Book> GetUserBooksToReadAsync(string userId);
         
         // TODO : ADD MORE METHODS WHEN NEEDED
     }
