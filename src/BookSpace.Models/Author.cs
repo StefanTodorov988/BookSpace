@@ -8,7 +8,7 @@ namespace BookSpace.Models
 
         public string Name { get; set; }
 
-        public virtual ICollection<BookAuthor> AuthorBooks { get; set; }
+        public ICollection<BookAuthor> AuthorBooks { get; set; }
 
     }
 }

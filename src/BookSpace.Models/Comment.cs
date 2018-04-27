@@ -12,9 +12,9 @@ namespace BookSpace.Models
         public DateTime Date { get; set; }
 
         public string BookId { get; set; }
-        public virtual Book Book { get; set; }
+        public Book Book { get; set; }
 
         public string UserId { get; set; }
-        public virtual ApplicationUser User { get; set; }
+        public ApplicationUser User { get; set; }
     }
 }

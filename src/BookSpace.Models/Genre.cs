@@ -8,6 +8,6 @@ namespace BookSpace.Models
 
         public string  Name { get; set; }
 
-        public virtual ICollection<BookGenre> GenreBooks { get; set; }
+        public ICollection<BookGenre> GenreBooks { get; set; }
     }
 }
