@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using BookSpace.Web.Models;
 using BookSpace.Web.Models.ManageViewModels;
@@ -25,7 +24,6 @@ namespace BookSpace.Web.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
-        private readonly ILogger _logger;
         private readonly UrlEncoder _urlEncoder;
 
         private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
@@ -35,13 +33,11 @@ namespace BookSpace.Web.Controllers
           UserManager<ApplicationUser> userManager,
           SignInManager<ApplicationUser> signInManager,
           IEmailSender emailSender,
-          ILogger<ManageController> logger,
           UrlEncoder urlEncoder)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
-            _logger = logger;
             _urlEncoder = urlEncoder;
         }
 
@@ -174,7 +170,6 @@ namespace BookSpace.Web.Controllers
             }
 
             await _signInManager.SignInAsync(user, isPersistent: false);
-            _logger.LogInformation("User changed their password successfully.");
             StatusMessage = "Your password has been changed.";
 
             return RedirectToAction(nameof(ChangePassword));
@@ -361,7 +356,7 @@ namespace BookSpace.Web.Controllers
                 throw new ApplicationException($"Unexpected error occured disabling 2FA for user with ID '{user.Id}'.");
             }
 
-            _logger.LogInformation("User with ID {UserId} has disabled 2fa.", user.Id);
+       
             return RedirectToAction(nameof(TwoFactorAuthentication));
         }
 
@@ -410,7 +405,7 @@ namespace BookSpace.Web.Controllers
             }
 
             await _userManager.SetTwoFactorEnabledAsync(user, true);
-            _logger.LogInformation("User with ID {UserId} has enabled 2FA with an authenticator app.", user.Id);
+    
             var recoveryCodes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
             TempData[RecoveryCodesKey] = recoveryCodes.ToArray();
 
@@ -448,7 +443,7 @@ namespace BookSpace.Web.Controllers
 
             await _userManager.SetTwoFactorEnabledAsync(user, false);
             await _userManager.ResetAuthenticatorKeyAsync(user);
-            _logger.LogInformation("User with id '{UserId}' has reset their authentication app key.", user.Id);
+      
 
             return RedirectToAction(nameof(EnableAuthenticator));
         }
@@ -486,7 +481,7 @@ namespace BookSpace.Web.Controllers
             }
 
             var recoveryCodes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
-            _logger.LogInformation("User with ID {UserId} has generated new 2FA recovery codes.", user.Id);
+
 
             var model = new ShowRecoveryCodesViewModel { RecoveryCodes = recoveryCodes.ToArray() };
 

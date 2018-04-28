@@ -17,6 +17,7 @@ public sealed class DelegatingControllerActivator : IControllerActivator
     }
 
     public object Create(ControllerContext context) => this.controllerCreator(context);
+
     public void Release(ControllerContext context, object controller) =>
         this.controllerReleaser(context, controller);
 }
