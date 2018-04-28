@@ -11,8 +11,11 @@ namespace BookSpace.Repositories
 {
     public class ApplicationUserRepository : BaseRepository<ApplicationUser>, IApplicationUserRepository
     {
-        
+       
         public ApplicationUserRepository(IDbContext dbContext) : base(dbContext) {}
+
+
+        ApplicationUserRepository(IDbContext dbContext) : base(dbContext) {}
      
         public ApplicationUser GetUserByUsernameAsync(string username)
         {

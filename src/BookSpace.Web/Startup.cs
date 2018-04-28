@@ -55,8 +55,6 @@ namespace BookSpace.Web
                 .AddEntityFrameworkStores<BookSpaceContext>()
                 .AddDefaultTokenProviders();
 
-
-
             //Repositories 
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
             services.AddSingleton<IApplicationUserRepository, ApplicationUserRepository>();
@@ -121,6 +119,7 @@ namespace BookSpace.Web
             {
                 kernel.Bind(ctrlType).ToSelf().InScope(RequestScope);
             }
+
 
             //needed binding
             kernel.Bind<IDbContext>()
