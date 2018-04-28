@@ -24,6 +24,9 @@ using System.Threading;
 using Ninject.Activation;
 using Ninject.Infrastructure.Disposal;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using BookSpace.Web.Controllers;
 
 namespace BookSpace.Web
 {
@@ -32,6 +35,7 @@ namespace BookSpace.Web
 
         private readonly AsyncLocal<Scope> scopeProvider = new AsyncLocal<Scope>();
         private IKernel kernel { get; set; }
+        private IServiceProvider provider;
 
         private object Resolve(Type type) => kernel.Get(type);
         private object RequestScope(IContext context) => scopeProvider.Value;
@@ -55,15 +59,7 @@ namespace BookSpace.Web
                 .AddEntityFrameworkStores<BookSpaceContext>()
                 .AddDefaultTokenProviders();
 
-            //Repositories 
-            services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
-            services.AddSingleton<IApplicationUserRepository, ApplicationUserRepository>();
-            services.AddSingleton<IBookRepository, BookRepository>();
-
-
-
-            // Add application services.
-            services.AddTransient<IEmailSender, EmailSender>();
+            services.AddScoped<IDbContext>(serviceProvider => (BookSpaceContext)provider.GetService(typeof(BookSpaceContext)));
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -73,13 +69,15 @@ namespace BookSpace.Web
             services.AddCustomViewComponentActivation(Resolve);
 
             services.AddMvc();
+
         }
 
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IServiceProvider provider)
         {
+            this.provider = provider;
             this.kernel = this.RegisterApplicationComponents(app);
 
             if (env.IsDevelopment())
@@ -95,6 +93,7 @@ namespace BookSpace.Web
 
             app.UseStaticFiles();
 
+
             app.UseAuthentication();
 
             app.UseMvc(routes =>
@@ -109,12 +108,46 @@ namespace BookSpace.Web
         {
             var kernel = new StandardKernel();
 
-            kernel.Load(new FuncModule());
+            kernel.Load<FuncModule>();
 
             foreach (var ctrlType in app.GetControllerTypes())
             {
                 kernel.Bind(ctrlType).ToSelf().InScope(RequestScope);
             }
+
+
+            kernel.Bind<IDbContext>()
+                .To<BookSpaceContext>()
+                .InScope(RequestScope)
+                .WithConstructorArgument(typeof(DbContextOptions), provider.GetService(typeof(DbContextOptions)));
+
+            kernel.Bind<UserManager<ApplicationUser>>()
+                  .ToMethod((context => this.Get<UserManager<ApplicationUser>>()))
+                  .InThreadScope();
+                        
+
+            kernel.Bind<SignInManager<ApplicationUser>>()
+                 .ToMethod((context => this.Get<SignInManager<ApplicationUser>>()))
+                 .InThreadScope();
+
+
+            kernel.Bind<IEmailSender>()
+                .To<EmailSender>()
+                .InThreadScope();
+
+
+            // Repositories
+            kernel.Bind(typeof(IRepository<>))
+                .To(typeof(BaseRepository<>))
+                .InScope(RequestScope);
+
+            kernel.Bind<IApplicationUserRepository>()
+                .To<ApplicationUserRepository>()
+                .InScope(RequestScope);
+
+            kernel.Bind<IBookRepository>()
+               .To<BookRepository>()
+               .InScope(RequestScope);
 
 
             kernel.Bind<IApplicationUserFactory>()
@@ -141,9 +174,16 @@ namespace BookSpace.Web
                 .ToFactory()
                 .InSingletonScope();
 
+   
+
             kernel.BindToMethod(app.GetRequestService<IViewBufferScope>);
 
             return kernel;
+        }
+
+        private T Get<T>()
+        {
+            return (T)this.provider.GetService(typeof(T));
         }
     }
 }
