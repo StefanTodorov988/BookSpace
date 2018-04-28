@@ -6,6 +6,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.7" />
+    <PackageReference Include="Ninject" Version="3.3.4" />
+    <PackageReference Include="Ninject.Extensions.Factory" Version="3.3.2" />
   </ItemGroup>
 
   <ItemGroup>
