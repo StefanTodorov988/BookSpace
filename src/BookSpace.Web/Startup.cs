@@ -24,9 +24,7 @@ using System.Threading;
 using Ninject.Activation;
 using Ninject.Infrastructure.Disposal;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using BookSpace.Web.Controllers;
 
 namespace BookSpace.Web
 {
