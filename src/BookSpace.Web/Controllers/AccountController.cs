@@ -14,6 +14,7 @@ using BookSpace.Web.Models;
 using BookSpace.Web.Models.AccountViewModels;
 using BookSpace.Web.Services;
 using BookSpace.Models;
+using BookSpace.Web.Extensions;
 
 namespace BookSpace.Web.Controllers
 {
