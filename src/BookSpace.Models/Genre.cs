@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace BookSpace.Models
 {
-    public class GenreDBModel
+    public class Genre
     {
         public string GenreId { get; set; }
 

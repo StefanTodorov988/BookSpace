@@ -10,6 +10,8 @@
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" PrivateAssets="All" />
+    <PackageReference Include="Ninject" Version="3.3.4" />
+    <PackageReference Include="Ninject.Extensions.Factory" Version="3.3.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,7 +22,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BookSpace.Data\BookSpace.Data.csproj" />
+    <ProjectReference Include="..\BookSpace.Factories\BookSpace.Factories.csproj" />
     <ProjectReference Include="..\BookSpace.Models\BookSpace.Models.csproj" />
+    <ProjectReference Include="..\BookSpace.Repositories\BookSpace.Repositories.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Admin\Models\" />
   </ItemGroup>
 
 </Project>

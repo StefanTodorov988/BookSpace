@@ -5,7 +5,7 @@ using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using BookSpace.Web.Services;
 
-namespace BookSpace.Web.Services
+namespace BookSpace.Web.Extensions
 {
     public static class EmailSenderExtensions
     {

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BookSpace.Models
 {
-    public class BookDBModel
+    public class Book
     {
         public string BookId { get; set; }
 
@@ -18,7 +18,7 @@ namespace BookSpace.Models
 
         public string CoverUrl { get; set; }
 
-        public ICollection<CommentDBModel> Comments { get; set; }
+        public ICollection<Comment> Comments { get; set; }
 
         public ICollection<BookUser> BookUsers { get; set; }
 

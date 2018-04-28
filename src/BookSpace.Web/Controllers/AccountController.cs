@@ -14,6 +14,7 @@ using BookSpace.Web.Models;
 using BookSpace.Web.Models.AccountViewModels;
 using BookSpace.Web.Services;
 using BookSpace.Models;
+using BookSpace.Web.Extensions;
 
 namespace BookSpace.Web.Controllers
 {
@@ -224,7 +225,7 @@ namespace BookSpace.Web.Controllers
                 var user = new ApplicationUser {
                     UserName = model.Username,
                     Email = model.Email,
-                    UserAccessControl = new BookSpace.Models.UserAccessControlDBModel { RegistrationDate = DateTime.Now }
+                    UserAccessControl = new BookSpace.Models.UserAccessControl { RegistrationDate = DateTime.Now }
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password);

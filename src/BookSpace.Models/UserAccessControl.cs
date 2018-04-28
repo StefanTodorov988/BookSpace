@@ -2,7 +2,7 @@
 
 namespace BookSpace.Models
 {
-    public class UserAccessControlDBModel
+    public class UserAccessControl
     {
         public string UserId { get; set; }
         public ApplicationUser User { get; set; }
