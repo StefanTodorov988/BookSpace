@@ -14,25 +14,25 @@ namespace BookSpace.Data
         {
         }
 
-        public virtual DbSet<Author> Authors { get; set; }
+        public DbSet<Author> Authors { get; set; }
 
-        public virtual  DbSet<BookAuthor> BooksAuthors { get; set; }
+        public DbSet<BookAuthor> BooksAuthors { get; set; }
 
-        public virtual DbSet<Book> Books { get; set; }
+        public DbSet<Book> Books { get; set; }
 
-        public virtual DbSet<BookGenre> BooksGenres { get; set; }
+        public DbSet<BookGenre> BooksGenres { get; set; }
 
-        public virtual DbSet<BookUser> BooksUsers { get; set; }
+        public DbSet<BookUser> BooksUsers { get; set; }
 
-        public virtual DbSet<Comment> Comments { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
-        public virtual DbSet<Genre> Genres { get; set; }
+        public DbSet<Genre> Genres { get; set; }
 
-        //public DbSet<UserAccessControlDBModel> UserAccessControl { get; set; }
+        public DbSet<UserAccessControl> UserAccessControl { get; set; }
 
-        //public DbSet<TagDBModel> Tags { get; set; }
+        public DbSet<Tag> Tags { get; set; }
 
-        //public DbSet<BookTag> BooksTags { get; set; }
+        public DbSet<BookTag> BooksTags { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -51,32 +51,14 @@ namespace BookSpace.Data
             builder.ApplyConfiguration(new BookTagConfiguration());
         }
 
-        public virtual DbSet<TEntity> DbSet<TEntity>() where TEntity : class
+        public DbSet<TEntity> DbSet<TEntity>() where TEntity : class
         {
             return this.Set<TEntity>();
         }
 
-        public virtual void SetAdded<TEntry>(TEntry entity) where TEntry : class
+        public async Task<int> SaveAsync()
         {
-            var entry = this.Entry(entity);
-            entry.State = EntityState.Added;
-        }
-
-        public virtual void SetDeleted<TEntry>(TEntry entity) where TEntry : class
-        {
-            var entry = this.Entry(entity);
-            entry.State = EntityState.Deleted;
-        }
-
-        public virtual void SetUpdated<TEntry>(TEntry entity) where TEntry : class
-        {
-            var entry = this.Entry(entity);
-            entry.State = EntityState.Modified;
-        }
-
-        public Task<int> SaveAsync()
-        {
-            return this.SaveChangesAsync();
+            return await this.SaveChangesAsync();
         }
     }
 }
