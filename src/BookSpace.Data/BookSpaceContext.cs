@@ -1,9 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System.IO;
+using System.Threading.Tasks;
 using BookSpace.Data.Contracts;
 using BookSpace.Models;
 using BookSpace.Models.Configurations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace BookSpace.Data
 {
@@ -51,8 +53,24 @@ namespace BookSpace.Data
             builder.ApplyConfiguration(new BookTagConfiguration());
         }
 
+
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                IConfigurationRoot configuration = new ConfigurationBuilder()
+                   .SetBasePath(Directory.GetCurrentDirectory())
+                   .AddJsonFile("appsettings.json")
+                   .Build();
+                var connectionString = configuration.GetConnectionString("DefaultConnection");
+                optionsBuilder.UseSqlServer(connectionString);
+            }
+        }
+
         public DbSet<TEntity> DbSet<TEntity>() where TEntity : class
         {
+
             return this.Set<TEntity>();
         }
 
