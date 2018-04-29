@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using BookSpace.Data;
 using BookSpace.Data.Contracts;
 using BookSpace.Models;
@@ -14,42 +14,28 @@ namespace BookSpace.Repositories
        
         public ApplicationUserRepository(IDbContext dbContext) : base(dbContext) {}
 
-
-        ApplicationUserRepository(IDbContext dbContext) : base(dbContext) {}
-     
-        public ApplicationUser GetUserByUsernameAsync(string username)
+        public async Task<ApplicationUser> GetUserByUsernameAsync(string username)
         {
-            return this.GetAsync(u => u.UserName == username ).GetAwaiter().GetResult();
+            return await this.GetAsync(u => u.UserName == username );
         }
 
-        public IEnumerable<ApplicationUser> GetPageOfUsersAscync(int take, int skip)
+        public async Task<IEnumerable<ApplicationUser>> GetPageOfUsersAscync(int take, int skip)
         {
-            return this.GetAllAsync().GetAwaiter().GetResult().Skip(skip).Take(take);
+            var users = await this.GetAllAsync();
+
+            return this.GetPaged(users, take, skip).Results;
         }
 
-        public IEnumerable<Book> GetUserReadBooksAsync(string userId)
-        {
-            return this.GetByIdAsync(userId).GetAwaiter().GetResult()
-                                                         .BookUsers
-                                                         .Where(bu => bu.State == BookState.Read)
-                                                         .Select(bu => bu.Book);
 
-        }
-
-        public IEnumerable<Book> GetUserBooksToReadAsync(string userId)
+        public async Task<IEnumerable<Book>> GetUserBooksAsync(string userId, BookState state)
         {
-            return this.GetByIdAsync(userId).GetAwaiter().GetResult()
-                                                         .BookUsers
-                                                         .Where(bu => bu.State == BookState.ToRead)
-                                                         .Select(bu => bu.Book);
-        }
+            return await this.GetAsync(user => user.Id == userId)
+                             .ContinueWith(
+                                           u => u.Result.BookUsers
+                                                        .Where( bu =>bu.State == state)
+                                                        .Select(b => b.Book)
+                                          );
 
-        public IEnumerable<Book> GetUserFavouriteBooksAsync(string userId)
-        {
-            return this.GetByIdAsync(userId).GetAwaiter().GetResult()
-                                                         .BookUsers
-                                                         .Where(bu => bu.State == BookState.Favourite)
-                                                         .Select(bu => bu.Book);
         }
     }
 }

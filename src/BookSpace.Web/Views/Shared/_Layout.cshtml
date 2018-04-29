@@ -3,16 +3,13 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>@ViewData["Title"] - BookSpace.Web</title>
+    <title>@ViewData["Title"] - BookS
+    .Web</title>
 
-    <environment include="Development">
         <link rel="stylesheet" href="~/css/base.css" />
         <link rel="stylesheet" href="~/css/main.css" />
-
-        <script src="~/js/plugins/pace.min.js"></script>
-
         <link rel="icon" href="~/images/favicon.ico" type="image/x-icon"/>
-    </environment>
+
     <environment exclude="Development">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
@@ -21,7 +18,7 @@
     </environment>
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    @*<nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -51,13 +48,17 @@
                 }
             </div>
         </div>
-    </nav>
+    </nav>*@
+
+    <div>
+        @await  Html.PartialAsync("_Header")
+    </div>
     <div class="container body-content">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; 2018 - BookSpace.Web</p>
-        </footer>
+    </div>
+
+    <div>
+        @await Html.PartialAsync("_Footer")
     </div>
 
     <environment include="Development">

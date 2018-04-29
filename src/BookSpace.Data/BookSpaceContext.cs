@@ -1,13 +1,19 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 ﻿using BookSpace.Data.Contracts;
 =======
 ﻿using System.Threading.Tasks;
+=======
+﻿using System.IO;
+using System.Threading.Tasks;
+>>>>>>> ee9ab0c912d3d49fe53b47164550140fd4f6681d
 using BookSpace.Data.Contracts;
 >>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
 using BookSpace.Models;
 using BookSpace.Models.Configurations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace BookSpace.Data
 {
@@ -18,6 +24,7 @@ namespace BookSpace.Data
         {
         }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
         public DbSet<AuthorDBModel> Authors { get; set; }
 
@@ -34,25 +41,32 @@ namespace BookSpace.Data
         public DbSet<GenreDBModel> Genres { get; set; }
 =======
         public virtual DbSet<Author> Authors { get; set; }
+=======
+        public DbSet<Author> Authors { get; set; }
+>>>>>>> ee9ab0c912d3d49fe53b47164550140fd4f6681d
 
-        public virtual  DbSet<BookAuthor> BooksAuthors { get; set; }
+        public DbSet<BookAuthor> BooksAuthors { get; set; }
 
-        public virtual DbSet<Book> Books { get; set; }
+        public DbSet<Book> Books { get; set; }
 
-        public virtual DbSet<BookGenre> BooksGenres { get; set; }
+        public DbSet<BookGenre> BooksGenres { get; set; }
 
-        public virtual DbSet<BookUser> BooksUsers { get; set; }
+        public DbSet<BookUser> BooksUsers { get; set; }
 
-        public virtual DbSet<Comment> Comments { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
+<<<<<<< HEAD
         public virtual DbSet<Genre> Genres { get; set; }
 >>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
+=======
+        public DbSet<Genre> Genres { get; set; }
+>>>>>>> ee9ab0c912d3d49fe53b47164550140fd4f6681d
 
-        //public DbSet<UserAccessControlDBModel> UserAccessControl { get; set; }
+        public DbSet<UserAccessControl> UserAccessControl { get; set; }
 
-        //public DbSet<TagDBModel> Tags { get; set; }
+        public DbSet<Tag> Tags { get; set; }
 
-        //public DbSet<BookTag> BooksTags { get; set; }
+        public DbSet<BookTag> BooksTags { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -83,32 +97,30 @@ namespace BookSpace.Data
             builder.ApplyConfiguration(new BookTagConfiguration());
         }
 
-        public virtual DbSet<TEntity> DbSet<TEntity>() where TEntity : class
+
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            if (!optionsBuilder.IsConfigured)
+            {
+                IConfigurationRoot configuration = new ConfigurationBuilder()
+                   .SetBasePath(Directory.GetCurrentDirectory())
+                   .AddJsonFile("appsettings.json")
+                   .Build();
+                var connectionString = configuration.GetConnectionString("DefaultConnection");
+                optionsBuilder.UseSqlServer(connectionString);
+            }
+        }
+
+        public DbSet<TEntity> DbSet<TEntity>() where TEntity : class
+        {
+
             return this.Set<TEntity>();
         }
 
-        public virtual void SetAdded<TEntry>(TEntry entity) where TEntry : class
+        public async Task<int> SaveAsync()
         {
-            var entry = this.Entry(entity);
-            entry.State = EntityState.Added;
-        }
-
-        public virtual void SetDeleted<TEntry>(TEntry entity) where TEntry : class
-        {
-            var entry = this.Entry(entity);
-            entry.State = EntityState.Deleted;
-        }
-
-        public virtual void SetUpdated<TEntry>(TEntry entity) where TEntry : class
-        {
-            var entry = this.Entry(entity);
-            entry.State = EntityState.Modified;
-        }
-
-        public Task<int> SaveAsync()
-        {
-            return this.SaveChangesAsync();
+            return await this.SaveChangesAsync();
         }
     }
 }

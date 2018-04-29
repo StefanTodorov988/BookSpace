@@ -31,6 +31,18 @@ namespace BookSpace.Web.Controllers
             return View();
         }
 
+        public IActionResult Book()
+        {
+          
+            return View();
+        }
+
+        public IActionResult Category()
+        {
+
+            return View();
+        }
+
         public IActionResult Contact()
         {
             ViewData["Message"] = "Your contact page.";

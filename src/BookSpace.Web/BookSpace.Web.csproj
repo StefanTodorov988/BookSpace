@@ -5,6 +5,10 @@
     <UserSecretsId>aspnet-BookSpace.Web-0F757762-B487-4F14-9E79-326752065640</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Configuration\ObjectMapping\ObjectMappingProfile.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.7" />
@@ -33,7 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Configuration\ObjectMapping\" />
     <Folder Include="wwwroot\css\font-awesome\css\" />
     <Folder Include="wwwroot\css\font-awesome\fonts\" />
     <Folder Include="wwwroot\fonts\metropolis\" />
