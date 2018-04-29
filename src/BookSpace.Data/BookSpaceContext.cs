@@ -53,6 +53,8 @@ namespace BookSpace.Data
             builder.ApplyConfiguration(new BookTagConfiguration());
         }
 
+
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -68,6 +70,7 @@ namespace BookSpace.Data
 
         public DbSet<TEntity> DbSet<TEntity>() where TEntity : class
         {
+
             return this.Set<TEntity>();
         }
 

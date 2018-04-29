@@ -87,6 +87,12 @@ h5 {
     line-height: 1.313;
 }
 
+.row{
+    background: white;
+}
+.row-header {
+    background: background: #19191b;
+}
 p img {
     margin: 0;
 }
@@ -752,17 +758,18 @@ button {
 }
 
 .pageheader-content {
+  
     overflow: hidden;
     padding: 0 75px;
     max-width: 1350px;
 }
 
-.header-logo {
-    display: inline-block;
-    margin: 0;
-    padding: 0;
-    z-index: 501;
-}
+    .header-logo {
+        display: inline-block;
+        margin: 0;
+        padding: 0;
+        z-index: 501;
+    }
 
     .header-logo a {
         display: block;

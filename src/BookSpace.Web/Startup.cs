@@ -25,8 +25,10 @@ using Ninject.Activation;
 using Ninject.Infrastructure.Disposal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using System.Text.Encodings.Web;
 using AutoMapper;
 using BookSpace.Web.Areas.Admin.Models.ApplicationUserViewModels;
+
 
 namespace BookSpace.Web
 {
@@ -36,7 +38,6 @@ namespace BookSpace.Web
         private readonly AsyncLocal<Scope> scopeProvider = new AsyncLocal<Scope>();
         private IKernel kernel { get; set; }
         private IServiceProvider provider;
- 
         private object Resolve(Type type) => kernel.Get(type);
         private object RequestScope(IContext context) => scopeProvider.Value;
 
@@ -145,23 +146,31 @@ namespace BookSpace.Web
                 .InScope(RequestScope)
                 .WithConstructorArgument(typeof(DbContextOptions), provider.GetService(typeof(DbContextOptions)));
 
-            kernel.Bind<IMapper>().ToMethod(AutoMapper).InSingletonScope();
 
-         
+            // It should be per request scope ?
             kernel.Bind<UserManager<ApplicationUser>>()
                   .ToMethod((context => this.Get<UserManager<ApplicationUser>>()))
-                  .InThreadScope();
-
+                  .InSingletonScope();
+                        
 
             kernel.Bind<SignInManager<ApplicationUser>>()
                  .ToMethod((context => this.Get<SignInManager<ApplicationUser>>()))
-                 .InThreadScope();
+                  .InSingletonScope();
+
+            kernel.Bind<IMapper>().ToMethod(AutoMapper).InSingletonScope();
+
+         
+
 
 
             kernel.Bind<IEmailSender>()
                 .To<EmailSender>()
-                .InThreadScope();
+                  .InSingletonScope();
 
+            kernel.Bind<UrlEncoder>()
+                .ToMethod((context => this.Get<UrlEncoder>()))
+                  .InSingletonScope();
+               
 
             // Repositories
             kernel.Bind(typeof(IRepository<>))
@@ -200,7 +209,6 @@ namespace BookSpace.Web
             kernel.Bind<ITagFactory>()
                 .ToFactory()
                 .InSingletonScope();
-
 
 
             kernel.BindToMethod(app.GetRequestService<IViewBufferScope>);

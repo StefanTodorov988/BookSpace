@@ -1,0 +1,124 @@
+﻿
+@{
+    ViewData["Title"] = "Category";
+}
+
+<section class="content">
+
+    <div class="row narrow">
+        <div class="col-full content-header">
+            <h1>Category: Clasics</h1>
+            <p class="lead">
+                A biography (from the Greek words bios meaning "life",
+                and graphos meaning "write") is an account of a person's life,
+                usually published in the form of a book or essay, or in some other form, such as a film.
+            </p>
+        </div>
+    </div>
+
+    <div class="row top">
+
+        <div class="col-full">
+            <div class="block-m-full">
+                <article class="category-entry">
+                    <a asp-action="Book" asp-controller="Home" class="category-thumb">
+                        <img src="~/images/books/on_the_road_small.jpg" alt="">
+                    </a>
+                    <h3><a asp-action="Book" asp-controller="Home">On the Road</a></h3>
+                    <section class="category-meta">
+                        <span class="category-author"><span>By</span> Duluoz Legend</span>
+                    </section>
+                    <div class="category-entry-description">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+                    </div>
+                </article>
+                <hr />
+                <article class="category-entry">
+                    <a asp-action="Book" asp-controller="Home" class="category-thumb">
+                        <img src="~/images/articles/new_york-small.jpg" alt="">
+                    </a>
+                    <h3><a asp-action="Book" asp-controller="Home">To New York and back</a></h3>
+                    <section class="category-meta">
+                        <span class="category-author"><span>By</span> Stefani Nikolova </span>
+                    </section>
+                    <div class="category-entry-description">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+                    </div>
+                </article>
+                <hr />
+                <article class="category-entry">
+                    <a asp-action="Book" asp-controller="Home" class="category-thumb">
+                        <img src="~/images/magazines/leuropeo_small.jpg" alt="">
+                    </a>
+                    <h3><a asp-action="Book" asp-controller="Home">L'Europeo</a></h3>
+                    <section class="category-meta">
+                        <span class="category-date"><span>on</span> <time datetime="2018-04-1">April 1, 2018</time></span>
+                    </section>
+                    <div class="category-entry-description">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+                    </div>
+                </article>
+                <hr />
+                <article class="category-entry">
+                    <a asp-action="Book" asp-controller="Home" class="category-thumb">
+                        <img src="~/images/magazines/inglobo_small.jpg" alt="">
+                    </a>
+                    <h3><a asp-action="Book" asp-controller="Home">Inglobo</a></h3>
+                    <section class="category-meta">
+                        <span class="category-date"><span>on</span> <time datetime="2018-03-24">March 24, 2018</time></span>
+                    </section>
+                    <div class="category-entry-description">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+                    </div>
+                </article>
+                <hr />
+                <article class="category-entry">
+                    <a asp-action="Book" asp-controller="Home" class="category-thumb">
+                        <img src="~/images/art/basquiat-selft-portret-small.jpg" alt="">
+                    </a>
+                    <h3><a asp-action="Book" asp-controller="Home">Jean-Michel Basquiat</a></h3>
+                    <section class="category-meta">
+                        <span class="category-author"><span>By</span> Unknown </span>
+                        <span class="category-date"><span>on</span> <time datetime="2018-03-02">March 2, 2018</time></span>
+                    </section>
+                    <div class="category-entry-description">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+                    </div>
+                </article>
+                <hr />
+                <article class="category-entry">
+                    <a asp-action="Book" asp-controller="Home" class="category-thumb">
+                        <img src="~/images/articles/fashion-small.jpg" alt="">
+                    </a>
+                    <h3><a asp-action="Book" asp-controller="Home">Fashion in Shanghai</a></h3>
+                    <section class="category-meta">
+                        <span class="category-author"><span>By</span> Stefani Nikolova</span>
+                        <span class="category-date"><span>on</span> <time datetime="2017-02-24">February 24, 2018</time></span>
+                    </section>
+                    <div class="category-entry-description">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-full">
+            <nav class="pagination">
+                <ul>
+                    <li><a class="page-prev" href="#0">Prev</a></li>
+                    <li><a class="page-num current" href="#0">1</a></li>
+                    <li><span class="page-num">2</span></li>
+                    <li><a class="page-num" href="#0">3</a></li>
+                    <li><a class="page-num" href="#0">4</a></li>
+                    <li><a class="page-num" href="#0">5</a></li>
+                    <li><span class="page-num dots">…</span></li>
+                    <li><a class="page-num" href="#0">8</a></li>
+                    <li><a class="page-next" href="#0">Next</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+</section>
