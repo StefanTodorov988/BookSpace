@@ -25,26 +25,48 @@ namespace BookSpace.Web.Areas.Admin.Controllers
             this.objectMapper = objectMapper;
         }
 
-        public IActionResult AdminIndex()
+        public IActionResult AllUsers()
         {
             var users = this.repository.GetAllAsync().Result.ToList();
             
-            var mappedUsers = new List<ApplicationUserViewModel>();
+            var userViewModels = new List<ApplicationUserViewModel>();
 
             foreach (var user in users)
             {
-               mappedUsers.Add(this.objectMapper.Map<ApplicationUserViewModel>(user));
+               userViewModels.Add(this.objectMapper.Map<ApplicationUserViewModel>(user));
             }
 
 
-            return View(mappedUsers);
+            return View(userViewModels);
         }
 
-        //public IActionResult EditUsers()
-        //{
-        //    var users =  this.repository.GetAllAsync();
+        public IActionResult EditUser(string id)
+        {
+            var user = this.repository.GetByIdAsync(id).Result;
+            var userViewModel = objectMapper.Map<ApplicationUserViewModel>(user);
 
-        //    return View();
+            return this.PartialView("_EditUser", userViewModel);
+        }
+
+        //public IActionResult AllBooks()
+        //{
+        //    var users = this.repository.GetAllAsync().Result.ToList();
+
+        //    var mappedUsers = new List<ApplicationUserViewModel>();
+
+        //    foreach (var user in users)
+        //    {
+        //        mappedUsers.Add(this.objectMapper.Map<ApplicationUserViewModel>(user));
+        //    }
+
+
+        //    return View(mappedUsers);
         //}
+
+        public IActionResult Index()
+        {
+            
+            return View();
+        }
     }
 }

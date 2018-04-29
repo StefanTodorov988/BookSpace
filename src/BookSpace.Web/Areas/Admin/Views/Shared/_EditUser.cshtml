@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Edit User";
+    Layout = "~/Views/Shared/_LayoutTest.cshtml";
+}
+<h3>Edit user: @Model.Username</h3>
+<table style="width:100%">
+    <thead>
+        <tr>
+            <th>Profile Picture</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Allowed</th>
+            <th>Admin rights</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><img src="@Model.ProfilePictureUrl" height="100" width="100"></td>
+            <td>@Model.Username</td>
+            <td>@Model.Email</td>
+            <td>@Model.isAllowed</td>
+            <td>@Model.isAdmin</td>
+            <td><a asp-area="Admin" asp-controller="Admin" asp-action="EditUser" asp-route-id="@Model.Id">[Edit]</a></td>
+        </tr>
+    </tbody>
+</table>

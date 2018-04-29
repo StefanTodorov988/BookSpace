@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "AllUsers";
+    Layout = "~/Views/Shared/_LayoutTest.cshtml";
+}
+
+<h2>AllUsers</h2>
+<table style="width:100%">
+    <thead>
+        <tr>
+            <th>Picture</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Allowed</th>
+            <th>Admin rights</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in @Model)
+        {
+                <tr>
+                    <td><img src="@user.ProfilePictureUrl" height="100" width="100"></td>
+                    <td>@user.Username</td>
+                    <td>@user.Email</td>
+                    <td>@user.isAllowed</td>
+                    <td>@user.isAdmin</td>
+                    <td><a asp-area="Admin" asp-controller="Admin" asp-action="EditUser" asp-route-id="@user.Id">[Edit]</a></td>
+                </tr>
+        }
+    </tbody>
+</table>
+
