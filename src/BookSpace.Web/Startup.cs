@@ -60,6 +60,8 @@ namespace BookSpace.Web
 
             services.AddScoped<IDbContext>(serviceProvider => (BookSpaceContext)provider.GetService(typeof(BookSpaceContext)));
 
+            services.AddScoped(p => new BookSpaceContext(p.GetService<DbContextOptions<BookSpaceContext>>()));
+
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddRequestScopingMiddleware(() => scopeProvider.Value = new Scope());
