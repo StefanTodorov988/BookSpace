@@ -25,6 +25,8 @@ using Ninject.Activation;
 using Ninject.Infrastructure.Disposal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using AutoMapper;
+using BookSpace.Web.Areas.Admin.Models.ApplicationUserViewModels;
 
 namespace BookSpace.Web
 {
@@ -34,7 +36,7 @@ namespace BookSpace.Web
         private readonly AsyncLocal<Scope> scopeProvider = new AsyncLocal<Scope>();
         private IKernel kernel { get; set; }
         private IServiceProvider provider;
-
+ 
         private object Resolve(Type type) => kernel.Get(type);
         private object RequestScope(IContext context) => scopeProvider.Value;
 
@@ -44,12 +46,13 @@ namespace BookSpace.Web
         {
             Configuration = configuration;
         }
-
+        
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+       
         public void ConfigureServices(IServiceCollection services)
         {
+            
             services.AddDbContext<BookSpaceContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -59,13 +62,16 @@ namespace BookSpace.Web
 
             services.AddScoped<IDbContext>(serviceProvider => (BookSpaceContext)provider.GetService(typeof(BookSpaceContext)));
 
+            services.AddScoped(p => new BookSpaceContext(p.GetService<DbContextOptions<BookSpaceContext>>()));
+
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddRequestScopingMiddleware(() => scopeProvider.Value = new Scope());
 
+            //services.AddAutoMapper();
+
             services.AddCustomControllerActivation(Resolve);
             services.AddCustomViewComponentActivation(Resolve);
-
             services.AddMvc();
 
         }
@@ -97,10 +103,30 @@ namespace BookSpace.Web
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
+                 name: "areaRoute",
+                 template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+                routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
+
+        private IMapper AutoMapper(Ninject.Activation.IContext context)
+        {
+            Mapper.Initialize(config =>
+            {
+                config.ConstructServicesUsing(type => context.Kernel.Get(type));
+
+                config.CreateMap<ApplicationUser, ApplicationUserViewModel>();
+                // .... other mappings, Profiles, etc.              
+
+            });
+
+            Mapper.AssertConfigurationIsValid(); // optional
+            return Mapper.Instance;
+        }
+
 
         private IKernel RegisterApplicationComponents(IApplicationBuilder app)
         {
@@ -119,10 +145,13 @@ namespace BookSpace.Web
                 .InScope(RequestScope)
                 .WithConstructorArgument(typeof(DbContextOptions), provider.GetService(typeof(DbContextOptions)));
 
+            kernel.Bind<IMapper>().ToMethod(AutoMapper).InSingletonScope();
+
+         
             kernel.Bind<UserManager<ApplicationUser>>()
                   .ToMethod((context => this.Get<UserManager<ApplicationUser>>()))
                   .InThreadScope();
-                        
+
 
             kernel.Bind<SignInManager<ApplicationUser>>()
                  .ToMethod((context => this.Get<SignInManager<ApplicationUser>>()))
@@ -172,7 +201,7 @@ namespace BookSpace.Web
                 .ToFactory()
                 .InSingletonScope();
 
-   
+
 
             kernel.BindToMethod(app.GetRequestService<IViewBufferScope>);
 
