@@ -14,6 +14,10 @@ using BookSpace.Web.Models;
 using BookSpace.Web.Models.AccountViewModels;
 using BookSpace.Web.Services;
 using BookSpace.Models;
+<<<<<<< HEAD
+=======
+using BookSpace.Web.Extensions;
+>>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
 
 namespace BookSpace.Web.Controllers
 {
@@ -24,6 +28,7 @@ namespace BookSpace.Web.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
+<<<<<<< HEAD
         private readonly ILogger _logger;
 
         public AccountController(
@@ -31,11 +36,22 @@ namespace BookSpace.Web.Controllers
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
             ILogger<AccountController> logger)
+=======
+    
+        public AccountController(
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            IEmailSender emailSender)
+       
+>>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
+<<<<<<< HEAD
             _logger = logger;
+=======
+>>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
         }
 
         [TempData]
@@ -65,7 +81,10 @@ namespace BookSpace.Web.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+<<<<<<< HEAD
                     _logger.LogInformation("User logged in.");
+=======
+>>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
                     return RedirectToLocal(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -74,7 +93,10 @@ namespace BookSpace.Web.Controllers
                 }
                 if (result.IsLockedOut)
                 {
+<<<<<<< HEAD
                     _logger.LogWarning("User account locked out.");
+=======
+>>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
                     return RedirectToAction(nameof(Lockout));
                 }
                 else
@@ -128,17 +150,29 @@ namespace BookSpace.Web.Controllers
 
             if (result.Succeeded)
             {
+<<<<<<< HEAD
                 _logger.LogInformation("User with ID {UserId} logged in with 2fa.", user.Id);
+=======
+   
+>>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
                 return RedirectToLocal(returnUrl);
             }
             else if (result.IsLockedOut)
             {
+<<<<<<< HEAD
                 _logger.LogWarning("User with ID {UserId} account locked out.", user.Id);
+=======
+             
+>>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
                 return RedirectToAction(nameof(Lockout));
             }
             else
             {
+<<<<<<< HEAD
                 _logger.LogWarning("Invalid authenticator code entered for user with ID {UserId}.", user.Id);
+=======
+          
+>>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
                 ModelState.AddModelError(string.Empty, "Invalid authenticator code.");
                 return View();
             }
@@ -182,17 +216,29 @@ namespace BookSpace.Web.Controllers
 
             if (result.Succeeded)
             {
+<<<<<<< HEAD
                 _logger.LogInformation("User with ID {UserId} logged in with a recovery code.", user.Id);
+=======
+           
+>>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
                 return RedirectToLocal(returnUrl);
             }
             if (result.IsLockedOut)
             {
+<<<<<<< HEAD
                 _logger.LogWarning("User with ID {UserId} account locked out.", user.Id);
+=======
+           
+>>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
                 return RedirectToAction(nameof(Lockout));
             }
             else
             {
+<<<<<<< HEAD
                 _logger.LogWarning("Invalid recovery code entered for user with ID {UserId}", user.Id);
+=======
+              //  _logger.LogWarning("Invalid recovery code entered for user with ID {UserId}", user.Id);
+>>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
                 ModelState.AddModelError(string.Empty, "Invalid recovery code entered.");
                 return View();
             }
@@ -224,20 +270,32 @@ namespace BookSpace.Web.Controllers
                 var user = new ApplicationUser {
                     UserName = model.Username,
                     Email = model.Email,
+<<<<<<< HEAD
                     UserAccessControl = new BookSpace.Models.UserAccessControlDBModel { RegistrationDate = DateTime.Now }
+=======
+                    UserAccessControl = new BookSpace.Models.UserAccessControl { RegistrationDate = DateTime.Now }
+>>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+<<<<<<< HEAD
                     _logger.LogInformation("User created a new account with password.");
+=======
+             
+>>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
                     await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
+<<<<<<< HEAD
                     _logger.LogInformation("User created a new account with password.");
+=======
+               
+>>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
                     return RedirectToLocal(returnUrl);
                 }
                 AddErrors(result);
@@ -252,6 +310,7 @@ namespace BookSpace.Web.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
+<<<<<<< HEAD
             _logger.LogInformation("User logged out.");
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
@@ -334,6 +393,12 @@ namespace BookSpace.Web.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             return View(nameof(ExternalLogin), model);
         }
+=======
+   
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
+
+>>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
 
         [HttpGet]
         [AllowAnonymous]

@@ -8,12 +8,19 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+<<<<<<< HEAD
 using Microsoft.Extensions.Logging;
+=======
+>>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
 using Microsoft.Extensions.Options;
 using BookSpace.Web.Models;
 using BookSpace.Web.Models.ManageViewModels;
 using BookSpace.Web.Services;
 using BookSpace.Models;
+<<<<<<< HEAD
+=======
+using BookSpace.Web.Extensions;
+>>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
 
 namespace BookSpace.Web.Controllers
 {
@@ -24,7 +31,10 @@ namespace BookSpace.Web.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
+<<<<<<< HEAD
         private readonly ILogger _logger;
+=======
+>>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
         private readonly UrlEncoder _urlEncoder;
 
         private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
@@ -34,13 +44,19 @@ namespace BookSpace.Web.Controllers
           UserManager<ApplicationUser> userManager,
           SignInManager<ApplicationUser> signInManager,
           IEmailSender emailSender,
+<<<<<<< HEAD
           ILogger<ManageController> logger,
+=======
+>>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
           UrlEncoder urlEncoder)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
+<<<<<<< HEAD
             _logger = logger;
+=======
+>>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
             _urlEncoder = urlEncoder;
         }
 
@@ -173,7 +189,10 @@ namespace BookSpace.Web.Controllers
             }
 
             await _signInManager.SignInAsync(user, isPersistent: false);
+<<<<<<< HEAD
             _logger.LogInformation("User changed their password successfully.");
+=======
+>>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
             StatusMessage = "Your password has been changed.";
 
             return RedirectToAction(nameof(ChangePassword));
@@ -360,7 +379,11 @@ namespace BookSpace.Web.Controllers
                 throw new ApplicationException($"Unexpected error occured disabling 2FA for user with ID '{user.Id}'.");
             }
 
+<<<<<<< HEAD
             _logger.LogInformation("User with ID {UserId} has disabled 2fa.", user.Id);
+=======
+       
+>>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
             return RedirectToAction(nameof(TwoFactorAuthentication));
         }
 
@@ -409,7 +432,11 @@ namespace BookSpace.Web.Controllers
             }
 
             await _userManager.SetTwoFactorEnabledAsync(user, true);
+<<<<<<< HEAD
             _logger.LogInformation("User with ID {UserId} has enabled 2FA with an authenticator app.", user.Id);
+=======
+    
+>>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
             var recoveryCodes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
             TempData[RecoveryCodesKey] = recoveryCodes.ToArray();
 
@@ -447,7 +474,11 @@ namespace BookSpace.Web.Controllers
 
             await _userManager.SetTwoFactorEnabledAsync(user, false);
             await _userManager.ResetAuthenticatorKeyAsync(user);
+<<<<<<< HEAD
             _logger.LogInformation("User with id '{UserId}' has reset their authentication app key.", user.Id);
+=======
+      
+>>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
 
             return RedirectToAction(nameof(EnableAuthenticator));
         }
@@ -485,7 +516,11 @@ namespace BookSpace.Web.Controllers
             }
 
             var recoveryCodes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
+<<<<<<< HEAD
             _logger.LogInformation("User with ID {UserId} has generated new 2FA recovery codes.", user.Id);
+=======
+
+>>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
 
             var model = new ShowRecoveryCodesViewModel { RecoveryCodes = recoveryCodes.ToArray() };
 

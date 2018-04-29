@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using BookSpace.Data.Contracts;
 using Microsoft.EntityFrameworkCore;
@@ -28,19 +29,39 @@ namespace BookSpace.Data
             return await this.dbContext.DbSet<TEntity>().ToListAsync();
         }
 
-        public void Add(TEntity entity)
+
+        public async Task<IEnumerable<TEntity>> GetManyAsync(Expression<Func<TEntity, bool>> where)
         {
-             this.dbContext.SetAdded(entity);
+            return await this.dbContext.DbSet<TEntity>().Where(where).ToListAsync();
         }
 
-        public void Update(TEntity entity)
+        public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> where)
         {
-           this.dbContext.SetUpdated(entity);
+            return await this.dbContext.DbSet<TEntity>().Where(where).FirstOrDefaultAsync<TEntity>();
         }
 
-        public void Delete(TEntity entity)
+        public async Task AddAsync(TEntity entity)
         {
-            this.dbContext.SetDeleted(entity);
+            await Task.Run(() =>
+            {
+               dbContext.SetAdded(entity);
+            });
+        }
+
+        public async Task UpdateAsync(TEntity entity)
+        {
+            await Task.Run(() =>
+            {
+                dbContext.SetUpdated(entity);
+            });
+        }
+
+        public async Task DeleteAsync(TEntity entity)
+        {
+            await Task.Run(() =>
+            {
+                dbContext.SetDeleted(entity);
+            });
         }
     }
 }

@@ -10,6 +10,11 @@
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" PrivateAssets="All" />
+<<<<<<< HEAD
+=======
+    <PackageReference Include="Ninject" Version="3.3.4" />
+    <PackageReference Include="Ninject.Extensions.Factory" Version="3.3.2" />
+>>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
   </ItemGroup>
 
   <ItemGroup>
@@ -21,6 +26,18 @@
   <ItemGroup>
     <ProjectReference Include="..\BookSpace.Data\BookSpace.Data.csproj" />
     <ProjectReference Include="..\BookSpace.Models\BookSpace.Models.csproj" />
+<<<<<<< HEAD
+=======
+    <ProjectReference Include="..\BookSpace.Repositories\BookSpace.Repositories.csproj" />
+>>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="wwwroot\css\font-awesome\css\" />
+    <Folder Include="wwwroot\css\font-awesome\fonts\" />
+    <Folder Include="wwwroot\fonts\metropolis\" />
+    <Folder Include="wwwroot\js\plugins\" />
   </ItemGroup>
 
 </Project>
