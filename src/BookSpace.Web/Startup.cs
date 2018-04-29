@@ -25,6 +25,7 @@ using Ninject.Activation;
 using Ninject.Infrastructure.Disposal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using System.Text.Encodings.Web;
 
 namespace BookSpace.Web
 {
@@ -119,19 +120,25 @@ namespace BookSpace.Web
                 .InScope(RequestScope)
                 .WithConstructorArgument(typeof(DbContextOptions), provider.GetService(typeof(DbContextOptions)));
 
+
+            // It should be per request scope ?
             kernel.Bind<UserManager<ApplicationUser>>()
                   .ToMethod((context => this.Get<UserManager<ApplicationUser>>()))
-                  .InThreadScope();
+                  .InSingletonScope();
                         
 
             kernel.Bind<SignInManager<ApplicationUser>>()
                  .ToMethod((context => this.Get<SignInManager<ApplicationUser>>()))
-                 .InThreadScope();
+                  .InSingletonScope();
 
 
             kernel.Bind<IEmailSender>()
                 .To<EmailSender>()
-                .InThreadScope();
+                  .InSingletonScope();
+
+            kernel.Bind<UrlEncoder>()
+                .ToMethod((context => this.Get<UrlEncoder>()))
+                  .InSingletonScope();
 
 
             // Repositories

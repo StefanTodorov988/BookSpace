@@ -1,17 +1,58 @@
 ﻿@{
     ViewData["Title"] = "Contact";
 }
-<h2>@ViewData["Title"]</h2>
-<h3>@ViewData["Message"]</h3>
 
-<address>
-    One Microsoft Way<br />
-    Redmond, WA 98052-6399<br />
-    <abbr title="Phone">P:</abbr>
-    425.555.0100
-</address>
+<section class="content content--narrow">
 
-<address>
-    <strong>Support:</strong> <a href="mailto:Support@example.com">Support@example.com</a><br />
-    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-</address>
+    <div class="row">
+
+        <div class="content-header col-full">
+            <h1 class="content-header-title">
+                Feel Free To Contact Us.
+            </h1>
+        </div>
+
+        <div class="col-full content-main">
+            <p class="lead">
+                Lorem ipsum Deserunt est dolore Ut Excepteur nulla occaecat magna occaecat Excepteur nisi esse veniam dolor consectetur minim qui nisi esse deserunt commodo ea enim ullamco non voluptate consectetur minim aliquip Ut incididunt amet ut
+                cupidatat.
+            </p>
+
+            <p>
+                Duis ex ad cupidatat tempor Excepteur cillum cupidatat fugiat nostrud cupidatat dolor sunt sint sit nisi est eu exercitation incididunt adipisicing veniam velit id fugiat enim mollit amet anim veniam dolor dolor irure velit commodo cillum
+                sit nulla ullamco magna amet magna cupidatat qui labore cillum sit in tempor veniam consequat non laborum adipisicing aliqua ea nisi sint ut quis proident ullamco ut dolore culpa occaecat ut laboris in sit minim cupidatat ut dolor
+                voluptate enim veniam consequat occaecat fugiat in adipisicing in amet Ut nulla nisi non ut enim aliqua laborum mollit quis nostrud sed sed.
+            </p>
+
+            <div class="row">
+                <div class="col-six tab-full">
+                    <h3>Where to Find Us</h3>
+                    <p>
+                        Sofia, Bulgaria<br> Bul. Bulgaria 123
+                    </p>
+                </div>
+
+                <div class="col-six tab-full">
+                    <h3>Contact Info</h3>
+                    <p>
+                        info@bookster.com<br> Phone: +35989992929
+                    </p>
+
+                </div>
+            </div>
+
+            <h3>Send us a message.</h3>
+
+            <form name="contact-form" id="contact-form" method="post" action="">
+                <fieldset>
+                    <div class="message form-field">
+                        <textarea name="comment-message" id="comment-message" class="full-width" placeholder="Your Message"></textarea>
+                    </div>
+
+                    <button type="submit" class="submit btn btn--primary full-width">Send</button>
+
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</section>
