@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using BookSpace.Data;
 using BookSpace.Data.Contracts;
 using BookSpace.Models;
@@ -12,61 +13,55 @@ namespace BookSpace.Repositories
         public BookRepository(IDbContext dbContext) : base(dbContext) {}
 
 
-        public Book GetBookByTitleAsync(string title)
+        public async Task<Book> GetBookByTitleAsync(string title)
         {
-            return this.GetAsync(b => b.Title == title).GetAwaiter().GetResult();
+            return await this.GetAsync(b => b.Title == title);
         }
 
-        public IEnumerable<Book> GetPageOfBooksAsync(int skip, int take)
+        public async Task<IEnumerable<Book>> GetPageOfBooksAscync(int take, int skip)
         {
-            return this.GetAllAsync().GetAwaiter().GetResult()
-                                                  .Skip(skip)
-                                                  .Take(take);
+            var books = await this.GetAllAsync();
+
+            return this.GetPaged(books, take, skip).Results;
         }
 
-        public IEnumerable<Author> GetBookAuthorsAsync(string bookId)
+        public async Task<IEnumerable<Author>> GetBookAuthorsAsync(string bookId)
         {
-            return this.GetByIdAsync(bookId).GetAwaiter().GetResult()
-                                            .BookAuthors
-                                            .Select(ba => ba.Author)
-                                            .ToList();
+            return await this.GetAsync(book => book.BookId == bookId)
+                           .ContinueWith(
+                                         b => b.Result.BookAuthors
+                                                      .Select(ba => ba.Author)
+                                        );
         }
 
-        public IEnumerable<Genre> GetBookGenresAsync(string bookId)
+        public async Task<IEnumerable<Genre>> GetBookGenresAsync(string bookId)
         {
-            return this.GetByIdAsync(bookId).GetAwaiter().GetResult()
-                                                         .BookGenres
-                                                         .Select(bg => bg.Genre)
-                                                         .ToList();
+            return await this.GetAsync(book => book.BookId == bookId)
+                             .ContinueWith(
+                                         b => b.Result.BookGenres
+                                                      .Select(bg => bg.Genre)
+                                        );
         }
 
-        public IEnumerable<Comment> GetBookCommentsAsync(string bookId)
+        public async Task<IEnumerable<Comment>> GetBookCommentsAsync(string bookId)
         {
-            return this.GetByIdAsync(bookId).GetAwaiter().GetResult()
-                                                         .Comments
-                                                         .ToList();
+            return await this.GetAsync(book => book.BookId == bookId)
+                            .ContinueWith(
+                                         b => b.Result.Comments
+                                        );
         }
 
-        public IEnumerable<Tag> GetBookTagsAsync(string bookId)
+        public async Task<IEnumerable<Tag>> GetBookTagsAsync(string bookId)
         {
-            return this.GetByIdAsync(bookId).GetAwaiter().GetResult()
-                                                         .BookTags
-                                                         .Select(bt => bt.Tag)
-                                                         .ToList();
+            return await this.GetAsync(book => book.BookId == bookId)
+                             .ContinueWith(
+                                         b => b.Result.BookTags
+                                                      .Select(bt => bt.Tag)
+                                        );
         }
 
-        public async void CreateBookAsync(Book book)
-        {
-            await this.AddAsync(book);
 
-        }
-
-        public async void UpdateBookAsync(Book book)
-        {
-            await this.UpdateAsync(book);
-        }
-
-        public async void RemoveBookAync(string bookId)
+        public async Task RemoveBookAync(string bookId)
         {
             var bookToRemove = this.GetByIdAsync(bookId).GetAwaiter().GetResult();
             await this.DeleteAsync(bookToRemove);
