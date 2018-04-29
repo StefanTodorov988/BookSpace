@@ -1,14 +1,6 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-﻿using BookSpace.Data.Contracts;
-=======
-﻿using System.Threading.Tasks;
-=======
 ﻿using System.IO;
 using System.Threading.Tasks;
->>>>>>> ee9ab0c912d3d49fe53b47164550140fd4f6681d
 using BookSpace.Data.Contracts;
->>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
 using BookSpace.Models;
 using BookSpace.Models.Configurations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -24,26 +16,7 @@ namespace BookSpace.Data
         {
         }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-        public DbSet<AuthorDBModel> Authors { get; set; }
-
-        public DbSet<BookAuthor> BooksAuthors { get; set; }
-
-        public DbSet<BookDBModel> Books { get; set; }
-
-        public DbSet<BookGenre> BooksGenres { get; set; }
-
-        public DbSet<BookUser> BooksUsers { get; set; }
-
-        public DbSet<CommentDBModel> Comments { get; set; }
-
-        public DbSet<GenreDBModel> Genres { get; set; }
-=======
-        public virtual DbSet<Author> Authors { get; set; }
-=======
         public DbSet<Author> Authors { get; set; }
->>>>>>> ee9ab0c912d3d49fe53b47164550140fd4f6681d
 
         public DbSet<BookAuthor> BooksAuthors { get; set; }
 
@@ -55,12 +28,7 @@ namespace BookSpace.Data
 
         public DbSet<Comment> Comments { get; set; }
 
-<<<<<<< HEAD
-        public virtual DbSet<Genre> Genres { get; set; }
->>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
-=======
         public DbSet<Genre> Genres { get; set; }
->>>>>>> ee9ab0c912d3d49fe53b47164550140fd4f6681d
 
         public DbSet<UserAccessControl> UserAccessControl { get; set; }
 
@@ -73,17 +41,6 @@ namespace BookSpace.Data
             base.OnModelCreating(builder);
 
             builder.ApplyConfiguration(new ApplicationUserConfiguration());
-<<<<<<< HEAD
-            builder.ApplyConfiguration(new AuthorDBModelConfiguration());
-            builder.ApplyConfiguration(new BookAuthorConfiguration());
-            builder.ApplyConfiguration(new BookDBModelConfiguration());
-            builder.ApplyConfiguration(new BookGenreConfiguration());
-            builder.ApplyConfiguration(new BookUserConfiguration());
-            builder.ApplyConfiguration(new CommentDBModelConfiguration());
-            builder.ApplyConfiguration(new GenreDBModelConfiguration());
-            builder.ApplyConfiguration(new UserAccessControlDBModelConfiguration());
-            builder.ApplyConfiguration(new TagDBModelConfiguration());
-=======
             builder.ApplyConfiguration(new AuthorConfiguration());
             builder.ApplyConfiguration(new BookAuthorConfiguration());
             builder.ApplyConfiguration(new BookConfiguration());
@@ -93,7 +50,6 @@ namespace BookSpace.Data
             builder.ApplyConfiguration(new GenreConfiguration());
             builder.ApplyConfiguration(new UserAccessControlConfiguration());
             builder.ApplyConfiguration(new TagConfiguration());
->>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
             builder.ApplyConfiguration(new BookTagConfiguration());
         }
 

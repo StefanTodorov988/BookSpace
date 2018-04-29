@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-<<<<<<< HEAD
-=======
 using System.Reflection;
->>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -15,9 +12,6 @@ using Microsoft.Extensions.DependencyInjection;
 using BookSpace.Web.Models;
 using BookSpace.Web.Services;
 using BookSpace.Data;
-<<<<<<< HEAD
-using BookSpace.Models;
-=======
 using BookSpace.Data.Contracts;
 using BookSpace.Factories;
 using BookSpace.Models;
@@ -31,14 +25,10 @@ using Ninject.Activation;
 using Ninject.Infrastructure.Disposal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-<<<<<<< HEAD
->>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
-=======
 using System.Text.Encodings.Web;
 using AutoMapper;
 using BookSpace.Web.Areas.Admin.Models.ApplicationUserViewModels;
 
->>>>>>> ee9ab0c912d3d49fe53b47164550140fd4f6681d
 
 namespace BookSpace.Web
 {
@@ -71,10 +61,6 @@ namespace BookSpace.Web
                 .AddEntityFrameworkStores<BookSpaceContext>()
                 .AddDefaultTokenProviders();
 
-<<<<<<< HEAD
-            // Add application services.
-            services.AddTransient<IEmailSender, EmailSender>();
-=======
             services.AddScoped<IDbContext>(serviceProvider => (BookSpaceContext)provider.GetService(typeof(BookSpaceContext)));
 
             services.AddScoped(p => new BookSpaceContext(p.GetService<DbContextOptions<BookSpaceContext>>()));
@@ -87,11 +73,6 @@ namespace BookSpace.Web
 
             services.AddCustomControllerActivation(Resolve);
             services.AddCustomViewComponentActivation(Resolve);
-<<<<<<< HEAD
->>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
-
-=======
->>>>>>> ee9ab0c912d3d49fe53b47164550140fd4f6681d
             services.AddMvc();
 
         }
@@ -117,10 +98,7 @@ namespace BookSpace.Web
 
             app.UseStaticFiles();
 
-<<<<<<< HEAD
-=======
 
->>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
             app.UseAuthentication();
 
             app.UseMvc(routes =>
@@ -134,8 +112,6 @@ namespace BookSpace.Web
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
-<<<<<<< HEAD
-=======
 
         private IMapper AutoMapper(Ninject.Activation.IContext context)
         {
@@ -244,6 +220,5 @@ namespace BookSpace.Web
         {
             return (T)this.provider.GetService(typeof(T));
         }
->>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
     }
 }

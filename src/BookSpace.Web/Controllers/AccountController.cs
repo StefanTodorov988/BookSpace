@@ -14,10 +14,7 @@ using BookSpace.Web.Models;
 using BookSpace.Web.Models.AccountViewModels;
 using BookSpace.Web.Services;
 using BookSpace.Models;
-<<<<<<< HEAD
-=======
 using BookSpace.Web.Extensions;
->>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
 
 namespace BookSpace.Web.Controllers
 {
@@ -28,30 +25,16 @@ namespace BookSpace.Web.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
-<<<<<<< HEAD
-        private readonly ILogger _logger;
-
-        public AccountController(
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
-            IEmailSender emailSender,
-            ILogger<AccountController> logger)
-=======
     
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender)
        
->>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
-<<<<<<< HEAD
-            _logger = logger;
-=======
->>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
         }
 
         [TempData]
@@ -81,10 +64,6 @@ namespace BookSpace.Web.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-<<<<<<< HEAD
-                    _logger.LogInformation("User logged in.");
-=======
->>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
                     return RedirectToLocal(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -93,10 +72,6 @@ namespace BookSpace.Web.Controllers
                 }
                 if (result.IsLockedOut)
                 {
-<<<<<<< HEAD
-                    _logger.LogWarning("User account locked out.");
-=======
->>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
                     return RedirectToAction(nameof(Lockout));
                 }
                 else
@@ -150,29 +125,17 @@ namespace BookSpace.Web.Controllers
 
             if (result.Succeeded)
             {
-<<<<<<< HEAD
-                _logger.LogInformation("User with ID {UserId} logged in with 2fa.", user.Id);
-=======
    
->>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
                 return RedirectToLocal(returnUrl);
             }
             else if (result.IsLockedOut)
             {
-<<<<<<< HEAD
-                _logger.LogWarning("User with ID {UserId} account locked out.", user.Id);
-=======
              
->>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
                 return RedirectToAction(nameof(Lockout));
             }
             else
             {
-<<<<<<< HEAD
-                _logger.LogWarning("Invalid authenticator code entered for user with ID {UserId}.", user.Id);
-=======
           
->>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
                 ModelState.AddModelError(string.Empty, "Invalid authenticator code.");
                 return View();
             }
@@ -216,29 +179,17 @@ namespace BookSpace.Web.Controllers
 
             if (result.Succeeded)
             {
-<<<<<<< HEAD
-                _logger.LogInformation("User with ID {UserId} logged in with a recovery code.", user.Id);
-=======
            
->>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
                 return RedirectToLocal(returnUrl);
             }
             if (result.IsLockedOut)
             {
-<<<<<<< HEAD
-                _logger.LogWarning("User with ID {UserId} account locked out.", user.Id);
-=======
            
->>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
                 return RedirectToAction(nameof(Lockout));
             }
             else
             {
-<<<<<<< HEAD
-                _logger.LogWarning("Invalid recovery code entered for user with ID {UserId}", user.Id);
-=======
               //  _logger.LogWarning("Invalid recovery code entered for user with ID {UserId}", user.Id);
->>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
                 ModelState.AddModelError(string.Empty, "Invalid recovery code entered.");
                 return View();
             }
@@ -270,32 +221,20 @@ namespace BookSpace.Web.Controllers
                 var user = new ApplicationUser {
                     UserName = model.Username,
                     Email = model.Email,
-<<<<<<< HEAD
-                    UserAccessControl = new BookSpace.Models.UserAccessControlDBModel { RegistrationDate = DateTime.Now }
-=======
                     UserAccessControl = new BookSpace.Models.UserAccessControl { RegistrationDate = DateTime.Now }
->>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-<<<<<<< HEAD
-                    _logger.LogInformation("User created a new account with password.");
-=======
              
->>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
                     await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
-<<<<<<< HEAD
-                    _logger.LogInformation("User created a new account with password.");
-=======
                
->>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
                     return RedirectToLocal(returnUrl);
                 }
                 AddErrors(result);
@@ -310,95 +249,10 @@ namespace BookSpace.Web.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-<<<<<<< HEAD
-            _logger.LogInformation("User logged out.");
-            return RedirectToAction(nameof(HomeController.Index), "Home");
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public IActionResult ExternalLogin(string provider, string returnUrl = null)
-        {
-            // Request a redirect to the external login provider.
-            var redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Account", new { returnUrl });
-            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
-            return Challenge(properties, provider);
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
-        {
-            if (remoteError != null)
-            {
-                ErrorMessage = $"Error from external provider: {remoteError}";
-                return RedirectToAction(nameof(Login));
-            }
-            var info = await _signInManager.GetExternalLoginInfoAsync();
-            if (info == null)
-            {
-                return RedirectToAction(nameof(Login));
-            }
-
-            // Sign in the user with this external login provider if the user already has a login.
-            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
-            if (result.Succeeded)
-            {
-                _logger.LogInformation("User logged in with {Name} provider.", info.LoginProvider);
-                return RedirectToLocal(returnUrl);
-            }
-            if (result.IsLockedOut)
-            {
-                return RedirectToAction(nameof(Lockout));
-            }
-            else
-            {
-                // If the user does not have an account, then ask the user to create an account.
-                ViewData["ReturnUrl"] = returnUrl;
-                ViewData["LoginProvider"] = info.LoginProvider;
-                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
-                return View("ExternalLogin", new ExternalLoginViewModel { Email = email });
-            }
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ExternalLoginConfirmation(ExternalLoginViewModel model, string returnUrl = null)
-        {
-            if (ModelState.IsValid)
-            {
-                // Get the information about the user from the external login provider
-                var info = await _signInManager.GetExternalLoginInfoAsync();
-                if (info == null)
-                {
-                    throw new ApplicationException("Error loading external login information during confirmation.");
-                }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await _userManager.CreateAsync(user);
-                if (result.Succeeded)
-                {
-                    result = await _userManager.AddLoginAsync(user, info);
-                    if (result.Succeeded)
-                    {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
-                        return RedirectToLocal(returnUrl);
-                    }
-                }
-                AddErrors(result);
-            }
-
-            ViewData["ReturnUrl"] = returnUrl;
-            return View(nameof(ExternalLogin), model);
-        }
-=======
    
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
->>>>>>> 280e0ded4b43c1723fcd4027699ec9ba290e71ec
 
         [HttpGet]
         [AllowAnonymous]
