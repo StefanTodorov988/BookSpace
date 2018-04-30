@@ -58,7 +58,7 @@ namespace BookSpace.Data
 
         public async Task UpdateAsync(TEntity entity)
         {
-            this.dbContext.DbSet<TEntity>().Attach(entity);
+            this.dbContext.DbSet<TEntity>().Update(entity);
             await this.dbContext.SaveAsync();
         }
 

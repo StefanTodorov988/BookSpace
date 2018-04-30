@@ -224,19 +224,19 @@ namespace BookSpace.Data.Migrations
 
                     b.Property<DateTime>("BanEndTime")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValue(new DateTime(2018, 4, 29, 18, 20, 10, 759, DateTimeKind.Local));
+                        .HasDefaultValue(new DateTime(2018, 4, 30, 1, 8, 23, 494, DateTimeKind.Local));
 
                     b.Property<DateTime>("LastLogin")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValue(new DateTime(2018, 4, 29, 18, 20, 10, 759, DateTimeKind.Local));
+                        .HasDefaultValue(new DateTime(2018, 4, 30, 1, 8, 23, 494, DateTimeKind.Local));
 
                     b.Property<DateTime>("LockOutEndTime")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValue(new DateTime(2018, 4, 29, 18, 20, 10, 759, DateTimeKind.Local));
+                        .HasDefaultValue(new DateTime(2018, 4, 30, 1, 8, 23, 494, DateTimeKind.Local));
 
                     b.Property<DateTime>("RegistrationDate")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValue(new DateTime(2018, 4, 29, 18, 20, 10, 757, DateTimeKind.Local));
+                        .HasDefaultValue(new DateTime(2018, 4, 30, 1, 8, 23, 492, DateTimeKind.Local));
 
                     b.HasKey("UserId");
 
