@@ -2,38 +2,41 @@
 using Microsoft.AspNetCore.Hosting;
 using System;
 
-public sealed class RequestScopingStartupFilter : IStartupFilter
+namespace BookSpace.Web.Infrastructure.Filters
 {
-    private readonly Func<IDisposable> requestScopeProvider;
-
-    public RequestScopingStartupFilter(Func<IDisposable> requestScopeProvider)
+    public sealed class RequestScopingStartupFilter : IStartupFilter
     {
-        if (requestScopeProvider == null)
+        private readonly Func<IDisposable> requestScopeProvider;
+
+        public RequestScopingStartupFilter(Func<IDisposable> requestScopeProvider)
         {
-            throw new ArgumentNullException(nameof(requestScopeProvider));
+            if (requestScopeProvider == null)
+            {
+                throw new ArgumentNullException(nameof(requestScopeProvider));
+            }
+
+            this.requestScopeProvider = requestScopeProvider;
         }
 
-        this.requestScopeProvider = requestScopeProvider;
-    }
-
-    public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> nextFilter)
-    {
-        return builder =>
+        public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> nextFilter)
         {
-            ConfigureRequestScoping(builder);
-
-            nextFilter(builder);
-        };
-    }
-
-    private void ConfigureRequestScoping(IApplicationBuilder builder)
-    {
-        builder.Use(async (context, next) =>
-        {
-            using (var scope = this.requestScopeProvider())
+            return builder =>
             {
-                await next();
-            }
-        });
+                ConfigureRequestScoping(builder);
+
+                nextFilter(builder);
+            };
+        }
+
+        private void ConfigureRequestScoping(IApplicationBuilder builder)
+        {
+            builder.Use(async (context, next) =>
+            {
+                using (var scope = this.requestScopeProvider())
+                {
+                    await next();
+                }
+            });
+        }
     }
 }
