@@ -133,6 +133,77 @@
 
     };
 
+    var register = function () {
+        var registerWrap = $('.header-register'),
+            usernameField = registerWrap.find('.text-field'),
+            passwordField = registerWrap.find('.password-field'),
+            emailField = registerWrap.find('.email-text-field'),
+            confirmPasswordField = registerWrap.find('.confirm-password-field'),
+            closeRegister = registerWrap.find('.header-register-close'),
+            registerTrigger = $('.header-register-btn'),
+            siteBody = $('body');
+
+
+        registerTrigger.on('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            var $this = $(this);
+
+            siteBody.addClass('register-is-visible');
+            setTimeout(function () {
+                registerWrap.find('.text-field').focus();
+                registerWrap.find('.password-field').focus();
+            }, 100);
+
+        });
+
+        closeRegister.on('click', function (e) {
+
+            var $this = $(this);
+
+            e.stopPropagation();
+
+            if (siteBody.hasClass('register-is-visible')) {
+                siteBody.removeClass('register-is-visible');
+                setTimeout(function () {
+                    registerWrap.find('.text-field').blur();
+                    registerWrap.find('.password-field').blur();
+                    registerWrap.find('.email-text-field').blur();
+                    registerWrap.find('.confirm-password-field').blur();
+                }, 100);
+            }
+        });
+
+        registerWrap.on('click', function (e) {
+            if (!$(e.target).is('.text-field') || !$(e.target).is('.password-field')) {
+                closeRegister.trigger('click');
+            }
+        });
+
+        usernameField.on('click', function (e) {
+            e.stopPropagation();
+        });
+
+        passwordField.on('click', function (e) {
+            e.stopPropagation();
+        });
+
+        emailField.on('click', function (e) {
+            e.stopPropagation();
+        });
+
+        confirmPasswordField.on('click', function (e) {
+            e.stopPropagation();
+        });
+
+        usernameField.attr({ placeholder: 'Username' });
+        passwordField.attr({ placeholder: 'Password' });
+        emailField.attr({ placeholder: 'Email' });
+        confirmPasswordField.attr({ placeholder: 'Confirm password' });
+
+    };
+
 
     var masonryGrid = function () {
         var containerBricks = $('.masonry');
@@ -180,6 +251,7 @@
         preloader();
         search();
         login();
+        register();
         masonryGrid();
         smoothScroll();
 

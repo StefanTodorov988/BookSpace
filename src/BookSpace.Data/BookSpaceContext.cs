@@ -15,8 +15,7 @@ namespace BookSpace.Data
             : base(options)
         {
         }
-
-        public DbSet<Author> Authors { get; set; }
+         public DbSet<Author> Authors { get; set; }
 
         public DbSet<BookAuthor> BooksAuthors { get; set; }
 
@@ -36,25 +35,6 @@ namespace BookSpace.Data
 
         public DbSet<BookTag> BooksTags { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            base.OnModelCreating(builder);
-
-            builder.ApplyConfiguration(new ApplicationUserConfiguration());
-            builder.ApplyConfiguration(new AuthorConfiguration());
-            builder.ApplyConfiguration(new BookAuthorConfiguration());
-            builder.ApplyConfiguration(new BookConfiguration());
-            builder.ApplyConfiguration(new BookGenreConfiguration());
-            builder.ApplyConfiguration(new BookUserConfiguration());
-            builder.ApplyConfiguration(new CommentConfiguration());
-            builder.ApplyConfiguration(new GenreConfiguration());
-            builder.ApplyConfiguration(new UserAccessControlConfiguration());
-            builder.ApplyConfiguration(new TagConfiguration());
-            builder.ApplyConfiguration(new BookTagConfiguration());
-        }
-
-
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -68,9 +48,27 @@ namespace BookSpace.Data
             }
         }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            //TODO suspicios
+            builder.ApplyConfiguration(new ApplicationUserConfiguration());
+            builder.ApplyConfiguration(new AuthorConfiguration());
+            builder.ApplyConfiguration(new BookAuthorConfiguration());
+            builder.ApplyConfiguration(new BookConfiguration());
+            builder.ApplyConfiguration(new BookGenreConfiguration());
+            builder.ApplyConfiguration(new BookUserConfiguration());
+            builder.ApplyConfiguration(new CommentConfiguration());
+            builder.ApplyConfiguration(new GenreConfiguration());
+            builder.ApplyConfiguration(new UserAccessControlConfiguration());
+            builder.ApplyConfiguration(new TagConfiguration());
+            builder.ApplyConfiguration(new BookTagConfiguration());
+        }
+
         public DbSet<TEntity> DbSet<TEntity>() where TEntity : class
         {
-
+            //TODO suspicios
             return this.Set<TEntity>();
         }
 

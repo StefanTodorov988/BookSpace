@@ -8,45 +8,48 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.DependencyInjection;
 using Ninject;
 
-public static class ApplicationBuilderExtensions
+namespace BookSpace.Web.Infrastructure
 {
-    public static void BindToMethod<T>(this IKernel config, Func<T> method)
-                                        => config.Bind<T>().ToMethod(c => method());
-
-    public static Type[] GetControllerTypes(this IApplicationBuilder builder)
+    public static class ApplicationBuilderExtensions
     {
-        var manager = builder.ApplicationServices.GetRequiredService<ApplicationPartManager>();
+        public static void BindToMethod<T>(this IKernel config, Func<T> method)
+                                            => config.Bind<T>().ToMethod(c => method());
 
-        var feature = new ControllerFeature();
-        manager.PopulateFeature(feature);
-
-        return feature.Controllers.Select(t => t.AsType()).ToArray();
-    }
-
-    public static T GetRequestService<T>(this IApplicationBuilder builder) where T : class
-    {
-        if (builder == null) throw new ArgumentNullException(nameof(builder));
-
-        return GetRequestServiceProvider(builder).GetService<T>();
-    }
-
-    private static IServiceProvider GetRequestServiceProvider(IApplicationBuilder builder)
-    {
-        var accessor = builder.ApplicationServices.GetService<IHttpContextAccessor>();
-
-        if (accessor == null)
+        public static Type[] GetControllerTypes(this IApplicationBuilder builder)
         {
-            throw new InvalidOperationException(
-      typeof(IHttpContextAccessor).FullName);
+            var manager = builder.ApplicationServices.GetRequiredService<ApplicationPartManager>();
+
+            var feature = new ControllerFeature();
+            manager.PopulateFeature(feature);
+
+            return feature.Controllers.Select(t => t.AsType()).ToArray();
         }
 
-        var context = accessor.HttpContext;
-
-        if (context == null)
+        public static T GetRequestService<T>(this IApplicationBuilder builder) where T : class
         {
-            throw new InvalidOperationException("No HttpContext.");
+            if (builder == null) throw new ArgumentNullException(nameof(builder));
+
+            return GetRequestServiceProvider(builder).GetService<T>();
         }
 
-        return context.RequestServices;
+        private static IServiceProvider GetRequestServiceProvider(IApplicationBuilder builder)
+        {
+            var accessor = builder.ApplicationServices.GetService<IHttpContextAccessor>();
+
+            if (accessor == null)
+            {
+                throw new InvalidOperationException(
+          typeof(IHttpContextAccessor).FullName);
+            }
+
+            var context = accessor.HttpContext;
+
+            if (context == null)
+            {
+                throw new InvalidOperationException("No HttpContext.");
+            }
+
+            return context.RequestServices;
+        }
     }
 }

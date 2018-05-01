@@ -28,7 +28,8 @@ using Microsoft.Extensions.Logging;
 using System.Text.Encodings.Web;
 using AutoMapper;
 using BookSpace.Web.Areas.Admin.Models.ApplicationUserViewModels;
-
+using BookSpace.Web.Infrastructure.Extensions;
+using BookSpace.Web.Infrastructure;
 
 namespace BookSpace.Web
 {
@@ -47,13 +48,13 @@ namespace BookSpace.Web
         {
             Configuration = configuration;
         }
-        
+
         public IConfiguration Configuration { get; }
 
-       
+
         public void ConfigureServices(IServiceCollection services)
         {
-            
+
             services.AddDbContext<BookSpaceContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -69,11 +70,14 @@ namespace BookSpace.Web
 
             services.AddRequestScopingMiddleware(() => scopeProvider.Value = new Scope());
 
+<<<<<<< HEAD
             //services.AddAutoMapper();
 
             services.AddTransient<IDatabaseSeedService, DatabaseSeedService>();
             services.AddTransient<UserManager<ApplicationUser>>();
 
+=======
+>>>>>>> 216779a7599fb54deb3d9806fa111ea711f3bb49
             services.AddCustomControllerActivation(Resolve);
             services.AddCustomViewComponentActivation(Resolve);
             services.AddMvc();
@@ -101,7 +105,6 @@ namespace BookSpace.Web
 
             app.UseStaticFiles();
 
-
             app.UseAuthentication();
 
             app.UseMvc(routes =>
@@ -122,7 +125,7 @@ namespace BookSpace.Web
             {
                 config.ConstructServicesUsing(type => context.Kernel.Get(type));
 
-                config.CreateMap<ApplicationUser, ApplicationUserViewModel>();
+                config.CreateMap<ApplicationUser, ApplicationUserViewModel>().ReverseMap();
                 // .... other mappings, Profiles, etc.              
 
             });
@@ -150,21 +153,21 @@ namespace BookSpace.Web
                 .WithConstructorArgument(typeof(DbContextOptions), provider.GetService(typeof(DbContextOptions)));
 
 
+            kernel.Bind<RoleManager<IdentityRole>>()
+                  .ToMethod((context => this.Get<RoleManager<IdentityRole>>()))
+                  .InSingletonScope();
+
             // It should be per request scope ?
             kernel.Bind<UserManager<ApplicationUser>>()
                   .ToMethod((context => this.Get<UserManager<ApplicationUser>>()))
                   .InSingletonScope();
-                        
+
 
             kernel.Bind<SignInManager<ApplicationUser>>()
                  .ToMethod((context => this.Get<SignInManager<ApplicationUser>>()))
                   .InSingletonScope();
 
             kernel.Bind<IMapper>().ToMethod(AutoMapper).InSingletonScope();
-
-         
-
-
 
             kernel.Bind<IEmailSender>()
                 .To<EmailSender>()
@@ -173,7 +176,6 @@ namespace BookSpace.Web
             kernel.Bind<UrlEncoder>()
                 .ToMethod((context => this.Get<UrlEncoder>()))
                   .InSingletonScope();
-               
 
             // Repositories
             kernel.Bind(typeof(IRepository<>))
@@ -223,5 +225,8 @@ namespace BookSpace.Web
         {
             return (T)this.provider.GetService(typeof(T));
         }
+
+
+
     }
 }
