@@ -5,7 +5,7 @@ using BookSpace.Models;
 
 namespace BookSpace.Repositories.Contracts
 {
-    public interface IBookRepository
+    public interface IBookRepository : IRepository<Book>
     {
         Task<Book> GetBookByTitleAsync(string title);
         Task<IEnumerable<Book>> GetPageOfBooksAscync(int take, int skip);

@@ -1,5 +1,4 @@
-﻿
-/* 
+﻿/* 
     Still not fully fuctioning responsiveness
     For the next task will be ready
 */
@@ -191,19 +190,19 @@ textarea {
 }
 
 
-.row-header {
+.row {
     width: 94%;
     max-width: 1200px;
     margin: 0 auto;
 }
 
-    .row-header :after {
+    .row:after {
         content: "";
         display: table;
         clear: both;
     }
 
-    .row-header .row-header {
+    .row .row {
         width: auto;
         max-width: none;
         margin-left: -20px;

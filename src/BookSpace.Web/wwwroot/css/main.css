@@ -87,12 +87,6 @@ h5 {
     line-height: 1.313;
 }
 
-.row{
-    background: white;
-}
-.row-header {
-    background: background: #19191b;
-}
 p img {
     margin: 0;
 }
@@ -477,7 +471,8 @@ button {
 }
 
 .header-search-close,
-.header-login-close {
+.header-login-close,
+.header-register-close {
     position: absolute;
     display: block;
     width: 45px;
@@ -493,7 +488,9 @@ button {
     .header-search-close::before,
     .header-search-close::after,
     .header-login-close::before,
-    .header-login-close::after {
+    .header-login-close::after,
+    .header-register-close:before,
+    .header-register-close:after {
         content: '';
         position: absolute;
         display: inline-block;
@@ -505,12 +502,14 @@ button {
     }
 
     .header-search-close::before,
-    .header-login-close::before {
+    .header-login-close::before,
+    .header-register-close:before {
         transform: rotate(45deg);
     }
 
     .header-search-close::after,
-    .header-login-close::after {
+    .header-login-close::after,
+    .header-register-close:after {
         transform: rotate(-45deg);
     }
 
@@ -758,18 +757,17 @@ button {
 }
 
 .pageheader-content {
-  
     overflow: hidden;
     padding: 0 75px;
     max-width: 1350px;
 }
 
-    .header-logo {
-        display: inline-block;
-        margin: 0;
-        padding: 0;
-        z-index: 501;
-    }
+.header-logo {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    z-index: 501;
+}
 
     .header-logo a {
         display: block;
@@ -832,7 +830,8 @@ button {
         }
 
 .header-search,
-.header-login {
+.header-login,
+.header-register {
     display: block;
     text-align: center;
     background: #151515;
@@ -849,7 +848,8 @@ button {
 }
 
 .header-search-form,
-.header-login-form {
+.header-login-form,
+.header-register-form {
     width: 100%;
     position: absolute;
     top: 50%;
@@ -859,11 +859,12 @@ button {
 }
 
     .header-search-form label,
-    .header-login-form label {
+    .header-login-form label,
+    .header-register-form label {
         color: #FFFFFF;
     }
 
-    .header-search-form::after, {
+    .header-search-form::after {
         content: "Press Enter to begin your search.";
         display: block;
         letter-spacing: 0.6px;
@@ -875,7 +876,9 @@ button {
 
     .header-search-form input[type="search"],
     .header-login-form input[type="text"],
-    .header-login-form input[type="password"] {
+    .header-login-form input[type="password"],
+    .header-register-form input[type="text"],
+    .header-register-form input[type="password"] {
         background-color: transparent;
         color: #000000;
         height: auto;
@@ -893,7 +896,9 @@ button {
 
         .header-search-form input[type="search"]:focus,
         .header-login-form input[type="text"]:focus,
-        .header-login-form input[type="password"]:focus {
+        .header-login-form input[type="password"]:focus,
+        .header-register-form input[type="text"]:focus,
+        .header-resgister-form input[type="password"]:focus {
             outline: none;
         }
 
@@ -901,18 +906,21 @@ button {
     background-image: url(../images/icons/icon-search.png);
     height: 21px;
     min-width: 21px;
-    position: absolute;
-    right: 58px;
+    position: relative;
+    float: left;
     top: 15px;
     background-repeat: no-repeat;
     background-position: right center;
     background-size: contain;
 }
 
-.header-login-btn {
-    background-image: url(../images/icons/icon-login.png);
+.header-login-btn,
+.header-register-btn {
+    color: white;
     height: 21px;
     min-width: 21px;
+    font-family: "metropolis-semibold", sans-serif;
+    font-size: 2.0rem;
     position: absolute;
     right: 20px;
     top: 15px;
@@ -920,6 +928,35 @@ button {
     background-position: right center;
     background-size: contain;
 }
+
+.header-login-btn {
+    right: 13rem;
+}
+
+    .header-login-btn:hover,
+    .header-register-btn:hover {
+        color: white;
+        font-size: 2.1rem;
+    }
+
+.header-account-btn {
+    color: white;
+    height: 21px;
+    min-width: 21px;
+    position: absolute;
+    right: 20px;
+    top: 70px;
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: contain;
+    font-size: 2.0rem;
+    font-weight: bold;
+}
+
+    .header-account-btn:hover {
+        font-size: 2.1rem;
+        color: white;
+    }
 
 
 .header-search-btn::before {
@@ -941,7 +978,8 @@ body.login-is-visible {
 }
 
 .search-is-visible .header-search,
-.login-is-visible .header-login {
+.login-is-visible .header-login,
+.register-is-visible .header-register {
     opacity: 1;
     visibility: visible;
 }
@@ -977,7 +1015,8 @@ body.login-is-visible {
     }
 
     .header-search-btn,
-    .header-login-btn {
+    .header-login-btn,
+    .header-register-btn {
         top: 9px;
         right: 28px;
     }
@@ -1008,7 +1047,8 @@ body.login-is-visible {
     }
 
     .header-search-btn,
-    .header-login-btn {
+    .header-login-btn,
+    .header-register-btn {
         top: 6px;
     }
 
@@ -1036,7 +1076,8 @@ body.login-is-visible {
     }
 
     .header-search-btn,
-    .header-login-btn {
+    .header-login-btn,
+    .header-register-btn {
         top: 3px;
     }
 
@@ -1853,9 +1894,22 @@ body.login-is-visible {
     padding: 0 40px;
 }
 
-    .content-extra .about p {
-        margin-bottom: 1.5rem;
+.user-books {
+    text-align: center;
+    text-decoration: underline;
+}
+
+.user-books-content {
+    display: flex;
+}
+
+    .user-books-content div {
+        margin: 3.0rem;
     }
+
+.content-extra .about p {
+    margin-bottom: 1.5rem;
+}
 
 .content-extra .about-social {
     list-style: none;
