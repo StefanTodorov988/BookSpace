@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewData["Title"] = "AllBooks";
+    Layout = "~/Views/Shared/_LayoutTest.cshtml";
+}
+
+<h2>AllUsers</h2>
+<table style="width:100%">
+    <thead>
+        <tr>
+            <th>Picture</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Allowed</th>
+            <th>Admin rights</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>//TODO:change this to book model when viewmodel is ready
+        @foreach (var book in @Model)
+        {
+            <tr>
+                <td><img src="@book.ProfilePictureUrl" height="100" width="100"></td>
+                <td>@book.Username</td>
+                <td>@book.Email</td>
+                <td>@book.isAllowed</td>
+                <td>@book.isAdmin</td>
+                <td><a asp-area="Admin" asp-controller="Admin" asp-action="EditUser" asp-route-username="@book.Username">[Edit]</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

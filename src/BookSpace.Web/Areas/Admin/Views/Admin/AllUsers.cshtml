@@ -24,7 +24,7 @@
                     <td>@user.Email</td>
                     <td>@user.isAllowed</td>
                     <td>@user.isAdmin</td>
-                    <td><a asp-area="Admin" asp-controller="Admin" asp-action="EditUser" asp-route-id="@user.Id">[Edit]</a></td>
+                    <td><a asp-area="Admin" asp-controller="Admin" asp-action="EditUser" asp-route-username="@user.Username">[Edit]</a></td>
                 </tr>
         }
     </tbody>

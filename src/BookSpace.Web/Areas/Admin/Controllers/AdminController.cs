@@ -47,10 +47,9 @@ namespace BookSpace.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditUser(ApplicationUserViewModel userViewModel)
         {
-            var dbModel = this.repository.GetByIdAsync(userViewModel.Id).Result;
+            var dbModel = this.repository.GetUserByUsernameAsync(userViewModel.Username).Result;
 
             var user = this.objectMapper.Map(userViewModel, dbModel);
-
 
             if (userViewModel.isAdmin)
             {
@@ -61,16 +60,16 @@ namespace BookSpace.Web.Areas.Admin.Controllers
                 await this.userManager.RemoveFromRoleAsync(user, "Admin");
             }
 
-            await this.repository.UpdateAsync(user);
-            //await this.userManager.UpdateAsync(user);
+            //await this.repository.UpdateAsync(user);
+            await this.userManager.UpdateAsync(user);
 
             return this.RedirectToAction("AllUsers");
         }
 
 
-        public IActionResult EditUser(string id)
+        public IActionResult EditUser(string username)
         {
-            var user = this.repository.GetByIdAsync(id).Result;
+            var user = this.repository.GetUserByUsernameAsync(username).Result;
             var userViewModel = objectMapper.Map<ApplicationUserViewModel>(user);
 
             return View(userViewModel);
