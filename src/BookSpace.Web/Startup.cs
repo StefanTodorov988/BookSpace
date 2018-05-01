@@ -28,7 +28,8 @@ using Microsoft.Extensions.Logging;
 using System.Text.Encodings.Web;
 using AutoMapper;
 using BookSpace.Web.Areas.Admin.Models.ApplicationUserViewModels;
-
+using BookSpace.Web.Infrastructure.Extensions;
+using BookSpace.Web.Infrastructure;
 
 namespace BookSpace.Web
 {
