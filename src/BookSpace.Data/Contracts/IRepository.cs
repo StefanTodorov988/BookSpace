@@ -12,14 +12,14 @@ namespace BookSpace.Data.Contracts
                      where TEntity : class
     {
         Task<TEntity> GetByIdAsync(object id);
-        Task<IQueryable<TEntity>> GetAllAsync();
-        Task<IQueryable<TEntity>> GetManyAsync(Expression<Func<TEntity, bool>> where);
+        Task<IEnumerable<TEntity>> GetAllAsync();
+        Task<IEnumerable<TEntity>> GetManyAsync(Expression<Func<TEntity, bool>> where);
         Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> where);
 
         Task AddAsync(TEntity entity);
         Task UpdateAsync(TEntity entity);
         Task DeleteAsync(TEntity entity);
 
-        PagedResult<TEntity> GetPaged(IQueryable<TEntity> query, int page, int pageSize);
+        Task<PagedResult<TEntity>> GetPaged(int page, int pageSize);
     }
 }

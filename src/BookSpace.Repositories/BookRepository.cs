@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BookSpace.Data;
@@ -20,50 +21,75 @@ namespace BookSpace.Repositories
 
         public async Task<IEnumerable<Book>> GetPageOfBooksAscync(int take, int skip)
         {
-            var books = await this.GetAllAsync();
+            var pageRecords = await this.GetPaged(take,skip);
 
-            return this.GetPaged(books, take, skip).Results;
+            return pageRecords.Results;
         }
 
         public async Task<IEnumerable<Author>> GetBookAuthorsAsync(string bookId)
         {
-            return await this.GetAsync(book => book.BookId == bookId)
-                           .ContinueWith(
-                                         b => b.Result.BookAuthors
-                                                      .Select(ba => ba.Author)
-                                        );
+            var book = await this.GetAsync(b => b.BookId == bookId);
+
+            if (book == null)
+            {
+                throw new ArgumentNullException(nameof(book));
+            }
+
+            return book.BookAuthors.Select(ba => ba.Author);
+        }
+
+        public async Task<IEnumerable<Author>> GetBookAuthorsAsync2(string bookId)
+        {
+            var book = await this.GetAsync(b => b.BookId == bookId);
+
+            if(book == null)
+            {
+                throw new ArgumentNullException(nameof(book));
+            }
+
+            return book.BookAuthors.Select(ba => ba.Author);
         }
 
         public async Task<IEnumerable<Genre>> GetBookGenresAsync(string bookId)
         {
-            return await this.GetAsync(book => book.BookId == bookId)
-                             .ContinueWith(
-                                         b => b.Result.BookGenres
-                                                      .Select(bg => bg.Genre)
-                                        );
+            var book = await this.GetAsync(b => b.BookId == bookId);
+
+            if (book == null)
+            {
+                throw new ArgumentNullException(nameof(book));
+            }
+
+            return book.BookGenres.Select(ba => ba.Genre);
         }
 
         public async Task<IEnumerable<Comment>> GetBookCommentsAsync(string bookId)
         {
-            return await this.GetAsync(book => book.BookId == bookId)
-                            .ContinueWith(
-                                         b => b.Result.Comments
-                                        );
+            var book = await this.GetAsync(b => b.BookId == bookId);
+
+            if (book == null)
+            {
+                throw new ArgumentNullException(nameof(book));
+            }
+
+            return book.Comments;
         }
 
         public async Task<IEnumerable<Tag>> GetBookTagsAsync(string bookId)
         {
-            return await this.GetAsync(book => book.BookId == bookId)
-                             .ContinueWith(
-                                         b => b.Result.BookTags
-                                                      .Select(bt => bt.Tag)
-                                        );
+            var book = await this.GetAsync(b => b.BookId == bookId);
+
+            if (book == null)
+            {
+                throw new ArgumentNullException(nameof(book));
+            }
+
+            return book.BookTags.Select(ba => ba.Tag);
         }
 
 
         public async Task RemoveBookAync(string bookId)
         {
-            var bookToRemove = this.GetByIdAsync(bookId).GetAwaiter().GetResult();
+            var bookToRemove = await this.GetByIdAsync(bookId);
             await this.DeleteAsync(bookToRemove);
         }
     }
