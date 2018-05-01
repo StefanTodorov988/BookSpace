@@ -8,54 +8,76 @@
             <div class="featured-column featured-column-big">
                 <div class="entry" style="background-image:url('images/featured/featured-books.jpg');">
                     <div class="article-content">
-                        <span class="article-category"><a href="category.html">Trending</a></span>
+                        <p>Meet your next favourite book.</p>
 
-                        <h1><a href="post.html" title="">What Your Books Preference Says About You and Your Personality.</a></h1>
-
-                        <div class="article-info">
-                            <ul class="entry-meta">
-                                <li>Stefani Nikolova</li>
-                                <li>April 9, 2018</li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="featured-column featured-column-small">
-
-                <div class="entry" style="background-image:url('images/featured/featured-art.jpg');">
-                    <div class="article-content">
-                        <span class="article-category"><a href="category.html">Lifestyle</a></span>
-
-                        <h1><a href="post.html" title="">Meet Jully</a></h1>
-
-                        <div class="article-info">
-                            <ul class="entry-meta">
-                                <li>Stefani Nikolova</li>
-                                <li>April 9, 2018</li>
-                            </ul>
+            <div class="header-forms">
+                <div class="container-login">
+                    <form role="login" class="login-form" method="get" action="#">
+                        <label>
+                            <span>Username:</span>
+                            <input type="text" placeholder="Username" value="" name="username" title="Username">
+                        </label>
+                        <label>
+                            <span>Password:</span>
+                            <input type="password" placeholder="Password" value="" name="password" title="Password">
+                        </label>
+                        <div class="form-submit-btn">
+                            <button type="submit" class="submit btn--primary btn--medium full-width"
+                                    asp-area="" asp-controller="Account" asp-action="Login">
+                                Login
+                            </button>
+                            @*<button type="submit" class="submit btn--primary btn--medium full-width">Register</button>*@
                         </div>
-                    </div>
+                    </form>
 
                 </div>
 
-                <div class="entry" style="background-image:url('images/featured/featured-articles.jpg');">
-
-                    <div class="article-content">
-                        <span class="article-category"><a href="category.html">Art</a></span>
-
-                        <h1><a href="post.html" title="">Throwback To The Good Old Days.</a></h1>
-
-                        <div class="article-info">
-                            <ul class="entry-meta">
-                                <li>Stefani Nikolova</li>
-                                <li>April 9, 2018</li>
-                            </ul>
+                <div class="container-register">
+                    <form role="register" class="register-form" method="get" action="#">
+                        <label>
+                            <span>Username:</span>
+                            <input type="text" placeholder="Username" value="" name="username" title="Username">
+                        </label>
+                        <label>
+                            <span>Email:</span>
+                            <input type="text" placeholder="Username" value="" name="username" title="Username">
+                        </label>
+                        <label>
+                            <span>Password:</span>
+                            <input type="password" placeholder="Password" value="" name="password" title="Password">
+                        </label>
+                        <label>
+                            <span>Confirm password:</span>
+                            <input type="password" placeholder="Password" value="" name="password" title="Password">
+                        </label>
+                        <div class="form-submit-btn">
+                            <button type="submit" class="submit btn--primary btn--medium full-width"
+                                    asp-area="" asp-controller="Account" asp-action="Register">
+                                Register
+                            </button>
                         </div>
-                    </div>
-
+                    </form>
                 </div>
+                @*<div class="entry" style="background-image:url('images/featured/featured-articles.jpg');">
+
+            <div class="article-content">
+                <span class="article-category"><a href="category.html">Art</a></span>
+
+                <h1><a href="post.html" title="">Throwback To The Good Old Days.</a></h1>
+
+                <div class="article-info">
+                    <ul class="entry-meta">
+                        <li>Stefani Nikolova</li>
+                        <li>April 9, 2018</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>*@
 
             </div>
         </div>
