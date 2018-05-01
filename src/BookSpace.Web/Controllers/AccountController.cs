@@ -225,10 +225,10 @@ namespace BookSpace.Web.Controllers
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
+                var setRoleResult = await _userManager.AddToRoleAsync(user, "User");
+
                 if (result.Succeeded)
                 {
-             
-
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
                     await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
