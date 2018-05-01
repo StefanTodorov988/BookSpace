@@ -15,8 +15,7 @@ namespace BookSpace.Data
             : base(options)
         {
         }
-
-        public DbSet<Author> Authors { get; set; }
+         public DbSet<Author> Authors { get; set; }
 
         public DbSet<BookAuthor> BooksAuthors { get; set; }
 
@@ -53,6 +52,7 @@ namespace BookSpace.Data
         {
             base.OnModelCreating(builder);
 
+            //TODO suspicios
             builder.ApplyConfiguration(new ApplicationUserConfiguration());
             builder.ApplyConfiguration(new AuthorConfiguration());
             builder.ApplyConfiguration(new BookAuthorConfiguration());
@@ -68,7 +68,7 @@ namespace BookSpace.Data
 
         public DbSet<TEntity> DbSet<TEntity>() where TEntity : class
         {
-
+            //TODO suspicios
             return this.Set<TEntity>();
         }
 

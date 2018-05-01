@@ -22,6 +22,7 @@ namespace BookSpace.Web.Controllers
     [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
@@ -29,12 +30,13 @@ namespace BookSpace.Web.Controllers
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            IEmailSender emailSender)
+            IEmailSender emailSender,RoleManager<IdentityRole> roleManager)
        
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
+            _roleManager = roleManager;
         }
 
         [TempData]
@@ -360,6 +362,25 @@ namespace BookSpace.Web.Controllers
         public IActionResult AccessDenied()
         {
             return View();
+        }
+
+        //TODO:BAD IMPLEMENTATION
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> Create()
+        {
+
+            string role = "Admin";
+
+            bool roleExists = await _roleManager.RoleExistsAsync(role);
+
+            if (!roleExists)
+            {
+                var newRole = new IdentityRole(role);
+                await _roleManager.CreateAsync(newRole);
+            }
+
+            return RedirectToAction("Login");
         }
 
         #region Helpers

@@ -14,5 +14,9 @@ namespace BookSpace.Models
         public ICollection<BookUser> BookUsers { get; set; }
 
         public ICollection<Comment> Comments { get; set; }
+
+        public bool isAllowed { get; set; }
+
+        public bool isAdmin { get; set; }
     }
 }
