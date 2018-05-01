@@ -21,9 +21,8 @@ namespace BookSpace.Repositories
 
         public async Task<IEnumerable<ApplicationUser>> GetPageOfUsersAscync(int take, int skip)
         {
-            var users = await this.GetAllAsync();
-
-            return this.GetPaged(users, take, skip).Results;
+            var pageRecords = await this.GetPaged(take, skip);
+            return pageRecords.Results;
         }
 
 

@@ -6,7 +6,7 @@ using BookSpace.Models.Enums;
 
 namespace BookSpace.Repositories.Contracts
 {
-    public interface IApplicationUserRepository : IRepository<ApplicationUser>
+    public interface IApplicationUserRepository
     {
         Task<ApplicationUser> GetUserByUsernameAsync(string username);
         Task<IEnumerable<ApplicationUser>> GetPageOfUsersAscync(int take, int skip);

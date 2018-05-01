@@ -25,18 +25,15 @@ namespace BookSpace.Data
             return await this.dbContext.DbSet<TEntity>().FindAsync(id);
         }
 
-        public async Task<IQueryable<TEntity>> GetAllAsync()
+        public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            var results = await this.dbContext.DbSet<TEntity>().ToListAsync();
-
-            return results.AsQueryable();
+            return await this.dbContext.DbSet<TEntity>().ToListAsync();
         }
 
 
-        public async Task<IQueryable<TEntity>> GetManyAsync(Expression<Func<TEntity, bool>> where)
+        public async Task<IEnumerable<TEntity>> GetManyAsync(Expression<Func<TEntity, bool>> where)
         {
-                var results = await this.dbContext.DbSet<TEntity>().Where(where).ToListAsync();
-                return results.AsQueryable();
+                return await this.dbContext.DbSet<TEntity>().Where(where).ToListAsync();
         }
 
         public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> where)
@@ -62,14 +59,14 @@ namespace BookSpace.Data
             await this.dbContext.SaveAsync();
         }
 
-        public PagedResult<TEntity> GetPaged(IQueryable<TEntity> query, int page, int pageSize)
+        public async Task<PagedResult<TEntity>> GetPaged(int page, int pageSize)
         {
             var result = new PagedResult<TEntity>();
             result.Page = page;
             result.PageSize = pageSize;
 
             var skip = (page - 1) * pageSize;
-            result.Results = query.Skip(skip).Take(pageSize);
+            result.Results = await this.dbContext.DbSet<TEntity>().Skip(skip).Take(pageSize).ToListAsync();
 
             return result;
         }
