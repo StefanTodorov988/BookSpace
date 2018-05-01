@@ -71,6 +71,9 @@ namespace BookSpace.Web
 
             //services.AddAutoMapper();
 
+            services.AddTransient<IDatabaseSeedService, DatabaseSeedService>();
+            services.AddTransient<UserManager<ApplicationUser>>();
+
             services.AddCustomControllerActivation(Resolve);
             services.AddCustomViewComponentActivation(Resolve);
             services.AddMvc();
