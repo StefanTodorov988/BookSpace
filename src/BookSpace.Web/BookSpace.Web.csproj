@@ -32,6 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Book\Views\" />
     <Folder Include="Configuration\ObjectMapping\" />
     <Folder Include="wwwroot\css\font-awesome\css\" />
     <Folder Include="wwwroot\css\font-awesome\fonts\" />
