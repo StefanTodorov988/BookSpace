@@ -15,7 +15,7 @@ body {
 }
 
 body {
-    background-image: url(../images/header-bg.jpg);
+    background: #FFFFFF;
     font-family: "metropolis-regular", sans-serif;
     font-size: 1.6rem;
     font-style: normal;
@@ -757,6 +757,7 @@ button {
 }
 
 .pageheader-content {
+    background-image:url('../images/header-bg.jpg');
     overflow: hidden;
     max-width: 100%;
 }
@@ -2123,6 +2124,7 @@ body.login-is-visible {
 }
 
 footer {
+    background: #19191b;
     padding-top: 5.2rem;
     padding-bottom: 2rem;
     font-size: 1.5rem;

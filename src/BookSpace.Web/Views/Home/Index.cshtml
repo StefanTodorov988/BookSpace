@@ -20,61 +20,8 @@
             @if (!SignInManager.IsSignedIn(User))
             {
                 <div class="header-forms">
-                    <div class="container-login">
-                        <form role="login" class="login-form" method="get" action="#">
-                            <label>
-                                <input type="text" placeholder="Username" value="" name="username" title="Username">
-                            </label>
-                            <label>
-
-                                <input type="password" placeholder="Password" value="" name="password" title="Password">
-                            </label>
-                            <div class="form-submit-btn">
-                                <button type="submit" class="submit btn--primary btn--medium full-width"
-                                        asp-area="" asp-controller="Account" asp-action="Login">
-                                    Login
-                                </button>
-                            </div>
-                            <div class="forgot-password">
-                                <a href="#">Forgot your password?</a>
-                            </div>
-                        </form>
-                        <p>
-                            <h4>Deciding what to read next? </h4>
-                            You’re in the right place. Tell us what titles or genres you’ve enjoyed in the past, and we’ll give you surprisingly insightful recommendations.
-                        </p>
-                    </div>
-
-                    <div class="container-register">
-                        <p> New here? Create a free account!</p>
-                        <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post" class="register-form">
-                            <label>
-                                <input asp-for="Username" class="form-control" type="text" placeholder="Username" value="" name="username" title="Username">
-                                <span asp-validation-for="Username" class="text-danger"></span>
-                            </label>
-                            <label>
-
-                                <input asp-for="Email" class="form-control" type="text" placeholder="Email" value="" name="email" title="Email">
-                                <span asp-validation-for="Email" class="text-danger"></span>
-                            </label>
-                            <label>
-
-                                <input asp-for="Password" class="form-control" type="password" placeholder="Password" value="" name="password" title="Password">
-                                <span asp-validation-for="Password" class="text-danger"></span>
-                            </label>
-                            <label>
-
-                                <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password" value="" name="password" title="Password">
-                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                            </label>
-                            <div class="form-submit-btn">
-                                <button type="submit" class="submit btn--primary btn--medium full-width"
-                                        asp-area="" asp-controller="Account" asp-action="Register">
-                                    Register
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+                   @await Html.PartialAsync("../Account/Login")
+                   @await Html.PartialAsync("../Account/Register");
                 </div>
             }
             else
@@ -470,7 +417,3 @@
     </div>
 
 </section>
-
-@section Scripts {
-    @await Html.PartialAsync("_ValidationScriptsPartial")
-}
