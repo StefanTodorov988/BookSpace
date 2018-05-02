@@ -20,7 +20,6 @@ namespace BookSpace.Web.Controllers
         }
         public IActionResult Index()
         {
-            Book test = bookFactory.Create("chika", "loca", "NO BUENO");
             return View();
         }
 

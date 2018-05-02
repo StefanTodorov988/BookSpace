@@ -30,6 +30,7 @@ using AutoMapper;
 using BookSpace.Web.Areas.Admin.Models.ApplicationUserViewModels;
 using BookSpace.Web.Infrastructure.Extensions;
 using BookSpace.Web.Infrastructure;
+using BookSpace.Web.Areas.Book.Models;
 
 namespace BookSpace.Web
 {
@@ -108,8 +109,8 @@ namespace BookSpace.Web
             {
                 routes.MapRoute(
                  name: "areaRoute",
-                 template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-
+                 template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"); 
+              
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
@@ -123,6 +124,7 @@ namespace BookSpace.Web
                 config.ConstructServicesUsing(type => context.Kernel.Get(type));
 
                 config.CreateMap<ApplicationUser, ApplicationUserViewModel>().ReverseMap();
+                config.CreateMap<Book, SimpleBookViewModel>().ReverseMap();
                 // .... other mappings, Profiles, etc.              
 
             });
