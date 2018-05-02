@@ -1,0 +1,37 @@
+﻿
+
+<div class="header-single-book">
+    <div class="header-book-heading">
+        <p>Book of the day</p>
+    </div>
+
+    <div class="header-book-img">
+        <a>
+            <img src="~/images/books/on_the_road.jpg" alt="">
+        </a>
+    </div>
+
+
+    <div class="header-book-info">
+
+        <div class="header-book-description">
+            <p>
+                Lorem ipsum Sed eiusmod esse aliqua sed incididunt aliqua incididunt mollit id et sit proident dolor nulla sed commodo est ad minim elit reprehenderit nisi officia aute incididunt velit sint in aliqua...
+            </p>
+        </div>
+        <div class="header-book-meta">
+            <a href="category.html">History, Clasics</a>
+        </div>
+        <div class="header-book-rating">
+            @await Html.PartialAsync("_RatingPartial")
+            
+            <span>Rating : 3.5</span>
+        </div>
+
+        <div class="header-book-btn">
+            <button>Want To Read</button>
+            <button>Currently Reading</button>
+            <button>Read</button>
+        </div>
+    </div>
+</div>
