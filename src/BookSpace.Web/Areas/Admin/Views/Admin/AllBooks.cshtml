@@ -4,29 +4,33 @@
     Layout = "~/Views/Shared/_LayoutTest.cshtml";
 }
 
-<h2>AllUsers</h2>
+<h2>All Books</h2>
 <table style="width:100%">
     <thead>
         <tr>
-            <th>Picture</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Allowed</th>
-            <th>Admin rights</th>
+            <th>Cover</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Isbn</th>
+            <th>Publication Year</th>
+            <th>Rating</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>//TODO:change this to book model when viewmodel is ready
         @foreach (var book in @Model)
         {
-            <tr>
-                <td><img src="@book.ProfilePictureUrl" height="100" width="100"></td>
-                <td>@book.Username</td>
-                <td>@book.Email</td>
-                <td>@book.isAllowed</td>
-                <td>@book.isAdmin</td>
-                <td><a asp-area="Admin" asp-controller="Admin" asp-action="EditUser" asp-route-username="@book.Username">[Edit]</a></td>
-            </tr>
+        <tr>
+            <td><img src="@book.CoverUrl" height="100" width="100"></td>
+            <td>@book.Title</td>
+            <td>@string.Join(", ", book.BookAuthors)</td>
+            <td>@book.Isbn</td>
+            <td>@book.PublicationYear</td>
+            <td>@book.Rating</td>
+            <td><a asp-area="Admin" asp-controller="Admin" asp-action="EditBook" asp-route-bookid="@book.BookId">[Edit]</a>
+            <a asp-area="Book" asp-controller="Book" asp-action="BookDetails" asp-route-bookid="@book.BookId">[Details]</a>
+            <a asp-area="Admin" asp-controller="Admin" asp-action="DeleteBook" asp-route-bookid="@book.BookId">[Delete]</a></td>
+        </tr>
         }
     </tbody>
 </table>

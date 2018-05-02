@@ -29,7 +29,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Book\Views\" />
     <Folder Include="Configuration\ObjectMapping\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="Configuration\" />
