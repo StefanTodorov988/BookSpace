@@ -39,7 +39,7 @@ namespace BookSpace.Data
 
         private void SeedBookUsers()
         {
-            if (ctx.BooksUsers.Any())
+            if (!ctx.BooksUsers.Any())
             {
                 string[] bookIds = ctx.Books.Select(b => b.BookId).ToArray();
                 string[] userIds = ctx.Users.Select(u => u.Id).ToArray();
