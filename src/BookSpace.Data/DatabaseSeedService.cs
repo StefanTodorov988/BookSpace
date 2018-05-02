@@ -39,51 +39,57 @@ namespace BookSpace.Data
 
         private void SeedBookUsers()
         {
-            string[] bookIds = ctx.Books.Select(b => b.BookId).ToArray();
-            string[] userIds = ctx.Users.Select(u => u.Id).ToArray();
-
-            // For each user add 2 books with different state
-            List<BookUser> bookUsers = new List<BookUser>();
-            Random rnd = new Random();
-            foreach (var uId in userIds)
+            if (ctx.BooksUsers.Any())
             {
-                bookUsers.Add(new BookUser
-                {
-                    UserId = uId,
-                    BookId = bookIds[rnd.Next(0, bookIds.Length / 2)],
-                    State = Models.Enums.BookState.Read
-                });
+                string[] bookIds = ctx.Books.Select(b => b.BookId).ToArray();
+                string[] userIds = ctx.Users.Select(u => u.Id).ToArray();
 
-                bookUsers.Add(new BookUser
+                // For each user add 2 books with different state
+                List<BookUser> bookUsers = new List<BookUser>();
+                Random rnd = new Random();
+                foreach (var uId in userIds)
                 {
-                    UserId = uId,
-                    BookId = bookIds[rnd.Next(bookIds.Length / 2, bookIds.Length)],
-                    State = Models.Enums.BookState.ToRead
-                });
+                    bookUsers.Add(new BookUser
+                    {
+                        UserId = uId,
+                        BookId = bookIds[rnd.Next(0, bookIds.Length / 2)],
+                        State = Models.Enums.BookState.Read
+                    });
+
+                    bookUsers.Add(new BookUser
+                    {
+                        UserId = uId,
+                        BookId = bookIds[rnd.Next(bookIds.Length / 2, bookIds.Length)],
+                        State = Models.Enums.BookState.ToRead
+                    });
+                }
+
+                ctx.BooksUsers.AddRange(bookUsers);
+                ctx.SaveChanges();
             }
-
-            ctx.BooksUsers.AddRange(bookUsers);
-            ctx.SaveChanges();
         }
 
         private void SeedBookAuthors()
         {
-            string[] bookIds = ctx.Books.Select(b => b.BookId).ToArray();
-            string[] authorIds = ctx.Authors.Select(a => a.AuthorId).ToArray();
-
-            List<BookAuthor> bookAuthors = new List<BookAuthor>();
-            Random rnd = new Random();
-            foreach (var bId in bookIds)
+            if (!ctx.BooksAuthors.Any())
             {
-                bookAuthors.Add(new BookAuthor
-                {
-                    BookId = bId,
-                    AuthorId = authorIds[rnd.Next(0, authorIds.Length)]
-                });
-            }
+                string[] bookIds = ctx.Books.Select(b => b.BookId).ToArray();
+                string[] authorIds = ctx.Authors.Select(a => a.AuthorId).ToArray();
 
-            ctx.BooksAuthors.AddRange(bookAuthors);
-            ctx.SaveChanges();
+                List<BookAuthor> bookAuthors = new List<BookAuthor>();
+                Random rnd = new Random();
+                foreach (var bId in bookIds)
+                {
+                    bookAuthors.Add(new BookAuthor
+                    {
+                        BookId = bId,
+                        AuthorId = authorIds[rnd.Next(0, authorIds.Length)]
+                    });
+                }
+
+                ctx.BooksAuthors.AddRange(bookAuthors);
+                ctx.SaveChanges();
+            }
         }
 
         private void SeedGenresBooks()
