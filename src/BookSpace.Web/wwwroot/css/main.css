@@ -998,6 +998,12 @@ button {
     display: inline-block;
 }
 
+.header-book-rating span{
+    float: right;
+    padding-top: 5px;
+    padding-right: 26px;
+}
+
 .header-book-btn{
     display: inline-grid;
     position: absolute;
@@ -2677,4 +2683,70 @@ h1 {
         .rating > label:hover ~ input:checked ~ label, /* lighten current selection */
         .rating > input:checked ~ label:hover ~ label {
             color: #FFED85;
-        } 
+        }
+
+
+.user-books-wrapper {
+  padding : 1px;
+}
+
+.user-vertical-nav{
+    position: relative;
+}
+
+.user-vertical-nav ul{
+    list-style: none;
+    margin: 0 auto;
+    text-align: center;
+    padding-top: 20px;
+}
+
+
+.user-vertical-nav ul li{
+    display:inline-block;
+    padding: 10px;
+}
+
+    .user-vertical-nav ul li.current a {
+        border-bottom: 1px solid #19191b;
+    }
+
+
+.user-books-heading{
+    width: 100%;
+    text-align: center;
+    font-size: 5.0rem;
+    
+}
+
+.user-books-description{
+    text-align: center;
+}
+
+/*Book List*/
+
+.books-heading{
+    text-align: center;
+    font-size: 5.0rem;
+    padding-bottom: 3.0rem;
+}
+.books-list{
+    display:block;
+    width: 100%;
+}
+.books-list-entry{
+    width: 25.0%;
+    float: left;
+    padding-left: 2.5rem;
+}
+
+
+.books-list-thumb img{
+    width: 160px;
+    height: 200px;
+}
+
+.books-list-entry span{
+    display: block;
+}
+

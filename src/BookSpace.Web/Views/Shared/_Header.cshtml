@@ -33,7 +33,7 @@
                 <ul class="header-nav nav-guest">
                     <li class="current"><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li class="has-children">
-                        <a asp-area="" asp-controller="Home" asp-action="Category">Books</a>
+                        <a asp-area="" asp-controller="Book" asp-action="Index">Books</a>
                         <ul class="sub-menu">
                             <li><a asp-area="" asp-controller="Home" asp-action="Category">Biography</a></li>
                             <li><a asp-area="" asp-controller="Home" asp-action="Category">Clasics</a></li>
@@ -61,7 +61,7 @@
                 @if (SignInManager.IsSignedIn(User))
                 {
                     <ul class="header-nav nav-user">
-                        <li><a asp-area="" asp-controller="Home" asp-action="Index" class="nav-user">My Books</a></li>
+                        <li><a asp-area="" asp-controller="UserBooks" asp-action="Index" class="nav-user">My Books</a></li>
                         <li>
                             <a asp-area="" asp-controller="Home" asp-action="Index" class="nav-user has-children">Hello, User!</a>
                             <ul class="sub-menu">
