@@ -589,7 +589,7 @@ button {
 }
 
 .masonry .brick-text {
-    padding: 3rem 2.8rem 3.6rem;
+    padding: 3rem 2.8rem 2.6rem;
     background-color: #FFFFFF;
 }
 
@@ -647,6 +647,25 @@ button {
 
 .masonry .entry-meta-links a:last-child::after {
     display: none;
+}
+
+.masonry .entry-meta .entry-meta-rating{
+   float:right;
+   padding-top: 5px;
+}
+
+.masonry .entry-meta .entry-learn-more{
+    width: 100%;
+    background : #b8b8b8;
+    color: #000000;
+    display: inline-block;
+    text-align:center;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.learn-more-btn{
+    color: #000000 !important;
 }
 
 
@@ -1198,6 +1217,22 @@ body.login-is-visible {
 .header-nav.nav-user{
     float: right;
 }
+
+.logout-btn {
+    all: unset;
+    margin: 0 auto;
+    display: block;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 39px;
+}
+
+    .logout-btn:hover {
+        margin: 0 auto;
+        background: #000000;
+        color: white;
+        line-height: 39px;
+
+    }
 
 
     .header-nav li {
