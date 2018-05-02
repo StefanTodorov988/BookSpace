@@ -15,7 +15,7 @@ body {
 }
 
 body {
-    background: #19191b;
+    background: #FFFFFF;
     font-family: "metropolis-regular", sans-serif;
     font-size: 1.6rem;
     font-style: normal;
@@ -290,7 +290,7 @@ button {
     letter-spacing: .3rem;
     height: 5.4rem;
     line-height: 5rem;
-    padding: 0 3rem;
+    padding: 0 1rem;
     margin: 0 .3rem 1.2rem 0;
     color: #000000;
     text-decoration: none;
@@ -589,7 +589,7 @@ button {
 }
 
 .masonry .brick-text {
-    padding: 3rem 2.8rem 3.6rem;
+    padding: 3rem 2.8rem 2.6rem;
     background-color: #FFFFFF;
 }
 
@@ -647,6 +647,25 @@ button {
 
 .masonry .entry-meta-links a:last-child::after {
     display: none;
+}
+
+.masonry .entry-meta .entry-meta-rating{
+   float:right;
+   padding-top: 5px;
+}
+
+.masonry .entry-meta .entry-learn-more{
+    width: 100%;
+    background : #b8b8b8;
+    color: #000000;
+    display: inline-block;
+    text-align:center;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.learn-more-btn{
+    color: #000000 !important;
 }
 
 
@@ -757,9 +776,9 @@ button {
 }
 
 .pageheader-content {
+    background-image:url('../images/header-bg.jpg');
     overflow: hidden;
-    padding: 0 75px;
-    max-width: 1350px;
+    max-width: 100%;
 }
 
 .header-logo {
@@ -880,7 +899,7 @@ button {
     .header-register-form input[type="text"],
     .header-register-form input[type="password"] {
         background-color: transparent;
-        color: #000000;
+        color: #FFFFFF;
         height: auto;
         width: 100%;
         font-family: "metropolis-semibold", sans-serif;
@@ -907,7 +926,7 @@ button {
     height: 21px;
     min-width: 21px;
     position: relative;
-    float: left;
+    float: right;
     top: 15px;
     background-repeat: no-repeat;
     background-position: right center;
@@ -939,6 +958,98 @@ button {
         font-size: 2.1rem;
     }
 
+.header-forms,
+.header-single-book{
+    height: 564px;
+    width:45%;
+    padding-top: 30px;
+    float: right;
+    background: #FFFFFF;
+    border: 5px solid white;
+}
+
+.header-forms{
+    display: flex;
+}
+.header-single-book{
+    padding: 0;
+}
+
+.header-book-heading{
+    text-align: center;
+    font-size: 4.5rem;
+}
+.header-book-img{
+    max-width: 20%;
+    height: auto;
+    position:absolute;
+    border: 2px solid #19191b;
+}
+
+.header-book-info{
+    max-width: 50%;
+    height: 100%;
+    position: relative;
+    float: right;
+}
+
+.header-book-rating{
+    width: 100%;
+    display: inline-block;
+}
+
+.header-book-rating span{
+    float: right;
+    padding-top: 5px;
+    padding-right: 26px;
+}
+
+.header-book-btn{
+    display: inline-grid;
+    position: absolute;
+    margin-left: 3.0rem;
+}
+.container-login,
+.container-register {
+    width: 50%;
+    background: #FFFFFF;
+    height: 100%;
+    margin: 0 auto;
+}
+
+.container-register p{
+    text-align: center;
+    font-weight:bold;
+}
+
+.login-form, 
+.register-form{
+    display:block;
+ 
+}
+
+.login-form label,
+.register-form label{
+    text-align: center;
+    font-size: 2.0rem;
+}
+
+.login-form input,
+.register-form input{
+    margin: 0 auto;
+    margin-bottom: 3rem;
+}
+
+.forgot-password {
+    text-align: center;
+}
+.forgot-password a{
+
+    color: #19191b;
+}
+    .forgot-password a:hover {
+        color: #0054a5;
+    }
 .header-account-btn {
     color: white;
     height: 21px;
@@ -961,14 +1072,14 @@ button {
 
 .header-search-btn::before {
     font-family: "metropolis-semibold", sans-serif;
-    font-size: 12px;
+    font-size: 20px;
     text-transform: uppercase;
     letter-spacing: 2px;
     line-height: 21px;
-    content: "Search";
+    content: "Explore";
     display: block;
     color: #FFFFFF;
-    float: left;
+    float: right;
     padding-right: 33px;
 }
 
@@ -1026,6 +1137,7 @@ body.login-is-visible {
     }
 
     .header-search-form input[type="search"] {
+        color: #FFFFFF;
         max-width: none;
         width: 80%;
         font-size: 4.2rem;
@@ -1054,6 +1166,7 @@ body.login-is-visible {
 
     .header-search-form input[type="search"] {
         font-size: 3.4rem;
+        color: #FFFFFF;
     }
 }
 
@@ -1101,8 +1214,32 @@ body.login-is-visible {
     margin: 0;
     padding: 0;
     font-family: "metropolis-medium", sans-serif;
-    font-size: 15px;
+    font-size: 20px;
 }
+
+.header-nav.nav-guest{
+    float: left;
+}
+.header-nav.nav-user{
+    float: right;
+}
+
+.logout-btn {
+    all: unset;
+    margin: 0 auto;
+    display: block;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 39px;
+}
+
+    .logout-btn:hover {
+        margin: 0 auto;
+        background: #000000;
+        color: white;
+        line-height: 39px;
+
+    }
+
 
     .header-nav li {
         display: inline-block;
@@ -1205,7 +1342,6 @@ body.login-is-visible {
             -ms-transform: translate3d(0, 0, 0);
             transform: translate3d(0, 0, 0);
         }
-
 @media only screen and (min-width:801px) {
     .header-nav li ul {
         display: block !important;
@@ -1281,12 +1417,13 @@ body.login-is-visible {
 }
 
 .featured {
-    background-color: #151515;
-    height: 564px;
+    background-color: #FFFFFF;
+    height: 570px;
     position: relative;
+    border: 5px solid white;
 }
 
-    .featured::before,
+    /*.featured::before,
     .featured::after {
         content: "";
         display: block;
@@ -1295,7 +1432,7 @@ body.login-is-visible {
         background-color: rgba(255, 255, 255, 0.15);
         position: absolute;
         top: 50%;
-    }
+    }*/
 
     .featured::before {
         left: -75px;
@@ -1318,24 +1455,18 @@ body.login-is-visible {
     position: relative;
 }
 
-    .featured .entry h1 {
-        font-size: 3.6rem;
-        line-height: 1.333;
+    .featured .entry p {
+        font-size: 7.0rem;
+        text-align: center;
+        font-weight: bold;
         margin-top: 0;
         margin-bottom: 3rem;
+        color: #FFFFFF;
+        border-bottom: 1px solid transparent;
+        -webkit-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
     }
 
-        .featured .entry h1 a {
-            color: #FFFFFF;
-            border-bottom: 1px solid transparent;
-            -webkit-transition: all 0.5s ease-in-out;
-            transition: all 0.5s ease-in-out;
-        }
-
-            .featured .entry h1 a:focus,
-            .featured .entry h1 a:hover {
-                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            }
 
     .featured .entry::before {
         display: block;
@@ -1347,8 +1478,9 @@ body.login-is-visible {
         height: 100%;
         -webkit-transition: all 0.4s ease-in-out;
         transition: all 0.4s ease-in-out;
-        opacity: .5;
+        opacity: .7;
         background-color: #151515;
+
     }
 
     .featured .entry:hover::before {
@@ -1364,6 +1496,8 @@ body.login-is-visible {
     display: block;
 }
 
+
+
 .featured .article-category {
     display: inline-block;
     font-family: "metropolis-bold", sans-serif;
@@ -1374,7 +1508,8 @@ body.login-is-visible {
     margin-bottom: 2.4rem;
 }
 
-    .featured .article-category a {
+    .featured .article-category {
+        font-size: 5.0rem;
         display: inline-block;
         color: #FFFFFF;
         padding: 0 1.5rem;
@@ -1409,9 +1544,8 @@ body.login-is-visible {
         }
 
 .featured-column-big {
-    width: 66.66666%;
+    width: 55%;
     position: relative;
-    border: 5px white solid;
 }
 
     .featured-column-big .entry {
@@ -1647,7 +1781,7 @@ body.login-is-visible {
 
 .content {
     background-color: #f2f2f2;
-    padding-top: 8.4rem;
+    padding-top: 2.4rem;
     padding-bottom: 7.2rem;
 }
 
@@ -1659,6 +1793,14 @@ body.login-is-visible {
     max-width: 960px;
 }
 
+.content-heading{
+    font-size: 6.0rem;
+    font-weight: bold;
+    text-align:center;
+    padding-bottom: 3rem;
+    margin-bottom: 3.0rem;
+    border-bottom: 1px solid #19191b;
+}
 .content-header {
     padding-bottom: 3rem;
     text-align: center;
@@ -2031,6 +2173,7 @@ body.login-is-visible {
 }
 
 footer {
+    background: #19191b;
     padding-top: 5.2rem;
     padding-bottom: 2rem;
     font-size: 1.5rem;
@@ -2485,3 +2628,125 @@ footer {
 #contact-form {
     margin-top: 3.6rem;
 }
+
+
+fieldset, label {
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-size: 1.5em;
+    margin: 10px;
+}
+
+/****** Style Star Rating Widget *****/
+
+.rating {
+    border: none;
+    float: left;
+}
+
+    .rating > input {
+        display: none;
+    }
+
+    .rating > label:before {
+        margin: 5px;
+        font-size: 1.25em;
+        font-family: FontAwesome;
+        display: inline-block;
+        content: "\f005";
+    }
+
+    .rating > .half:before {
+        content: "\f089";
+        position: absolute;
+    }
+
+    .rating > label {
+        color: #ddd;
+        float: right;
+    }
+
+    /***** CSS Magic to Highlight Stars on Hover *****/
+
+    .rating > input:checked ~ label, /* show gold star when clicked */
+    .rating:not(:checked) > label:hover, /* hover current star */
+    .rating:not(:checked) > label:hover ~ label {
+        color: #FFD700;
+    }
+        /* hover previous stars in list */
+
+        .rating > input:checked + label:hover, /* hover current star when changing rating */
+        .rating > input:checked ~ label:hover,
+        .rating > label:hover ~ input:checked ~ label, /* lighten current selection */
+        .rating > input:checked ~ label:hover ~ label {
+            color: #FFED85;
+        }
+
+
+.user-books-wrapper {
+  padding : 1px;
+}
+
+.user-vertical-nav{
+    position: relative;
+}
+
+.user-vertical-nav ul{
+    list-style: none;
+    margin: 0 auto;
+    text-align: center;
+    padding-top: 20px;
+}
+
+
+.user-vertical-nav ul li{
+    display:inline-block;
+    padding: 10px;
+}
+
+    .user-vertical-nav ul li.current a {
+        border-bottom: 1px solid #19191b;
+    }
+
+
+.user-books-heading{
+    width: 100%;
+    text-align: center;
+    font-size: 5.0rem;
+    
+}
+
+.user-books-description{
+    text-align: center;
+}
+
+/*Book List*/
+
+.books-heading{
+    text-align: center;
+    font-size: 5.0rem;
+    padding-bottom: 3.0rem;
+}
+.books-list{
+    display:block;
+    width: 100%;
+}
+.books-list-entry{
+    width: 25.0%;
+    float: left;
+    padding-left: 2.5rem;
+}
+
+
+.books-list-thumb img{
+    width: 160px;
+    height: 200px;
+}
+
+.books-list-entry span{
+    display: block;
+}
+
