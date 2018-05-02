@@ -9,23 +9,17 @@ namespace BookSpace.Web.Controllers
 {
     public class AssignRoleController : Controller
     {
+        private readonly IServiceProvider serviceProvider;
+
+        public AssignRoleController(IServiceProvider serviceProvider)
+        {
+            this.serviceProvider = serviceProvider;
+        }
+       
         public IActionResult Index()
         {
             return View();
         }
 
-
-        public IActionResult Create()
-        {
-            var role = new IdentityRole();
-
-            return View(role);
-        }
-
-        //[HttpPost]
-        //public IActionResult Create(IdentityRole role)
-        //{
-        //    context.Roles.Add(role);
-        //}
     }
 }

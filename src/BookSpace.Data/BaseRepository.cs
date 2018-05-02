@@ -27,18 +27,18 @@ namespace BookSpace.Data
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            return await this.dbContext.DbSet<TEntity>().ToListAsync();
+            return await this.dbContext.DbSet<TEntity>().AsNoTracking<TEntity>().ToListAsync();
         }
 
 
         public async Task<IEnumerable<TEntity>> GetManyAsync(Expression<Func<TEntity, bool>> where)
         {
-                return await this.dbContext.DbSet<TEntity>().Where(where).ToListAsync();
+                return await this.dbContext.DbSet<TEntity>().AsNoTracking<TEntity>().Where(where).ToListAsync();
         }
 
         public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> where)
         {
-            return await this.dbContext.DbSet<TEntity>().Where(where).FirstOrDefaultAsync<TEntity>();
+            return await this.dbContext.DbSet<TEntity>().AsNoTracking<TEntity>().Where(where).FirstOrDefaultAsync<TEntity>();
         }
 
         public async Task AddAsync(TEntity entity)
@@ -55,7 +55,7 @@ namespace BookSpace.Data
 
         public async Task UpdateAsync(TEntity entity)
         {
-            this.dbContext.DbSet<TEntity>().Attach(entity);
+            this.dbContext.DbSet<TEntity>().Update(entity);
             await this.dbContext.SaveAsync();
         }
 
