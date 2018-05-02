@@ -1,6 +1,9 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@using Microsoft.AspNetCore.Identity
+@model RegisterViewModel
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
 
 <div class="pageheader-content row">
     <div class="col-full">
@@ -14,76 +17,103 @@
                 </div>
             </div>
 
-            <div class="header-forms">
-                <div class="container-login">
-                    <form role="login" class="login-form" method="get" action="#">
-                        <label>
-                            <span>Username:</span>
-                            <input type="text" placeholder="Username" value="" name="username" title="Username">
-                        </label>
-                        <label>
-                            <span>Password:</span>
-                            <input type="password" placeholder="Password" value="" name="password" title="Password">
-                        </label>
-                        <div class="form-submit-btn">
-                            <button type="submit" class="submit btn--primary btn--medium full-width"
-                                    asp-area="" asp-controller="Account" asp-action="Login">
-                                Login
-                            </button>
-                            @*<button type="submit" class="submit btn--primary btn--medium full-width">Register</button>*@
+            @if (!SignInManager.IsSignedIn(User))
+            {
+                <div class="header-forms">
+                    <div class="container-login">
+                        <form role="login" class="login-form" method="get" action="#">
+                            <label>
+                                <input type="text" placeholder="Username" value="" name="username" title="Username">
+                            </label>
+                            <label>
+
+                                <input type="password" placeholder="Password" value="" name="password" title="Password">
+                            </label>
+                            <div class="form-submit-btn">
+                                <button type="submit" class="submit btn--primary btn--medium full-width"
+                                        asp-area="" asp-controller="Account" asp-action="Login">
+                                    Login
+                                </button>
+                            </div>
+                            <div class="forgot-password">
+                                <a href="#">Forgot your password?</a>
+                            </div>
+                        </form>
+                        <p>
+                            <h4>Deciding what to read next? </h4>
+                            You’re in the right place. Tell us what titles or genres you’ve enjoyed in the past, and we’ll give you surprisingly insightful recommendations.
+                        </p>
+                    </div>
+
+                    <div class="container-register">
+                        <p> New here? Create a free account!</p>
+                        <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post" class="register-form">
+                            <label>
+                                <input asp-for="Username" class="form-control" type="text" placeholder="Username" value="" name="username" title="Username">
+                                <span asp-validation-for="Username" class="text-danger"></span>
+                            </label>
+                            <label>
+
+                                <input asp-for="Email" class="form-control" type="text" placeholder="Email" value="" name="email" title="Email">
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </label>
+                            <label>
+
+                                <input asp-for="Password" class="form-control" type="password" placeholder="Password" value="" name="password" title="Password">
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </label>
+                            <label>
+
+                                <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password" value="" name="password" title="Password">
+                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                            </label>
+                            <div class="form-submit-btn">
+                                <button type="submit" class="submit btn--primary btn--medium full-width"
+                                        asp-area="" asp-controller="Account" asp-action="Register">
+                                    Register
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="header-single-book">
+                    <div class="header-book-heading">
+                        <p>Book of the day</p>
+                    </div>
+
+                    <div class="header-book-img">
+                        <a>
+                            <img src="~/images/books/on_the_road.jpg" alt="">
+                        </a>
+                    </div>
+
+
+                    <div class="header-book-info">
+
+                        <div class="header-book-description">
+                            <p>
+                                Lorem ipsum Sed eiusmod esse aliqua sed incididunt aliqua incididunt mollit id et sit proident dolor nulla sed commodo est ad minim elit reprehenderit nisi officia aute incididunt velit sint in aliqua...
+                            </p>
                         </div>
-                    </form>
-                    <p>
-                        <h4>Deciding what to read next? </h4>
-                        You’re in the right place. Tell us what titles or genres you’ve enjoyed in the past, and we’ll give you surprisingly insightful recommendations.
-                    </p>
-                </div>
-              
-                <div class="container-register">
-                    <p> New here? Create a free account!</p>
-                    <form role="register" class="register-form" method="get" action="#">
-                        <label>
-                            <span>Username:</span>
-                            <input type="text" placeholder="bookworm" value="" name="username" title="Username">
-                        </label>
-                        <label>
-                            <span>Email:</span>
-                            <input type="text" placeholder="bookworm@book.com" value="" name="username" title="Username">
-                        </label>
-                        <label>
-                            <span>Password:</span>
-                            <input type="password" placeholder="Lovebooks!123" value="" name="password" title="Password">
-                        </label>
-                        <label>
-                            <span>Confirm password:</span>
-                            <input type="password" placeholder="Lovebooks!123" value="" name="password" title="Password">
-                        </label>
-                        <div class="form-submit-btn">
-                            <button type="submit" class="submit btn--primary btn--medium full-width"
-                                    asp-area="" asp-controller="Account" asp-action="Register">
-                                Register
-                            </button>
+                        <div class="header-book-meta">
+                            <a href="category.html">History, Clasics</a>
                         </div>
-                    </form>
+                        <div class="header-book-rating">
+                            @await Html.PartialAsync("_RatingPartial")
+                        </div>
+
+                        <div class="header-book-btn">
+                            <button>Want To Read</button>
+                            <button>Currently Reading</button>
+                            <button>Read</button>
+                        </div>
+                    </div>
                 </div>
-                @*<div class="entry" style="background-image:url('images/featured/featured-articles.jpg');">
 
-            <div class="article-content">
-                <span class="article-category"><a href="category.html">Art</a></span>
-
-                <h1><a href="post.html" title="">Throwback To The Good Old Days.</a></h1>
-
-                <div class="article-info">
-                    <ul class="entry-meta">
-                        <li>Stefani Nikolova</li>
-                        <li>April 9, 2018</li>
-                    </ul>
-                </div>
-            </div>
-
-        </div>*@
-
-            </div>
+            }
         </div>
 
     </div>
@@ -440,3 +470,7 @@
     </div>
 
 </section>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
