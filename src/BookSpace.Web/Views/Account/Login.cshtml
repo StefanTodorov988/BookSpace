@@ -5,29 +5,29 @@
 }
 
 <div class="container-login">
-    <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post" class="login-form">
-        <div asp-validation-summary="All" class="text-danger"></div>
-        <label>
-            <input asp-for="Username" class="form-control" placeholder="Username"/>
-            <span asp-validation-for="Username" class="text-danger"></span>
-        </label>
-        <label>
-            <input asp-for="Password" class="form-control" placeholder="Password"/>
-            <span asp-validation-for="Password" class="text-danger"></span>
-        </label>
-        <div class="form-submit-btn">
-            <button type="submit" class="submit btn--primary btn--medium full-width">
-                Login
-            </button>
-        </div>
-        <div class="forgot-password">
-            <a href="#">Forgot your password?</a>
-        </div>
-    </form>
-    <p>
-        <h4>Deciding what to read next? </h4>
-        You’re in the right place. Tell us what titles or genres you’ve enjoyed in the past, and we’ll give you surprisingly insightful recommendations.
-    </p>
+    <form asp-controller="Account" asp-action="Login" method="post" class="login-form">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <label>
+                <input asp-for="Username" class="form-control" placeholder="Username"/>
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </label>
+            <label>
+                <input asp-for="Password" class="form-control" placeholder="Password"/>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </label>
+            <div class="form-submit-btn">
+                <button type="submit" class="submit btn--primary btn--medium full-width">
+                    Login
+                </button>
+            </div>
+            <div class="forgot-password">
+                <a href="#">Forgot your password?</a>
+            </div>
+        </form>
+        <p>
+            <h4>Deciding what to read next? </h4>
+            You’re in the right place. Tell us what titles or genres you’ve enjoyed in the past, and we’ll give you surprisingly insightful recommendations.
+        </p>
 </div>
 
 @section Scripts {

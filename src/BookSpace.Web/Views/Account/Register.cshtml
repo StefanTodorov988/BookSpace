@@ -5,7 +5,7 @@
 
 <div class="container-register">
     <p> New here? Create a free account!</p>
-    <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post" class="register-form">
+    <form asp-controller="Account" asp-action="Register" method="post" class="register-form">
         <div asp-validation-summary="All" class="text-danger"></div>
         <label>
             <input asp-for="Username" class="form-control" placeholder="Username">
