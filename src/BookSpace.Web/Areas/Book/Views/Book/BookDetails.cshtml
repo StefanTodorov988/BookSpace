@@ -1,0 +1,52 @@
+﻿@model BookSpace.Web.Areas.Book.Models.DetailedBookViewModel
+
+@{
+    ViewData["Title"] = "BookDetails";
+    Layout = "~/Views/Shared/_LayoutTest.cshtml";
+}
+
+<h2>Book Details</h2>
+
+<div>
+    <h4>@Model.Title</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.BookId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.BookId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Isbn)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Isbn)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PublicationYear)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PublicationYear)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Rating)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Rating)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CoverUrl)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CoverUrl)
+        </dd>
+    </dl>
+</div>
+
