@@ -71,6 +71,11 @@ namespace BookSpace.Web
 
             services.AddRequestScopingMiddleware(() => scopeProvider.Value = new Scope());
 
+            //services.AddAutoMapper();
+
+            services.AddTransient<IDatabaseSeedService, DatabaseSeedService>();
+            services.AddTransient<UserManager<ApplicationUser>>();
+
             services.AddCustomControllerActivation(Resolve);
             services.AddCustomViewComponentActivation(Resolve);
             services.AddMvc();
