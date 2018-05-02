@@ -225,6 +225,10 @@ namespace BookSpace.Web.Controllers
                     Email = model.Email,
                     UserAccessControl = new BookSpace.Models.UserAccessControl { RegistrationDate = DateTime.Now }
                 };
+                if (user != null)
+                {
+                    await _userManager.UpdateSecurityStampAsync(user);
+                }
 
                 var result = await _userManager.CreateAsync(user, model.Password);
                 var setRoleResult = await _userManager.AddToRoleAsync(user, "User");
