@@ -29,9 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Configuration\ObjectMapping\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
-    <Folder Include="Configuration\" />
     <Folder Include="wwwroot\css\font-awesome\css\" />
     <Folder Include="wwwroot\css\font-awesome\fonts\" />
     <Folder Include="wwwroot\fonts\metropolis\" />
