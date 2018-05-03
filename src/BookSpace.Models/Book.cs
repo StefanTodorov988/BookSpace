@@ -18,6 +18,8 @@ namespace BookSpace.Models
 
         public string CoverUrl { get; set; }
 
+        public string Description { get; set; }
+
         public ICollection<Comment> Comments { get; set; }
 
         public ICollection<BookUser> BookUsers { get; set; }

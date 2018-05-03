@@ -15,6 +15,10 @@ namespace BookSpace.Models.Configurations
                 .IsRequired(true)
                 .IsUnicode(true);
 
+            builder.Property(p => p.Description)
+                .IsUnicode(true)
+                .IsRequired(false);
+
             builder.HasMany(c => c.Comments)
                 .WithOne(b => b.Book)
                 .HasForeignKey(fk => fk.BookId);
