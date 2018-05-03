@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using BookSpace.Factories;
 using BookSpace.Models;
-using BookSpace.Repositories;
 using BookSpace.Repositories.Contracts;
 using BookSpace.Web.Areas.Admin.Models.ApplicationUserViewModels;
-using BookSpace.Web.Areas.Book.Models;
+using BookSpace.Web.Models.BookViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -23,15 +21,15 @@ namespace BookSpace.Web.Areas.Admin.Controllers
         private readonly IBookRepository bookRepository;
         private readonly IMapper objectMapper;
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly IBookFactory bookFactory;
+        //private readonly IBookFactory bookFactory;
 
-        public AdminController(IApplicationUserRepository userRepository, IBookRepository bookRepository, IMapper objectMapper, UserManager<ApplicationUser> userManager, IBookFactory bookFactory)
+        public AdminController(IApplicationUserRepository userRepository, IBookRepository bookRepository, IMapper objectMapper, UserManager<ApplicationUser> userManager)
         {
             this.userRepository = userRepository;
             this.bookRepository = bookRepository;
             this.objectMapper = objectMapper;
             this.userManager = userManager;
-            this.bookFactory = bookFactory;
+            //this.bookFactory = bookFactory;
         }
 
         public IActionResult AllUsers()
@@ -54,7 +52,7 @@ namespace BookSpace.Web.Areas.Admin.Controllers
         public async Task<IActionResult> EditUser(ApplicationUserViewModel userViewModel)
         {
             //TODO:Getting user by anything that can be changed is impossible!So I must use Id and therefore ID cannot be changed which is not good!
-            var dbModel = this.userRepository.GetByIdAsync(userViewModel.Id).Result;
+            var dbModel = this.userManager.FindByIdAsync(userViewModel.Id).Result;  
 
             var user = this.objectMapper.Map(userViewModel, dbModel);
 
@@ -68,8 +66,7 @@ namespace BookSpace.Web.Areas.Admin.Controllers
                 await this.userManager.RemoveFromRoleAsync(user, "Admin");
             }
 
-            await this.userRepository.UpdateAsync(user);
-            //await this.userManager.UpdateAsync(user);
+            await this.userManager.UpdateAsync(user);
 
             return this.RedirectToAction("AllUsers");
         }
