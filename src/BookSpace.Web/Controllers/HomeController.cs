@@ -7,19 +7,28 @@ using BookSpace.Factories;
 using BookSpace.Models;
 using Microsoft.AspNetCore.Mvc;
 using BookSpace.Web.Models;
+using BookSpace.Repositories.Contracts;
 
 namespace BookSpace.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IBookFactory bookFactory;
+        private readonly IBookRepository bookRepository;
 
-        public HomeController(IBookFactory bookFactory)
+        public HomeController(IBookRepository bookRepository)
         {
-            this.bookFactory = bookFactory;
+            this.bookRepository = bookRepository;
         }
         public IActionResult Index()
         {
+            var bookAuthor = this.bookRepository
+                .GetBookAuthorsAsync("0053235A-26E8-4335-9E9E-4E75936A9639").GetAwaiter().GetResult();
+            var bookComments = this.bookRepository
+               .GetBookCommentsAsync("0053235A-26E8-4335-9E9E-4E75936A9639").GetAwaiter().GetResult();
+            var bookGenres = this.bookRepository
+               .GetBookGenresAsync("0053235A-26E8-4335-9E9E-4E75936A9639").GetAwaiter().GetResult();
+            var bookTags = this.bookRepository
+               .GetBookTagsAsync("0053235A-26E8-4335-9E9E-4E75936A9639").GetAwaiter().GetResult();
             return View();
         }
 
