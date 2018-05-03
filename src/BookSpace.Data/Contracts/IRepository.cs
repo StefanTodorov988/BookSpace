@@ -1,4 +1,5 @@
 ﻿using BookSpace.Repositories.Contracts;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,15 @@ namespace BookSpace.Data.Contracts
         Task<IEnumerable<TEntity>> GetAllAsync();
         Task<IEnumerable<TEntity>> GetManyAsync(Expression<Func<TEntity, bool>> where);
         Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> where);
+
+        Task<IEnumerable<TProperty>> GetOneToManyAsync<TProperty>
+                                   (Expression<Func<TEntity, bool>> where,
+                                    Expression<Func<TEntity, IEnumerable<TProperty>>> selector);
+
+        Task<IEnumerable<TResultProperty>> GetManyToManyAsync<TProperty, TResultProperty>
+                                    (Expression<Func<TEntity, bool>> where,
+                                     Expression<Func<TEntity, IEnumerable<TProperty>>> selectorMany,
+                                     Expression<Func<TProperty, TResultProperty>> selector);
 
         Task AddAsync(TEntity entity);
         Task UpdateAsync(TEntity entity);

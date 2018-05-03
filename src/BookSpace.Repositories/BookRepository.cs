@@ -6,6 +6,7 @@ using BookSpace.Data;
 using BookSpace.Data.Contracts;
 using BookSpace.Models;
 using BookSpace.Repositories.Contracts;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookSpace.Repositories
 {
@@ -26,64 +27,60 @@ namespace BookSpace.Repositories
             return pageRecords.Results;
         }
 
-        public async Task<IEnumerable<Author>> GetBookAuthorsAsync(string bookId)
-        {
-            var book = await this.GetAsync(b => b.BookId == bookId);
 
-            if (book == null)
+        public  async Task<IEnumerable<Author>> GetBookAuthorsAsync(string bookId)
+        {
+            var authors = await this.GetManyToManyAsync(b => b.BookId == bookId,
+                                                        ba => ba.BookAuthors,
+                                                        a => a.Author);
+            if (authors == null)
             {
-                throw new ArgumentNullException(nameof(book));
+                throw new ArgumentNullException(nameof(authors));
             }
 
-            return book.BookAuthors.Select(ba => ba.Author);
-        }
-
-        public async Task<IEnumerable<Author>> GetBookAuthorsAsync2(string bookId)
-        {
-            var book = await this.GetAsync(b => b.BookId == bookId);
-
-            if(book == null)
-            {
-                throw new ArgumentNullException(nameof(book));
-            }
-
-            return book.BookAuthors.Select(ba => ba.Author);
+            return authors;
         }
 
         public async Task<IEnumerable<Genre>> GetBookGenresAsync(string bookId)
         {
-            var book = await this.GetAsync(b => b.BookId == bookId);
+            var genres = await this.GetManyToManyAsync(b => b.BookId == bookId,
+                                                       bg => bg.BookGenres,
+                                                       g => g.Genre);
 
-            if (book == null)
+            if (genres == null)
             {
-                throw new ArgumentNullException(nameof(book));
+                throw new ArgumentNullException(nameof(genres));
             }
 
-            return book.BookGenres.Select(ba => ba.Genre);
+            return genres;
         }
 
         public async Task<IEnumerable<Comment>> GetBookCommentsAsync(string bookId)
         {
-            var book = await this.GetAsync(b => b.BookId == bookId);
+            var comments = await this.GetOneToManyAsync(b => b.BookId == bookId,
+                                                       bg => bg.Comments);
 
-            if (book == null)
+            if (comments == null)
             {
-                throw new ArgumentNullException(nameof(book));
+                throw new ArgumentNullException(nameof(comments));
             }
 
-            return book.Comments;
+            return comments;
         }
 
         public async Task<IEnumerable<Tag>> GetBookTagsAsync(string bookId)
         {
-            var book = await this.GetAsync(b => b.BookId == bookId);
 
-            if (book == null)
+            var tags = await this.GetManyToManyAsync(b => b.BookId == bookId,
+                                                       bg => bg.BookTags,
+                                                       g => g.Tag);
+
+            if (tags == null)
             {
-                throw new ArgumentNullException(nameof(book));
+                throw new ArgumentNullException(nameof(tags));
             }
 
-            return book.BookTags.Select(ba => ba.Tag);
+            return tags;
         }
 
 

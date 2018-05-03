@@ -47,6 +47,7 @@ namespace BookSpace.Web
                 .AddEntityFrameworkStores<BookSpaceContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddScoped<IDbContext, BookSpaceContext>();
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IDatabaseSeedService, DatabaseSeedService>();
 
