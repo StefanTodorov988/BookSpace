@@ -13,7 +13,8 @@ namespace BookSpace.Data
     public class BaseRepository<TEntity> : IRepository<TEntity> 
                                                     where TEntity : class
     {
-        private readonly IDbContext dbContext;
+        // FIX!
+        public readonly IDbContext dbContext;
 
         public BaseRepository(IDbContext dbCtx)
         {
@@ -30,16 +31,43 @@ namespace BookSpace.Data
             return await this.dbContext.DbSet<TEntity>().ToListAsync();
         }
 
+        public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> where)
+        {
+            return await this.dbContext.DbSet<TEntity>().Where(where).FirstOrDefaultAsync<TEntity>();
+        }
 
         public async Task<IEnumerable<TEntity>> GetManyAsync(Expression<Func<TEntity, bool>> where)
         {
                 return await this.dbContext.DbSet<TEntity>().Where(where).ToListAsync();
         }
 
-        public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> where)
+        public async Task<IEnumerable<TProperty>> GetOneToManyAsync<TProperty>
+                                   (Expression<Func<TEntity, bool>> where,
+                                    Expression<Func<TEntity, IEnumerable<TProperty>>> selector)
+
         {
-            return await this.dbContext.DbSet<TEntity>().Where(where).FirstOrDefaultAsync<TEntity>();
+
+            return await this.dbContext.DbSet<TEntity>()
+                   .Where(where)
+                   .SelectMany(selector)
+                   .ToListAsync();
         }
+
+        public async Task<IEnumerable<TResultProperty>> GetManyToManyAsync<TProperty, TResultProperty>
+                                    (Expression<Func<TEntity, bool>> where,
+                                     Expression<Func<TEntity, IEnumerable<TProperty>>> selectorMany,
+                                     Expression<Func<TProperty, TResultProperty>> selector)
+   
+        {
+         
+            return await this.dbContext.DbSet<TEntity>()
+                   .Where(where)
+                   .SelectMany(selectorMany)
+                   .Select(selector)
+                   .ToListAsync();
+        }
+
+
 
         public async Task AddAsync(TEntity entity)
         {
