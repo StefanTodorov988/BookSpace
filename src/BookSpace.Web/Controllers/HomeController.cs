@@ -12,11 +12,10 @@ namespace BookSpace.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IBookFactory bookFactory;
-
-        public HomeController(IBookFactory bookFactory)
+     
+        public HomeController()
         {
-            this.bookFactory = bookFactory;
+   
         }
         public IActionResult Index()
         {

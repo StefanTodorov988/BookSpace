@@ -18,32 +18,16 @@ using BookSpace.Models;
 using BookSpace.Repositories;
 using BookSpace.Repositories.Contracts;
 using Ninject;
-using Ninject.Extensions.Factory;
-using Microsoft.AspNetCore.Mvc.ViewFeatures.Internal;
-using System.Threading;
-using Ninject.Activation;
-using Ninject.Infrastructure.Disposal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using System.Text.Encodings.Web;
 using AutoMapper;
 using BookSpace.Web.Areas.Admin.Models.ApplicationUserViewModels;
-using BookSpace.Web.Infrastructure.Extensions;
-using BookSpace.Web.Infrastructure;
 using BookSpace.Web.Areas.Book.Models;
 
 namespace BookSpace.Web
 {
     public class Startup
     {
-
-        private readonly AsyncLocal<Scope> scopeProvider = new AsyncLocal<Scope>();
-        private IKernel kernel { get; set; }
-        private IServiceProvider provider;
-        private object Resolve(Type type) => kernel.Get(type);
-        private object RequestScope(IContext context) => scopeProvider.Value;
-
-        private sealed class Scope : DisposableObject { }
 
         public Startup(IConfiguration configuration)
         {
@@ -63,33 +47,23 @@ namespace BookSpace.Web
                 .AddEntityFrameworkStores<BookSpaceContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddScoped<IDbContext>(serviceProvider => (BookSpaceContext)provider.GetService(typeof(BookSpaceContext)));
-
-            services.AddScoped(p => new BookSpaceContext(p.GetService<DbContextOptions<BookSpaceContext>>()));
-
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-            services.AddRequestScopingMiddleware(() => scopeProvider.Value = new Scope());
-
-            //services.AddAutoMapper();
-
+            services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IDatabaseSeedService, DatabaseSeedService>();
-            services.AddTransient<UserManager<ApplicationUser>>();
 
-            services.AddCustomControllerActivation(Resolve);
-            services.AddCustomViewComponentActivation(Resolve);
+            //Repositories
+
+            services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
+            services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
+            services.AddScoped<IBookRepository, BookRepository>();
+
             services.AddMvc();
 
         }
 
-
-
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IServiceProvider provider)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            this.provider = provider;
-            this.kernel = this.RegisterApplicationComponents(app);
-
+          
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
@@ -132,100 +106,6 @@ namespace BookSpace.Web
             Mapper.AssertConfigurationIsValid(); // optional
             return Mapper.Instance;
         }
-
-
-        private IKernel RegisterApplicationComponents(IApplicationBuilder app)
-        {
-            var kernel = new StandardKernel();
-
-            kernel.Load<FuncModule>();
-
-            foreach (var ctrlType in app.GetControllerTypes())
-            {
-                kernel.Bind(ctrlType).ToSelf().InScope(RequestScope);
-            }
-
-
-            kernel.Bind<IDbContext>()
-                .To<BookSpaceContext>()
-                .InScope(RequestScope)
-                .WithConstructorArgument(typeof(DbContextOptions), provider.GetService(typeof(DbContextOptions)));
-
-
-            kernel.Bind<RoleManager<IdentityRole>>()
-                  .ToMethod((context => this.Get<RoleManager<IdentityRole>>()))
-                  .InSingletonScope();
-
-            // It should be per request scope ?
-            kernel.Bind<UserManager<ApplicationUser>>()
-                  .ToMethod((context => this.Get<UserManager<ApplicationUser>>()))
-                  .InSingletonScope();
-
-
-            kernel.Bind<SignInManager<ApplicationUser>>()
-                 .ToMethod((context => this.Get<SignInManager<ApplicationUser>>()))
-                  .InSingletonScope();
-
-            kernel.Bind<IMapper>().ToMethod(AutoMapper).InSingletonScope();
-
-            kernel.Bind<IEmailSender>()
-                .To<EmailSender>()
-                  .InSingletonScope();
-
-            kernel.Bind<UrlEncoder>()
-                .ToMethod((context => this.Get<UrlEncoder>()))
-                  .InSingletonScope();
-
-            // Repositories
-            kernel.Bind(typeof(IRepository<>))
-                .To(typeof(BaseRepository<>))
-                .InScope(RequestScope);
-
-            kernel.Bind<IApplicationUserRepository>()
-                .To<ApplicationUserRepository>()
-                .InScope(RequestScope);
-
-            kernel.Bind<IBookRepository>()
-               .To<BookRepository>()
-               .InScope(RequestScope);
-
-
-            kernel.Bind<IApplicationUserFactory>()
-                .ToFactory()
-                .InSingletonScope();
-
-            kernel.Bind<IBookFactory>()
-                .ToFactory()
-                .InSingletonScope();
-
-            kernel.Bind<IAuthorFactory>()
-                .ToFactory()
-                .InSingletonScope();
-
-            kernel.Bind<IGenreFactory>()
-                .ToFactory()
-                .InSingletonScope();
-
-            kernel.Bind<ICommentFactory>()
-                .ToFactory()
-                .InSingletonScope();
-
-            kernel.Bind<ITagFactory>()
-                .ToFactory()
-                .InSingletonScope();
-
-
-            kernel.BindToMethod(app.GetRequestService<IViewBufferScope>);
-
-            return kernel;
-        }
-
-        private T Get<T>()
-        {
-            return (T)this.provider.GetService(typeof(T));
-        }
-
-
 
     }
 }
