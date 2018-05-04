@@ -20,6 +20,10 @@
             <li><a asp-controller="UserBooks" asp-action="Index">Favourite(23)</a></li>
         </ul>
     </nav>
+
+    <section id="renderPartial">
+
+    </section>
 </div>
 
 <script>
@@ -29,6 +33,13 @@
         e.preventDefault();
         e.stopPropagation();
 
-        alert('Showing Read books');
+        const renderSection = $('#renderPartial');
+
+        $.ajax({
+            type: "POST",
+            url: "/UserBooks/_ReadBooksPartialListAsync",
+            success: (htmlData) => renderSection.html(htmlData),
+            error: (response) => alert('Error')
+        })
     }
 </script>

@@ -1,4 +1,13 @@
-﻿
-@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<UserBookViewModel>
+
+@if (Model == null)
+{
+    <h3>Sorry pal! You haven't read any book yet!</h3>
+}
+else
+{
+    @foreach (var b in Model)
+    {
+        @Html.RenderPartialAsync("_BookPartial", b);
+    }
+}
