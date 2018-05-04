@@ -8,8 +8,8 @@ namespace BookSpace.Factories
     public class BookFactory : IFactory<Book, BookResponseModel>
     {
 
-       //Book Create(string bookId, string isbn, string title, DateTime publicationYear, string coverUrl);
-     
+        //Book Create(string bookId, string isbn, string title, DateTime publicationYear, string coverUrl);
+
         public Book Create(BookResponseModel model)
         {
             return new Book()
@@ -21,7 +21,7 @@ namespace BookSpace.Factories
                 Rating = model.Rating,
                 CoverUrl = model.CoverUrl,
                 Description = model.Description,
-                Author = model.Author
+                Author = model.Author,
             };
         }
     }

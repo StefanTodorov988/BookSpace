@@ -25,6 +25,6 @@ namespace BookSpace.Factories.ResponseModels
         //TODO:FIGURE OUT HOW GENRES AND TAGS WILL BE ADDED TO DB MODEL
         //public ICollection<BookGenre> BookGenres { get; set; }
 
-        //public ICollection<BookTag> BookTags { get; set; }
+        public ICollection<string> BookTags { get; set; }
     }
 }

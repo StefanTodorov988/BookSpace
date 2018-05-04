@@ -33,7 +33,14 @@
 <body>
 
     <div>
-        @await Html.PartialAsync("_Header")
+        @if (User.IsInRole("Admin"))
+        {
+            @await Html.PartialAsync("/Areas/Admin/Views/Shared/_AdminHeader.cshtml");
+        }
+        else
+        {
+            @await Html.PartialAsync("_Header")
+        }
     </div>
     <div class="container body-content">
         @RenderBody()

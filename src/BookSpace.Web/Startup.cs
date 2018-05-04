@@ -58,6 +58,8 @@ namespace BookSpace.Web
 
             //Factories
             services.AddScoped<IFactory<Book, BookResponseModel>, BookFactory>();
+            services.AddScoped<IFactory<Genre, GenreResponseModel>, GenreFactory>();
+            services.AddScoped<IFactory<Tag, TagResponseModel>, TagFactory>();
 
 
             //Blob Storage

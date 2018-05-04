@@ -30,10 +30,12 @@ namespace BookSpace.Web.Areas.Admin.Controllers
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IBlobStorageService blobStorageService;
         private readonly IFactory<Book, BookResponseModel> bookFactory;
+        private readonly IFactory<Genre, GenreResponseModel> genreFactory;
+        private readonly IFactory<Tag, TagResponseModel> tagFactory;
 
         public AdminController(IApplicationUserRepository userRepository, IBookRepository bookRepository, ITagRepository tagRepository, IGenreRepository genreRepository,
-            IMapper objectMapper, UserManager<ApplicationUser> userManager, IBlobStorageService blobStorageService,
-            IFactory<Book, BookResponseModel> bookFactory)
+            IFactory<Book, BookResponseModel> bookFactory, IFactory<Genre, GenreResponseModel> genreFactory, IFactory<Tag, TagResponseModel> tagFactory,
+            IMapper objectMapper, UserManager<ApplicationUser> userManager, IBlobStorageService blobStorageService)
         {
             this.userRepository = userRepository;
             this.bookRepository = bookRepository;
@@ -43,6 +45,8 @@ namespace BookSpace.Web.Areas.Admin.Controllers
             this.userManager = userManager;
             this.blobStorageService = blobStorageService;
             this.bookFactory = bookFactory;
+            this.genreFactory = genreFactory;
+            this.tagFactory = tagFactory;
         }
 
         public IActionResult AllUsers()
@@ -57,6 +61,15 @@ namespace BookSpace.Web.Areas.Admin.Controllers
             }
 
             return View(userViewModels);
+        }
+
+        public IActionResult AllBooks()
+        {
+            var allBooks = this.bookRepository.GetAllAsync().Result.ToList();
+
+            var mappedBooks = this.objectMapper.Map<IEnumerable<ListBookViewModel>>(allBooks);
+
+            return View(mappedBooks);
         }
 
         [HttpPost]
@@ -90,14 +103,7 @@ namespace BookSpace.Web.Areas.Admin.Controllers
             return View(userViewModel);
         }
 
-        public IActionResult AllBooks()
-        {
-            var allBooks = this.bookRepository.GetAllAsync().Result.ToList();
 
-            var mappedBooks = this.objectMapper.Map<IEnumerable<ListBookViewModel>>(allBooks);
-
-            return View(mappedBooks);
-        }
 
         [HttpPost("/EditBook/{bookid}")]
         [ValidateAntiForgeryToken]
@@ -139,39 +145,81 @@ namespace BookSpace.Web.Areas.Admin.Controllers
             return View();
         }
 
+        //TODO:MAJOR FEATURES MISSING
         [HttpPost("/CreateBook")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateBookAsync(CreateBookViewModel bookViewModel)
         {
-
             var bookResponse = this.objectMapper.Map<BookResponseModel>(bookViewModel);
-
             var book = this.bookFactory.Create(bookResponse);
+
+            //ADDING GENRES TO BOOK
+            //search for genres with the names from the controller in the database  get their Ids
+            //create new BookGenre record with bookId and GenreId add it to database
+
+            //SAMPLE CODE 
+            //foreach (var genre in bookViewModel.Genres)
+            //{
+            //    var genreToBook = await this.genreRepository.GetGenreByNameAsync(genre);
+
+            //    //This would work if we have BookGenre repository because AddAsync method works only with its appropriate type(e.g. for GenreRepository => genres)
+            //    this.genreRepository.AddAsync(new BookGenre()
+            //    {
+            //        BookId = bookViewModel.BookId,
+            //        GenreId = genreToBook.GenreId
+            //    });
+            //}
+
+            //ADDING TAGS TO BOOK
+            //search for tags with the names from the controller in the database get their Ids
+            //create new BookTag record with bookId and TagId and add it to database
+
+            //SAMPLE CODE
+            //Same as above just with genres
+
 
             await this.bookRepository.AddAsync(book);
 
             return RedirectToAction("CreateBook");
         }
 
-        //[HttpGet("/CreateTag")]
-        //public IActionResult CreateTag()
-        //{
-        //    return View();
-        //}
+        [HttpGet("/CreateTag")]
+        public IActionResult CreateTag()
+        {
+            return View();
+        }
 
-        //[HttpPost("/CreateTag")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> CreateTagAsync(TagViewModel bookViewModel)
-        //{
+        [HttpPost("/CreateTag")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateTagAsync(TagViewModel tagViewModel)
+        {
+            var tagResponse = this.objectMapper.Map<TagResponseModel>(tagViewModel);
 
-        //    var tagResponse = this.objectMapper.Map<TagResponseModel>(bookViewModel);
+            var tag = this.tagFactory.Create(tagResponse);
 
-        //    var book = this.bookFactory.Create(tagResponse);
+            await this.tagRepository.AddAsync(tag);
 
-        //    await this.bookRepository.AddAsync(book);
+            return RedirectToAction("CreateTag");
+        }
 
-        //    return RedirectToAction("CreateBook");
-        //}
+        [HttpGet("/CreateGenre")]
+        public IActionResult CreateGenre()
+        {
+            return View();
+        }
+
+        [HttpPost("/CreateGenre")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateGenreAsync(GenreViewModel genreViewModel)
+        {
+            var genreResponse = this.objectMapper.Map<GenreResponseModel>(genreViewModel);
+
+            var genre = this.genreFactory.Create(genreResponse);
+
+            await this.genreRepository.AddAsync(genre);
+
+            return RedirectToAction("CreateGenre");
+        }
 
         public IActionResult Index()
         {
