@@ -1,34 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using BookSpace.Web.Models;
 using BookSpace.Web.Services;
 using BookSpace.Data;
 using BookSpace.Data.Contracts;
-using BookSpace.Factories;
 using BookSpace.Models;
 using BookSpace.Repositories;
 using BookSpace.Repositories.Contracts;
-using Ninject;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using AutoMapper;
-using BookSpace.Web.Areas.Admin.Models.ApplicationUserViewModels;
-using BookSpace.Web.Areas.Book.Models;
+using BookSpace.BlobStorage.Contracts;
+using BookSpace.BlobStorage;
 
 namespace BookSpace.Web
 {
     public class Startup
     {
-
+        
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -47,7 +38,8 @@ namespace BookSpace.Web
                 .AddEntityFrameworkStores<BookSpaceContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddScoped<IDbContext, BookSpaceContext>();
+            services.AddScoped<IDbContext>(provider => provider.GetService<BookSpaceContext>());
+
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IDatabaseSeedService, DatabaseSeedService>();
 
@@ -57,6 +49,14 @@ namespace BookSpace.Web
             services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
             services.AddScoped<IBookRepository, BookRepository>();
 
+            //Blob Storage
+            services.AddSingleton<IBlobStorageService, BlobStorageService>();
+            services.AddSingleton<BlobStorageInfo>(
+                Configuration.GetSection(nameof(BlobStorageInfo))
+                .Get<BlobStorageInfo>());
+
+
+            services.AddAutoMapper();
             services.AddMvc();
 
         }
@@ -91,22 +91,5 @@ namespace BookSpace.Web
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
-
-        private IMapper AutoMapper(Ninject.Activation.IContext context)
-        {
-            Mapper.Initialize(config =>
-            {
-                config.ConstructServicesUsing(type => context.Kernel.Get(type));
-
-                config.CreateMap<ApplicationUser, ApplicationUserViewModel>().ReverseMap();
-                config.CreateMap<Book, SimpleBookViewModel>().ReverseMap();
-                // .... other mappings, Profiles, etc.              
-
-            });
-
-            Mapper.AssertConfigurationIsValid(); // optional
-            return Mapper.Instance;
-        }
-
     }
 }

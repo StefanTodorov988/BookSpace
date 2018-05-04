@@ -223,9 +223,9 @@ namespace BookSpace.Web.Controllers
             {
                 var user = new ApplicationUser {
                     UserName = model.Username,
-                    Email = model.Email,
-                    UserAccessControl = new BookSpace.Models.UserAccessControl { RegistrationDate = DateTime.Now }
+                    Email = model.Email
                 };
+
                 if (user != null)
                 {
                     await _userManager.UpdateSecurityStampAsync(user);

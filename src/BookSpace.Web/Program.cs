@@ -22,7 +22,7 @@ namespace BookSpace.Web
             {
                 var services = scope.ServiceProvider;
                 var context = scope.ServiceProvider.GetService<BookSpaceContext>();
-                context.Database.EnsureCreated();
+                // context.Database.EnsureCreated();
                 var seedService = services.GetRequiredService<IDatabaseSeedService>();
                 seedService.SeedData();
             }

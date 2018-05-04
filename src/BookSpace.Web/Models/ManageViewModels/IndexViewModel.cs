@@ -21,5 +21,7 @@ namespace BookSpace.Web.Models.ManageViewModels
         public string PhoneNumber { get; set; }
 
         public string StatusMessage { get; set; }
+
+        public string PictureUrl { get; set; }
     }
 }

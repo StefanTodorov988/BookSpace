@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BookSpace.Web.Areas.Book.Models
+namespace BookSpace.Web.Models.BookViewModels
 {
     public class SimpleBookViewModel
     {

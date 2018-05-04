@@ -9,8 +9,6 @@ namespace BookSpace.Models
     {
         public string ProfilePictureUrl { get; set; }
 
-        public UserAccessControl UserAccessControl { get; set; }
-
         public ICollection<BookUser> BookUsers { get; set; }
 
         public ICollection<Comment> Comments { get; set; }

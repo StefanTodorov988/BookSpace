@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using BookSpace.Repositories.Contracts;
-using BookSpace.Web.Areas.Book.Models;
+using BookSpace.Web.Models.BookViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookSpace.Web.Controllers
@@ -27,15 +23,27 @@ namespace BookSpace.Web.Controllers
 
         public IActionResult BookDetails(string bookId)
         {
+            //TODO:Not finished
             var dbModel = this.bookRepository.GetByIdAsync(bookId).Result;
+            //var dbGenre = this.bookRepository.GetBookGenresAsync(bookId).Result;
             var mappedBookViewModel = this.objectMapper.Map<DetailedBookViewModel>(dbModel);
 
             return View(mappedBookViewModel);
         }
 
 
-        public IActionResult BooksByAuthor()
+        public IActionResult GetBookGenres(string bookId)
         {
+            //TODO:Not finished
+            var dbModel = this.bookRepository.GetBookGenresAsync(bookId);
+            var mappedGenreViewModel = this.objectMapper.Map<GenreViewModel>(dbModel);
+
+            return View();
+        }
+
+        public IActionResult BooksByAuthor(string bookId)
+        {
+            
             return View();
         }
 
