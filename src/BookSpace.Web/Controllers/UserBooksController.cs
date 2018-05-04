@@ -30,15 +30,15 @@ namespace BookSpace.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> _ReadBooksPartialListAsync()
+        public IActionResult _ReadBooksPartialListAsync()
         {
             if (!User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Index", "Home");
             }
 
-            var user = await this.applicationUserRepository.GetUserByUsernameAsync(User.Identity.Name);
-            var userReadBooks = await this.applicationUserRepository.GetUserBooksAsync(user.Id, BookState.Read);
+            var user = this.applicationUserRepository.GetUserByUsernameAsync(User.Identity.Name).Result;
+            var userReadBooks = this.applicationUserRepository.GetUserBooksAsync(user.Id, BookState.Read).Result;
 
             IEnumerable<UserBookViewModel> mappedBooksToViewModel = null; 
 

@@ -27,11 +27,11 @@
 </div>
 
 <script>
-    $('#read').on('click', process);
+    $('#read').on('click', readBooks);
 
-    function process(e) {
-        e.preventDefault();
-        e.stopPropagation();
+    function readBooks(e) {
+        //e.preventDefault();
+        //e.stopPropagation();
 
         const renderSection = $('#renderPartial');
 
@@ -42,4 +42,6 @@
             error: (response) => alert('Error')
         })
     }
+
+    (() => readBooks())();
 </script>

@@ -8,6 +8,6 @@ else
 {
     @foreach (var b in Model)
     {
-        @Html.RenderPartialAsync("_BookPartial", b);
+         @await Html.PartialAsync("_BookPartial", b);
     }
 }
