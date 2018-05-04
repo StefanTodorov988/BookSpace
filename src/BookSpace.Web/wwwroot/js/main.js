@@ -8,7 +8,6 @@
 
         $WIN = $(window);
 
-
     var preloader = function () {
         $("html").addClass('cl-preload');
 
@@ -247,7 +246,6 @@
 
 
     (function Init() {
-
         preloader();
         search();
         login();
