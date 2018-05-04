@@ -26,7 +26,7 @@ namespace BookSpace.Web.Controllers
         public async Task<IActionResult> Index()
         {
             var books = await this.bookRepository.FindByExpressionOrdered(book => book.Rating, 12);
-            var booksViewModels = this.objectMapper.Map<IEnumerable<Book>, IEnumerable<BookViewModel>>(books);
+            var booksViewModels = this.objectMapper.Map<IEnumerable<Book>, IEnumerable<PopularBookViewModel>>(books);
 
             return View(booksViewModels);
         }
