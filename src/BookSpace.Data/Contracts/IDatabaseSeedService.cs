@@ -1,8 +1,10 @@
-﻿namespace BookSpace.Data.Contracts
+﻿using System.Threading.Tasks;
+
+namespace BookSpace.Data.Contracts
 {
     public interface IDatabaseSeedService
     {
 
-        void SeedData();
+        Task SeedDataAsync();
     }
 }

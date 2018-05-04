@@ -24,20 +24,18 @@ namespace BookSpace.Data
             this.userManager = userManager;
         }
 
-        public void SeedData()
+        public async Task SeedDataAsync()
         {
-            this.SeedBooks();
-            this.SeedGenres();
-            //this.SeedAuthors();
-            this.SeedRoles();
-            this.SeedUsers();
-            this.SeedComments();
-            this.SeedGenresBooks();
-            //this.SeedBookAuthors();
-            this.SeedBookUsers();
+            await this.SeedBooksAsync();
+            await this.SeedGenresAsync();
+            await this.SeedRolesAsync();
+            await this.SeedUsersAsync();
+            await this.SeedCommentsAsync();
+            await this.SeedGenresBooksAsync();
+            await this.SeedBookUsersAsync();
         }
 
-        private void SeedBookUsers()
+        private async Task SeedBookUsersAsync()
         {
             if (!ctx.BooksUsers.Any())
             {
@@ -64,35 +62,12 @@ namespace BookSpace.Data
                     });
                 }
 
-                ctx.BooksUsers.AddRange(bookUsers);
-                ctx.SaveChanges();
+                await ctx.BooksUsers.AddRangeAsync(bookUsers);
+                await ctx.SaveChangesAsync();
             }
         }
 
-        //private void SeedBookAuthors()
-        //{
-        //    if (!ctx.BooksAuthors.Any())
-        //    {
-        //        string[] bookIds = ctx.Books.Select(b => b.BookId).ToArray();
-        //        string[] authorIds = ctx.Authors.Select(a => a.AuthorId).ToArray();
-
-        //        List<BookAuthor> bookAuthors = new List<BookAuthor>();
-        //        Random rnd = new Random();
-        //        foreach (var bId in bookIds)
-        //        {
-        //            bookAuthors.Add(new BookAuthor
-        //            {
-        //                BookId = bId,
-        //                AuthorId = authorIds[rnd.Next(0, authorIds.Length)]
-        //            });
-        //        }
-
-        //        ctx.BooksAuthors.AddRange(bookAuthors);
-        //        ctx.SaveChanges();
-        //    }
-        //}
-
-        private void SeedGenresBooks()
+        private async Task SeedGenresBooksAsync()
         {
             if (!ctx.BooksGenres.Any())
             {
@@ -110,12 +85,12 @@ namespace BookSpace.Data
                     });
                 }
 
-                ctx.BooksGenres.AddRange(booksGenres);
-                ctx.SaveChanges();
+                await ctx.BooksGenres.AddRangeAsync(booksGenres);
+                await ctx.SaveChangesAsync();
             }
         }
 
-        private void SeedComments()
+        private async Task SeedCommentsAsync()
         {
             if (!ctx.Comments.Any())
             {
@@ -133,12 +108,12 @@ namespace BookSpace.Data
                     comment.BookId = bookIds[rnd.Next(0, bookIds.Length)];
                 }
 
-                ctx.Comments.AddRange(allComments);
-                ctx.SaveChanges();
+                await ctx.Comments.AddRangeAsync(allComments);
+                await ctx.SaveChangesAsync();
             }
         }
 
-        private void SeedUsers()
+        private async Task SeedUsersAsync()
         {
             if (!this.ctx.Users.Any())
             {
@@ -159,11 +134,11 @@ namespace BookSpace.Data
                     this.SetRoleToUser(user.Email, "User");
                 }
                 
-                ctx.SaveChanges();
+                await ctx.SaveChangesAsync();
             }
         }
 
-        private void SeedRoles()
+        private async Task SeedRolesAsync()
         {
             if (!roleManager.RoleExistsAsync("User").Result)
             {
@@ -171,7 +146,8 @@ namespace BookSpace.Data
                 {
                     Name = "User"
                 };
-                IdentityResult roleResult = roleManager.CreateAsync(role).Result;
+
+                IdentityResult roleResult = await roleManager.CreateAsync(role);
             }
 
             if (!roleManager.RoleExistsAsync("Admin").Result)
@@ -180,40 +156,30 @@ namespace BookSpace.Data
                 {
                     Name = "Admin"
                 };
-                IdentityResult roleResult = roleManager.CreateAsync(role).Result;
+                IdentityResult roleResult = await roleManager.CreateAsync(role);
             }
         }
 
-        //private void SeedAuthors()
-        //{
-        //    if (!ctx.Authors.Any())
-        //    {
-        //        string responseBody = this.ReadJsonAsync("https://academystorage18.blob.core.windows.net/unknown/Authors.json?sv=2017-07-29&sr=b&sig=eb5EKh3itVTNsBqzqCEII1OU20z21XzYWUYCMk86ClE%3D&se=9999-12-31T21%3A59%3A59Z&sp=rd").Result;
-        //        Author[] allAuthors = JsonConvert.DeserializeObject<Author[]>(responseBody);
-        //        ctx.Authors.AddRange(allAuthors);
-        //        ctx.SaveChanges();
-        //    }
-        //}
-
-        private void SeedGenres()
+        private async Task SeedGenresAsync()
         {
             if (!ctx.Genres.Any())
             {
                 string responseBody = this.ReadJsonAsync("https://academystorage18.blob.core.windows.net/unknown/Genres.json?sv=2017-07-29&sr=b&sig=CJ74O0PbWVZoecuXRF9UFagG9mBdp%2BB6RRU2SK5CeCA%3D&se=9999-12-31T21%3A59%3A59Z&sp=rd").Result;
                 Genre[] allGenres = JsonConvert.DeserializeObject<Genre[]>(responseBody);
-                ctx.Genres.AddRange(allGenres);
-                ctx.SaveChanges();
+                await ctx.Genres.AddRangeAsync(allGenres);
+                await ctx.SaveChangesAsync();
             }
         }
 
-        private void SeedBooks()
+        private async Task SeedBooksAsync()
         {
             if (!ctx.Books.Any())
             {
                 string responseBody = this.ReadJsonAsync("https://academystorage18.blob.core.windows.net/unknown/Books.json?sv=2017-07-29&sr=b&sig=ikTp51MPPEOCowkqL7hym8sGGycWlDN0Ztw2JgeN5%2Fg%3D&se=9999-12-31T21%3A59%3A59Z&sp=rd").Result;
                 Book[] allBooks = JsonConvert.DeserializeObject<Book[]>(responseBody);
-                ctx.Books.AddRange(allBooks);
-                ctx.SaveChanges();
+
+                await ctx.Books.AddRangeAsync(allBooks);
+                await ctx.SaveChangesAsync();
             }
         }
 
