@@ -1,4 +1,6 @@
 ﻿@model BookSpace.Web.Models.BookViewModels.CreateBookViewModel
+@inject BookSpace.Repositories.IGenreRepository genreRepository
+@inject BookSpace.Repositories.ITagRepository tagRepository
 
 @{
     ViewData["Title"] = "Create Book";
@@ -6,46 +8,7 @@
 }
 
 <h2>Create Book</h2>
-
-<dl class="dropdown">
-
-    <dt>
-        <a href="#">
-            <span class="hida">Select</span>
-            <p class="multiSel"></p>
-        </a>
-    </dt>
-
-    <dd>
-        <div class="mutliSelect">
-            <ul>
-                <li>
-                    <input type="checkbox" value="Apple" />Apple
-                </li>
-                <li>
-                    <input type="checkbox" value="Blackberry" />Blackberry
-                </li>
-                <li>
-                    <input type="checkbox" value="HTC" />HTC
-                </li>
-                <li>
-                    <input type="checkbox" value="Sony Ericson" />Sony Ericson
-                </li>
-                <li>
-                    <input type="checkbox" value="Motorola" />Motorola
-                </li>
-                <li>
-                    <input type="checkbox" value="Nokia" />Nokia
-                </li>
-            </ul>
-        </div>
-    </dd>
-    <button>Filter</button>
-</dl>
-
-
-
-@*<div class="row">
+<div class="row">
     <div class="col-md-4">
         <form asp-action="CreateBookAsync">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -59,36 +22,78 @@
                 <input asp-for="Author" class="form-control" />
                 <span asp-validation-for="Author" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Genres" class="control-label"></label>
-                <input asp-for="Genres" class="form-control" />
-                <span asp-validation-for="Genres" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PublicationYear" class="control-label"></label>
-                <input asp-for="PublicationYear" class="form-control" />
-                <span asp-validation-for="PublicationYear" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Rating" class="control-label"></label>
-                <input asp-for="Rating" class="form-control" />
-                <span asp-validation-for="Rating" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CoverUrl" class="control-label"></label>
-                <input asp-for="CoverUrl" class="form-control" />
-                <span asp-validation-for="CoverUrl" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
+            @*<div class="form-group">
+                <dl class="dropdown">
+                    <dt>
+                        <a href="#">
+                            <span class="hida" onclick="dropDownMenu()">Select Genre</span>
+                            <p class="multiSel"></p>
+                        </a>
+                    </dt>
+                    <dd>
+                        <div class="mutliSelect">
+                            <ul>
+                                @foreach (var genre in genreRepository.GetAllAsync().Result)
+                                {
+                                    <li>
+                                        <input type="checkbox" value="@genre.Name" />@genre.Name
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </dd>
+                </dl>
+                <label asp-for="Genres" class="control-label"></label>*@
+
+                @*<div class="form-group">
+                    <dl class="dropdown">
+                        <dt>
+                            <a href="#">
+                                <span class="hida" onclick="dropDownMenu()">Select Tags</span>
+                                <p class="multiSel"></p>
+                            </a>
+                        </dt>
+                        <dd>
+                            <div class="mutliSelect">
+                                <ul>
+                                    @foreach (var tag in tagRepository.GetAllAsync().Result)
+                                    {
+                                        <li>
+                                            <input type="checkbox" value="@tag.Value" />tag.Value
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </dd>
+                    </dl>
+                    <label asp-for="Tags" class="control-label"></label>
+                </div>*@
+
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PublicationYear" class="control-label"></label>
+                    <input asp-for="PublicationYear" class="form-control" />
+                    <span asp-validation-for="PublicationYear" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Rating" class="control-label"></label>
+                    <input asp-for="Rating" class="form-control" />
+                    <span asp-validation-for="Rating" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CoverUrl" class="control-label"></label>
+                    <input asp-for="CoverUrl" class="form-control" />
+                    <span asp-validation-for="CoverUrl" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
         </form>
     </div>
-</div>*@
+</div>
 
 

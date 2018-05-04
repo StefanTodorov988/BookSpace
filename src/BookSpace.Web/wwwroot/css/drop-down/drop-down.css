@@ -1,21 +1,11 @@
-﻿body {
-    font: normal 14px/100% "Andale Mono", AndaleMono, monospace;
-    color: #fff;
-    padding: 50px;
-    width: 300px;
-    margin: 0 auto;
-    background-color: #374954;
-}
-
+﻿
 .dropdown {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
 }
 
-a {
-    color: #fff;
-}
+
 
 .dropdown dd,
 .dropdown dt {
@@ -85,13 +75,4 @@ a {
         background-color: #fff;
     }
 
-button {
-    background-color: #6BBE92;
-    width: 302px;
-    border: 0;
-    padding: 10px 0;
-    margin: 5px 0;
-    text-align: center;
-    color: #fff;
-    font-weight: bold;
-}
+

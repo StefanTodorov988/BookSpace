@@ -8,6 +8,7 @@ using BookSpace.BlobStorage.Contracts;
 using BookSpace.Factories;
 using BookSpace.Factories.ResponseModels;
 using BookSpace.Models;
+using BookSpace.Repositories;
 using BookSpace.Repositories.Contracts;
 using BookSpace.Web.Areas.Admin.Models.ApplicationUserViewModels;
 using BookSpace.Web.Models.BookViewModels;
@@ -23,17 +24,21 @@ namespace BookSpace.Web.Areas.Admin.Controllers
     {
         private readonly IApplicationUserRepository userRepository;
         private readonly IBookRepository bookRepository;
+        private readonly ITagRepository tagRepository;
+        private readonly IGenreRepository genreRepository;
         private readonly IMapper objectMapper;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IBlobStorageService blobStorageService;
         private readonly IFactory<Book, BookResponseModel> bookFactory;
 
-        public AdminController(IApplicationUserRepository userRepository, IBookRepository bookRepository,
+        public AdminController(IApplicationUserRepository userRepository, IBookRepository bookRepository, ITagRepository tagRepository, IGenreRepository genreRepository,
             IMapper objectMapper, UserManager<ApplicationUser> userManager, IBlobStorageService blobStorageService,
-            IFactory<Book,BookResponseModel> bookFactory)
+            IFactory<Book, BookResponseModel> bookFactory)
         {
             this.userRepository = userRepository;
             this.bookRepository = bookRepository;
+            this.tagRepository = tagRepository;
+            this.genreRepository = genreRepository;
             this.objectMapper = objectMapper;
             this.userManager = userManager;
             this.blobStorageService = blobStorageService;
@@ -50,7 +55,6 @@ namespace BookSpace.Web.Areas.Admin.Controllers
             {
                 userViewModels.Add(this.objectMapper.Map<ApplicationUserViewModel>(user));
             }
-
 
             return View(userViewModels);
         }
@@ -139,15 +143,35 @@ namespace BookSpace.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateBookAsync(CreateBookViewModel bookViewModel)
         {
+
             var bookResponse = this.objectMapper.Map<BookResponseModel>(bookViewModel);
 
             var book = this.bookFactory.Create(bookResponse);
 
-            
             await this.bookRepository.AddAsync(book);
 
             return RedirectToAction("CreateBook");
         }
+
+        //[HttpGet("/CreateTag")]
+        //public IActionResult CreateTag()
+        //{
+        //    return View();
+        //}
+
+        //[HttpPost("/CreateTag")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> CreateTagAsync(TagViewModel bookViewModel)
+        //{
+
+        //    var tagResponse = this.objectMapper.Map<TagResponseModel>(bookViewModel);
+
+        //    var book = this.bookFactory.Create(tagResponse);
+
+        //    await this.bookRepository.AddAsync(book);
+
+        //    return RedirectToAction("CreateBook");
+        //}
 
         public IActionResult Index()
         {
