@@ -1,0 +1,14 @@
+﻿@model IEnumerable<UserBookViewModel>
+
+@if (!Model.Any())
+{
+    <h3 style="text-align:center">Sorry pal! No books here.</h3>
+}
+else
+{
+    <h3 style="text-align:center">You have @Model.ToList().Count books here</h3>
+    @foreach (var b in Model)
+    {
+        @Html.Partial("_BookPartial", b);
+    }
+}

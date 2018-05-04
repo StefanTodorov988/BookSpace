@@ -8,8 +8,10 @@
     </title>
 
     <link rel="stylesheet" href="~/css/base.css" />
+    <link href="~/css/notifications.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/main.css" />
     <link rel="icon" href="~/images/favicon.ico" type="image/x-icon" />
+
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"
             integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
             crossorigin="anonymous">
@@ -22,7 +24,6 @@
     <script src="js/plugins/masonry.js"></script>
     <script src="js/main.js"></script>
 
-
     <environment exclude="Development">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
@@ -31,7 +32,6 @@
     </environment>
 </head>
 <body>
-
     <div>
         @await Html.PartialAsync("_Header")
     </div>
