@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BookSpace.Data\BookSpace.Data.csproj" />
+  </ItemGroup>
+
 </Project>

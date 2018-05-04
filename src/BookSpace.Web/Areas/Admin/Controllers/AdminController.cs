@@ -103,7 +103,7 @@ namespace BookSpace.Web.Areas.Admin.Controllers
             return View(userViewModel);
         }
 
-        
+
 
         [HttpPost("/EditBook/{bookid}")]
         [ValidateAntiForgeryToken]
@@ -145,16 +145,38 @@ namespace BookSpace.Web.Areas.Admin.Controllers
             return View();
         }
 
+        //TODO:MAJOR FEATURES MISSING
         [HttpPost("/CreateBook")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateBookAsync(CreateBookViewModel bookViewModel)
         {
-            var tags = bookViewModel.Tags.ToString().Split(", ").ToList();
-
             var bookResponse = this.objectMapper.Map<BookResponseModel>(bookViewModel);
-            bookResponse.BookTags = tags;
-
             var book = this.bookFactory.Create(bookResponse);
+
+            //ADDING GENRES TO BOOK
+            //search for genres with the names from the controller in the database  get their Ids
+            //create new BookGenre record with bookId and GenreId add it to database
+
+            //SAMPLE CODE 
+            //foreach (var genre in bookViewModel.Genres)
+            //{
+            //    var genreToBook = await this.genreRepository.GetGenreByNameAsync(genre);
+
+            //    //This would work if we have BookGenre repository because AddAsync method works only with its appropriate type(e.g. for GenreRepository => genres)
+            //    this.genreRepository.AddAsync(new BookGenre()
+            //    {
+            //        BookId = bookViewModel.BookId,
+            //        GenreId = genreToBook.GenreId
+            //    });
+            //}
+
+            //ADDING TAGS TO BOOK
+            //search for tags with the names from the controller in the database get their Ids
+            //create new BookTag record with bookId and TagId and add it to database
+
+            //SAMPLE CODE
+            //Same as above just with genres
+
 
             await this.bookRepository.AddAsync(book);
 
