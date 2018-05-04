@@ -517,30 +517,32 @@ button {
     width: 40%;
     margin: 0 auto;
     align-content: center !important;
-    padding-top: rem
 }
 
+.masonry{
+    display: flex;
+    flex-wrap: wrap;
+}
 .masonry .entry {
     margin-bottom: 40px;
 }
 
-.masonry .brick-thumb,
-.masonry .brick-text {
+.masonry .brick {
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05);
 }
 
-.masonry .brick-thumb {
+.masonry .brick{
     position: relative;
     overflow: hidden;
 }
 
-.masonry .brick-thumb-link img {
-    vertical-align: bottom;
+.brick-thumb-link img {
     -webkit-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
+    border: 1px solid #19191b;
 }
 
-.masonry .brick-thumb-link::before {
+.brick::before {
     content: "";
     display: block;
     background: rgba(0, 0, 0, 0.8);
@@ -556,7 +558,7 @@ button {
     z-index: 1;
 }
 
-.masonry .brick-thumb-link::after {
+.brick::after {
     content: "...";
     font-family: georgia, serif;
     font-size: 2.7rem;
@@ -582,13 +584,17 @@ button {
     transform: scale(0.5);
 }
 
-.masonry .brick-thumb:hover .brick-thumb-link img {
+.masonry .brick-thumb-link:hover img {
     -webkit-transform: scale(1.05);
     -ms-transform: scale(1.05);
     transform: scale(1.05);
 }
 
-.masonry .brick-text {
+.masonry .brick-header{
+    text-align: center;
+}
+
+.masonry .brick {
     padding: 3rem 2.8rem 2.6rem;
     background-color: #FFFFFF;
 }
@@ -981,23 +987,61 @@ button {
     font-size: 4.5rem;
 }
 
+.header-book-title{
+    max-width: 80%;
+    float: right;
+    padding-bottom: 1.5rem;
+}
+
+.header-book-title a{
+    font-size: 3rem;
+    font-weight: bold;
+    color: #000;
+}
+
+    .header-book-title a:hover {
+        border-bottom: 1px dotted #19191b;
+        font-weight: bold;
+        color: #000;
+    }
+
+
 .header-book-img {
     max-width: 20%;
-    height: auto;
+    height: 80%;
+    display : inline-block;
+    vertical-align: middle;
     position: absolute;
-    border: 2px solid #19191b;
+    padding-top: 13.0rem;
+    padding-left: 4.0rem;
+}
+
+.header-book-img a{
+   margin: auto;
+}
+.header-book-img a img{
+    width: 100px;
+    height: auto;
 }
 
 .header-book-info {
-    max-width: 50%;
+    max-width: 90%;
     height: 100%;
-    position: relative;
+
+}
+
+.header-book-description{
+    max-width: 70%;
     float: right;
+    text-align: left;
+
 }
 
 .header-book-rating {
-    width: 100%;
+    width: 70%;
     display: inline-block;
+    padding: 2.0rem;
+    float: right;
 }
 
     .header-book-rating span {
@@ -1007,8 +1051,8 @@ button {
     }
 
 .header-book-btn {
-    display: inline-grid;
-    position: absolute;
+    display: inline-block;
+    float: right;
     margin-left: 3.0rem;
 }
 
@@ -2011,7 +2055,7 @@ body.login-is-visible {
     }
 
         .content-extra .popular-thumb img {
-            height: 6.9rem;
+            height: auto;
             width: 6.9rem;
         }
 

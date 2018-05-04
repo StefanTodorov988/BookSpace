@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@model RegisterViewModel
+@model HomePageViewModel
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
@@ -20,13 +20,13 @@
             @if (!SignInManager.IsSignedIn(User))
             {
             <div class="header-forms">
-                @await Html.PartialAsync("../Account/Login");
-                @await Html.PartialAsync("../Account/Register");
+                @await Html.PartialAsync("~/Account/Login", new LoginViewModel())
+                @await Html.PartialAsync("~/Account/Register", new RegisterViewModel())
             </div>
             }
             else
             {
-                 @await Html.PartialAsync("_HeaderBookPartial")
+                 @await Html.PartialAsync("Book/_BookOfTheDayPartial", Model.BookOfTheDay)
             }
         </div>
 
@@ -40,241 +40,12 @@
     <div class="row masonry-wrap">
         <div class="masonry">
 
-            <article class="masonry-brick entry format-standard">
-
-                <div class="brick-thumb">
-                    <a href="post.html" class="brick-thumb-link">
-                        <img src="images/books/on_the_road.jpg" alt="">
-                    </a>
-                </div>
-
-                <div class="brick-text">
-                    <div class="brick-header">
-
-                        <div class="brick-date">
-                            <a href="post.html">April 10, 2018</a>
-                        </div>
-                        <h1 class="brick-title"><a href="post.html">On the Road <br /> by <i>Duluoz Legend</i></a></h1>
-
-                    </div>
-                    <div class="entry-meta">
-                        <span class="entry-meta-links">
-                            Category: <a href="category.html">Books, Modern</a>
-                        </span>
-                        <div>
-                            @await Html.PartialAsync("_RatingPartial")
-                            <span class="entry-meta-rating">Rating : 3.5</span>
-                        </div>
-                        <div class="entry-learn-more">
-                            <span>
-                                <a class="learn-more-btn" href="category.html">Learn more</a>
-                            </span>
-                        </div>
-                       
-       
-                    </div>
-                </div>
-            </article>
-
-            <article class="masonry-brick entry format-quote">
-
-                <div class="brick-thumb">
-                    <blockquote>
-                        <p>Everything is created twice, first in the mind and then in reality.</p>
-                        <cite>Robin Sharma</cite>
-                    </blockquote>
-                </div>
-
-            </article>
-
-            <article class="masonry-brick entry format-standard">
-
-                <div class="brick-thumb">
-                    <a href="post.html" class="brick-thumb-link">
-                        <img src="images/articles/new_york.jpg" alt="">
-                    </a>
-                </div>
-
-                <div class="brick-text">
-                    <div class="brick-header">
-
-                        <div class="brick-date">
-                            <a href="post.html">April 10, 2018</a>
-                        </div>
-                        <h1 class="brick-title"><a href="post.html">To New York and back</a></h1>
-
-                    </div>
-                    <div class="brick-description">
-                        <p>
-                            Lorem ipsum Sed eiusmod esse aliqua sed incididunt aliqua incididunt mollit id et sit proident dolor nulla sed commodo est ad minim elit reprehenderit nisi officia aute incididunt velit sint in aliqua...
-                        </p>
-                    </div>
-                    <div class="entry-meta">
-                        <span class="entry-meta-links">
-                            <a href="category.html">Articles, Travel</a>
-                        </span>
-                    </div>
-                </div>
-
-            </article>
-
-            <article class="masonry-brick entry format-standard">
-
-                <div class="brick-thumb">
-                    <a href="post.html" class="brick-thumb-link">
-                        <img src="images/magazines/leuropeo.jpg" alt="">
-                    </a>
-                </div>
-
-                <div class="brick-text">
-                    <div class="brick-header">
-
-                        <div class="brick-date">
-                            <a href="post.html">April 1, 2018</a>
-                        </div>
-                        <h1 class="brick-title"><a href="post.html">L'Europeo</a></h1>
-
-                    </div>
-                    <div class="brick-description">
-                        <p>
-                            Focussing on news and current affairs, the magazine achieved some impressive scoops, one of the most memorable being Tommaso Besozzi's investigative report in July 1950 on the mysterious death of the Sicilian bandit Salvatore Giuliano, which convincingly
-                            disproved official accounts of how the bandit had died.
-                        </p>
-                    </div>
-                    <div class="entry-meta">
-                        <span class="entry-meta-links">
-                            <a href="category.html">Magazines, Stories</a>
-                        </span>
-                    </div>
-                </div>
-
-            </article>
-
-            <article class="masonry-brick entry format-standard">
-
-                <div class="brick-thumb">
-                    <a href="post.html" class="brick-thumb-link">
-                        <img src="images/magazines/inglobo.jpg" alt="">
-                    </a>
-                </div>
-
-                <div class="brick-text">
-                    <div class="brick-header">
-
-                        <div class="brick-date">
-                            <a href="post.html">March 24, 2018</a>
-                        </div>
-                        <h1 class="brick-title"><a href="post.html">Inglobo</a></h1>
-
-                    </div>
-                    <div class="brick-description">
-                        <p>
-                            Lorem ipsum Sed eiusmod esse aliqua sed incididunt aliqua incididunt mollit id et sit proident dolor nulla sed commodo est ad minim elit reprehenderit nisi officia aute incididunt velit sint in aliqua...
-                        </p>
-                    </div>
-                    <div class="entry-meta">
-                        <span class="entry-meta-links">
-                            <a href="#">Magazines, LifeStyle</a>
-                        </span>
-                    </div>
-                </div>
-
-            </article>
-
-            <article class="masonry-brick entry format-standard">
-
-                <div class="brick-thumb">
-                    <a href="post.html" class="brick-thumb-link">
-                        <img src="images/books/the_english_patient.jpg" alt="">
-                    </a>
-                </div>
-
-                <div class="brick-text">
-                    <div class="brick-header">
-
-                        <div class="brick-date">
-                            <a href="post.html">March 18, 2018</a>
-                        </div>
-                        <h1 class="brick-title"><a href="post.html">The English Patient <br /> (Michael Ondaatje) </a></h1>
-
-                    </div>
-                    <div class="brick-description">
-                        <p>
-                            With ravishing beauty and unsettling intelligence, Michael Ondaatje's Booker Prize-winning novel traces the intersection of four damaged lives in an Italian villa at the end of World War II.
-                        </p>
-                    </div>
-                    <div class="entry-meta">
-                        <span class="entry-meta-links">
-                            <a href="category.html">Books, Classics</a>
-                        </span>
-                    </div>
-                </div>
-
-            </article>
+           @foreach (var book in Model.PopularBooks)
+           {
+               @await Html.PartialAsync("Book/_PopularBookPartial", book)
+           }
 
 
-
-            <article class="masonry-brick entry format-standard">
-
-                <div class="brick-thumb">
-                    <a href="post.html" class="brick-thumb-link">
-                        <img src="images/art/basquiat-selft-portret.jpg" alt="">
-                    </a>
-                </div>
-
-                <div class="brick-text">
-                    <div class="brick-header">
-
-                        <div class="brick-date">
-                            <a href="post.html">March 2, 2018</a>
-                        </div>
-                        <h1 class="brick-title"><a href="post.html">Jean-Michel Basquiat</a></h1>
-
-                    </div>
-                    <div class="brick-description">
-                        <p>
-                            Lorem ipsum Sed eiusmod esse aliqua sed incididunt aliqua incididunt mollit id et sit proident dolor nulla sed commodo est ad minim elit reprehenderit nisi officia aute incididunt velit sint in aliqua...
-                        </p>
-                    </div>
-                    <div class="entry-meta">
-                        <span class="entry-meta-links">
-                            <a href="category.html">Art, Modern</a>
-                        </span>
-                    </div>
-                </div>
-
-            </article>
-
-            <article class="masonry-brick entry format-standard">
-
-                <div class="brick-thumb">
-                    <a href="post.html" class="brick-thumb-link">
-                        <img src="images/articles/fashion.jpg" alt="">
-                    </a>
-                </div>
-
-                <div class="brick-text">
-                    <div class="brick-header">
-
-                        <div class="brick-date">
-                            <a href="post.html">February 24, 2018</a>
-                        </div>
-                        <h1 class="brick-title"><a href="post.html">Fashion in Shanghai</a></h1>
-
-                    </div>
-                    <div class="brick-description">
-                        <p>
-                            Lorem ipsum Sed eiusmod esse aliqua sed incididunt aliqua incididunt mollit id et sit proident dolor nulla sed commodo est ad minim elit reprehenderit nisi officia aute incididunt velit sint in aliqua...
-                        </p>
-                    </div>
-                    <div class="entry-meta">
-                        <span class="entry-meta-links">
-                            <a href="category.html">Articles, Fashion</a>
-                        </span>
-                    </div>
-                </div>
-
-            </article>
         </div>
     </div>
 </section>
@@ -286,65 +57,11 @@
             <h3>New </h3>
 
             <div class="block-1-2 block-m-full popular-entires">
-                <article class="col-block popular-entry">
-                    <a href="#0" class="popular-thumb">
-                        <img src="images/books/on_the_road_small.jpg" alt="">
-                    </a>
-                    <h5><a href="#0">On the Road</a></h5>
-                    <section class="popular-meta">
-                        <span class="popular-author"><span>By</span> <a href="#0">Duluoz Legend</a></span>
-                        <span class="popular-date"><span>on</span> <time datetime="2018-04-10">April 10, 2018</time></span>
-                    </section>
-                </article>
-                <article class="col-block popular-entry">
-                    <a href="#0" class="popular-thumb">
-                        <img src="images/articles/new_york-small.jpg" alt="">
-                    </a>
-                    <h5><a href="#0">To New York and back</a></h5>
-                    <section class="popular-meta">
-                        <span class="popular-author"><span>By</span> <a href="#0">Stefani Nikolova</a></span>
-                        <span class="popular-date"><span>on</span> <time datetime="2018-04-10">April 10, 2018</time></span>
-                    </section>
-                </article>
-                <article class="col-block popular-entry">
-                    <a href="#0" class="popular-thumb">
-                        <img src="images/magazines/leuropeo_small.jpg" alt="">
-                    </a>
-                    <h5><a href="#0">L'Europeo</a></h5>
-                    <section class="popular-meta">
+                @foreach (var book in Model.NewBooks)
+                {
+                    @await Html.PartialAsync("Book/_NewBookPartial", book)
+                }
 
-                        <span class="popular-date"><span>on</span> <time datetime="2018-04-1">April 1, 2018</time></span>
-                    </section>
-                </article>
-                <article class="col-block popular-entry">
-                    <a href="#0" class="popular-thumb">
-                        <img src="images/magazines/inglobo_small.jpg" alt="">
-                    </a>
-                    <h5><a href="#0">Inglobo</a></h5>
-                    <section class="popular-meta">
-                        <span class="popular-date"><span>on</span> <time datetime="2018-03-24">March 24, 2018</time></span>
-                    </section>
-                </article>
-                <article class="col-block popular-entry">
-                    <a href="#0" class="popular-thumb">
-                        <img src="images/art/basquiat-selft-portret.jpg" alt="">
-                    </a>
-                    <h5><a href="#0">Jean-Michel Basquiat</a></h5>
-                    <section class="popular-meta">
-                        <span class="popular-author"><span>By</span> <a href="#0"> Unknown</a></span>
-                        <span class="popular-date"><span>on</span> <time datetime="2018-03-02">March 2, 2018</time></span>
-                    </section>
-                </article>
-                <article class="col-block popular-entry">
-                    <a href="#0" class="popular-thumb">
-                        <img src="images/articles/fashion-small.jpg" alt="">
-                    </a>
-                    <h5><a href="#0">Fashion in Shanghai</a></h5>
-                    <section class="popular-meta">
-                        <span class="popular-author"><span>By</span> <a href="#0"> Stefani Nikolova</a></span>
-                        <span class="popular-date"><span>on</span> <time datetime="2017-02-24">February 24, 2018</time></span>
-                    </section>
-                </article>
             </div>
         </div>
 

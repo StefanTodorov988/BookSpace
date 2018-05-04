@@ -12,9 +12,10 @@ using System;
 namespace BookSpace.Data.Migrations
 {
     [DbContext(typeof(BookSpaceContext))]
-    partial class BookSpaceContextModelSnapshot : ModelSnapshot
+    [Migration("20180504075650_AuthorTableIsRemoved")]
+    partial class AuthorTableIsRemoved
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,10 +83,6 @@ namespace BookSpace.Data.Migrations
                 {
                     b.Property<string>("BookId")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Author")
-                        .IsRequired()
-                        .IsUnicode(true);
 
                     b.Property<string>("CoverUrl");
 

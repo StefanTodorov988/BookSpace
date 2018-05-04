@@ -12,9 +12,10 @@ using System;
 namespace BookSpace.Data.Migrations
 {
     [DbContext(typeof(BookSpaceContext))]
-    partial class BookSpaceContextModelSnapshot : ModelSnapshot
+    [Migration("20180503112206_RmoveUserAccessControl")]
+    partial class RmoveUserAccessControl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -78,19 +79,26 @@ namespace BookSpace.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("BookSpace.Models.Author", b =>
+                {
+                    b.Property<string>("AuthorId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .IsUnicode(true);
+
+                    b.HasKey("AuthorId");
+
+                    b.ToTable("Authors");
+                });
+
             modelBuilder.Entity("BookSpace.Models.Book", b =>
                 {
                     b.Property<string>("BookId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Author")
-                        .IsRequired()
-                        .IsUnicode(true);
-
                     b.Property<string>("CoverUrl");
-
-                    b.Property<string>("Description")
-                        .IsUnicode(true);
 
                     b.Property<string>("Isbn");
 
@@ -105,6 +113,19 @@ namespace BookSpace.Data.Migrations
                     b.HasKey("BookId");
 
                     b.ToTable("Books");
+                });
+
+            modelBuilder.Entity("BookSpace.Models.BookAuthor", b =>
+                {
+                    b.Property<string>("AuthorId");
+
+                    b.Property<string>("BookId");
+
+                    b.HasKey("AuthorId", "BookId");
+
+                    b.HasIndex("BookId");
+
+                    b.ToTable("BooksAuthors");
                 });
 
             modelBuilder.Entity("BookSpace.Models.BookGenre", b =>
@@ -304,6 +325,19 @@ namespace BookSpace.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("BookSpace.Models.BookAuthor", b =>
+                {
+                    b.HasOne("BookSpace.Models.Author", "Author")
+                        .WithMany("AuthorBooks")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("BookSpace.Models.Book", "Book")
+                        .WithMany("BookAuthors")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("BookSpace.Models.BookGenre", b =>

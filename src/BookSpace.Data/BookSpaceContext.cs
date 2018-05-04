@@ -11,13 +11,10 @@ namespace BookSpace.Data
 {
     public class BookSpaceContext : IdentityDbContext<ApplicationUser>, IDbContext
     {
-        public BookSpaceContext(DbContextOptions<BookSpaceContext> options) 
+        public BookSpaceContext(DbContextOptions<BookSpaceContext> options)
             : base(options)
         {
         }
-         public DbSet<Author> Authors { get; set; }
-
-        public DbSet<BookAuthor> BooksAuthors { get; set; }
 
         public DbSet<Book> Books { get; set; }
 
@@ -28,8 +25,6 @@ namespace BookSpace.Data
         public DbSet<Comment> Comments { get; set; }
 
         public DbSet<Genre> Genres { get; set; }
-
-        public DbSet<UserAccessControl> UserAccessControl { get; set; }
 
         public DbSet<Tag> Tags { get; set; }
 
@@ -54,14 +49,11 @@ namespace BookSpace.Data
 
             //TODO suspicios
             builder.ApplyConfiguration(new ApplicationUserConfiguration());
-            builder.ApplyConfiguration(new AuthorConfiguration());
-            builder.ApplyConfiguration(new BookAuthorConfiguration());
             builder.ApplyConfiguration(new BookConfiguration());
             builder.ApplyConfiguration(new BookGenreConfiguration());
             builder.ApplyConfiguration(new BookUserConfiguration());
             builder.ApplyConfiguration(new CommentConfiguration());
             builder.ApplyConfiguration(new GenreConfiguration());
-            builder.ApplyConfiguration(new UserAccessControlConfiguration());
             builder.ApplyConfiguration(new TagConfiguration());
             builder.ApplyConfiguration(new BookTagConfiguration());
         }

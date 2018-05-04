@@ -31,5 +31,10 @@ namespace BookSpace.Data.Contracts
         Task DeleteAsync(TEntity entity);
 
         Task<PagedResult<TEntity>> GetPaged(int page, int pageSize);
+        Task<IEnumerable<TEntity>> FindByExpressionOrdered<TProperty>
+                                    (Expression<Func<TEntity, TProperty>> order,
+                                     int recordsCount);
+
+        Task<int> GetCount();
     }
 }

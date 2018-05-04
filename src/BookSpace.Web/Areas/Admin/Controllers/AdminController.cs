@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using BookSpace.BlobStorage.Contracts;
 using BookSpace.Models;
 using BookSpace.Repositories.Contracts;
 using BookSpace.Web.Areas.Admin.Models.ApplicationUserViewModels;
@@ -21,14 +23,17 @@ namespace BookSpace.Web.Areas.Admin.Controllers
         private readonly IBookRepository bookRepository;
         private readonly IMapper objectMapper;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IBlobStorageService blobStorageService;
+
         //private readonly IBookFactory bookFactory;
 
-        public AdminController(IApplicationUserRepository userRepository, IBookRepository bookRepository, IMapper objectMapper, UserManager<ApplicationUser> userManager)
+        public AdminController(IApplicationUserRepository userRepository, IBookRepository bookRepository, IMapper objectMapper, UserManager<ApplicationUser> userManager, IBlobStorageService blobStorageService)
         {
             this.userRepository = userRepository;
             this.bookRepository = bookRepository;
             this.objectMapper = objectMapper;
             this.userManager = userManager;
+            this.blobStorageService = blobStorageService;
             //this.bookFactory = bookFactory;
         }
 
@@ -52,7 +57,7 @@ namespace BookSpace.Web.Areas.Admin.Controllers
         public async Task<IActionResult> EditUser(ApplicationUserViewModel userViewModel)
         {
             //TODO:Getting user by anything that can be changed is impossible!So I must use Id and therefore ID cannot be changed which is not good!
-            var dbModel = this.userManager.FindByIdAsync(userViewModel.Id).Result;  
+            var dbModel = this.userManager.FindByIdAsync(userViewModel.Id).Result;
 
             var user = this.objectMapper.Map(userViewModel, dbModel);
 
@@ -70,7 +75,7 @@ namespace BookSpace.Web.Areas.Admin.Controllers
 
             return this.RedirectToAction("AllUsers");
         }
-       
+
         public IActionResult EditUser(string id)
         {
             var dbModel = this.userRepository.GetByIdAsync(id).Result;
@@ -107,9 +112,9 @@ namespace BookSpace.Web.Areas.Admin.Controllers
         }
 
         [HttpGet("/EditBook/{bookid}")]
-        public IActionResult EditBook(string bookId) 
+        public IActionResult EditBook(string bookId)
         {
-           
+
             var dbModel = this.bookRepository.GetByIdAsync(bookId).Result;
 
             var bookViewModel = objectMapper.Map<DetailedBookViewModel>(dbModel);
@@ -152,9 +157,13 @@ namespace BookSpace.Web.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> IndexAsync()
         {
-
+            using (FileStream str = new FileStream(@"C:\Users\snikoltc\Documents\Visual Studio 2017\Projects\BookSpace\src\BookSpace.Web\wwwroot\images\art\basquiat-selft-portret.jpg", FileMode.Open))
+            {
+                await blobStorageService.UploadAsync("testName", "testcontainer", str);
+                var result = await blobStorageService.GetAsync("testName", "testcontainer");
+            }
             return View();
         }
     }

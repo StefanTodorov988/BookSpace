@@ -8,28 +8,40 @@ using BookSpace.Models;
 using Microsoft.AspNetCore.Mvc;
 using BookSpace.Web.Models;
 using BookSpace.Repositories.Contracts;
+using BookSpace.Web.Models.BookViewModels;
+using AutoMapper;
 
 namespace BookSpace.Web.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IBookRepository bookRepository;
+        private readonly IMapper objectMapper;
 
-        public HomeController(IBookRepository bookRepository)
+        public HomeController(IBookRepository bookRepository, IMapper mapper)
         {
             this.bookRepository = bookRepository;
+            this.objectMapper = mapper;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var bookAuthor = this.bookRepository
-                .GetBookAuthorsAsync("0053235A-26E8-4335-9E9E-4E75936A9639").GetAwaiter().GetResult();
-            var bookComments = this.bookRepository
-               .GetBookCommentsAsync("0053235A-26E8-4335-9E9E-4E75936A9639").GetAwaiter().GetResult();
-            var bookGenres = this.bookRepository
-               .GetBookGenresAsync("0053235A-26E8-4335-9E9E-4E75936A9639").GetAwaiter().GetResult();
-            var bookTags = this.bookRepository
-               .GetBookTagsAsync("0053235A-26E8-4335-9E9E-4E75936A9639").GetAwaiter().GetResult();
-            return View();
+            var popularBooks = await this.bookRepository.FindByExpressionOrdered(book => book.Rating, 12);
+            var popularBooksViewModels = this.objectMapper.Map<IEnumerable<Book>, IEnumerable<PopularBookViewModel>>(popularBooks);
+
+            var newBooks = await this.bookRepository.FindByExpressionOrdered(book => book.PublicationYear, 6);
+            var newBooksViewModels = this.objectMapper.Map<IEnumerable<Book>, IEnumerable<NewBookViewModel>>(newBooks);
+
+            var bookOfTheDay = await this.bookRepository.FindByExpressionOrdered(x => new Guid(), 1);
+            var bookOfTheDayViewModel = this.objectMapper.Map<Book, BookOfTheDayViewModel>(bookOfTheDay.FirstOrDefault());
+
+            var homePageViewModel = new HomePageViewModel()
+            {
+                BookOfTheDay = bookOfTheDayViewModel,
+                PopularBooks = popularBooksViewModels,
+                NewBooks = newBooksViewModels
+            };
+
+            return View(homePageViewModel);
         }
 
         public IActionResult About()

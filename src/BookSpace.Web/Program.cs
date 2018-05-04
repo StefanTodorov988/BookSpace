@@ -21,10 +21,8 @@ namespace BookSpace.Web
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
-                var context = scope.ServiceProvider.GetService<BookSpaceContext>();
-                context.Database.EnsureCreated();
                 var seedService = services.GetRequiredService<IDatabaseSeedService>();
-                seedService.SeedData();
+                seedService.SeedDataAsync().GetAwaiter().GetResult();
             }
             host.Run();
         }

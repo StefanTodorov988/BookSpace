@@ -12,12 +12,14 @@ using BookSpace.Repositories;
 using BookSpace.Repositories.Contracts;
 using Microsoft.Extensions.Logging;
 using AutoMapper;
+using BookSpace.BlobStorage.Contracts;
+using BookSpace.BlobStorage;
 
 namespace BookSpace.Web
 {
     public class Startup
     {
-
+        
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -36,7 +38,8 @@ namespace BookSpace.Web
                 .AddEntityFrameworkStores<BookSpaceContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddScoped<IDbContext, BookSpaceContext>();
+            services.AddScoped<IDbContext>(provider => provider.GetService<BookSpaceContext>());
+
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IDatabaseSeedService, DatabaseSeedService>();
 
@@ -45,6 +48,13 @@ namespace BookSpace.Web
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
             services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
             services.AddScoped<IBookRepository, BookRepository>();
+
+            //Blob Storage
+            services.AddSingleton<IBlobStorageService, BlobStorageService>();
+            services.AddSingleton<BlobStorageInfo>(
+                Configuration.GetSection(nameof(BlobStorageInfo))
+                .Get<BlobStorageInfo>());
+
 
             services.AddAutoMapper();
             services.AddMvc();
