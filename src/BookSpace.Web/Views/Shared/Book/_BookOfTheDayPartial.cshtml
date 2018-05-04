@@ -28,7 +28,7 @@
         </div>
 
         <div class="header-book-rating">
-            @await Html.PartialAsync("_RatingPartial")
+            @await Html.PartialAsync("_RatingPartial", new KeyValuePair<string, decimal>(Model.Title, Model.Rating))
 
             <span>Rating : @Model.Rating</span>
         </div>

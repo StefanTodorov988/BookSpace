@@ -2701,49 +2701,32 @@ h1 {
 
 /****** Style Star Rating Widget *****/
 
-.rating {
-    border: none;
-    float: left;
+.stars-outer {
+    display: inline-block;
+    position: relative;
+    font-family: FontAwesome;
+    font-size : 2.0rem;
 }
 
-    .rating > input {
-        display: none;
+    .stars-outer::before {
+        content: "\f006\f006\f006\f006\f006";
     }
 
-    .rating > label:before {
-        margin: 5px;
-        font-size: 1.25em;
-        font-family: FontAwesome;
-        display: inline-block;
-        content: "\f005";
+.stars-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 0;
+}
+
+    .stars-inner::before {
+        content: "\f005\f005\f005\f005\f005";
+        color: #f8ce0b;
     }
 
-    .rating > .half:before {
-        content: "\f089";
-        position: absolute;
-    }
-
-    .rating > label {
-        color: #ddd;
-        float: right;
-    }
-
-    /***** CSS Magic to Highlight Stars on Hover *****/
-
-    .rating > input:checked ~ label, /* show gold star when clicked */
-    .rating:not(:checked) > label:hover, /* hover current star */
-    .rating:not(:checked) > label:hover ~ label {
-        color: #FFD700;
-    }
-        /* hover previous stars in list */
-
-        .rating > input:checked + label:hover, /* hover current star when changing rating */
-        .rating > input:checked ~ label:hover,
-        .rating > label:hover ~ input:checked ~ label, /* lighten current selection */
-        .rating > input:checked ~ label:hover ~ label {
-            color: #FFED85;
-        }
-
+/*-----User Books----*/
 
 .user-books-wrapper {
     padding: 1px;
