@@ -27,20 +27,6 @@ namespace BookSpace.Repositories
             return pageRecords.Results;
         }
 
-
-        public  async Task<IEnumerable<Author>> GetBookAuthorsAsync(string bookId)
-        {
-            var authors = await this.GetManyToManyAsync(b => b.BookId == bookId,
-                                                        ba => ba.BookAuthors,
-                                                        a => a.Author);
-            if (authors == null)
-            {
-                throw new ArgumentNullException(nameof(authors));
-            }
-
-            return authors;
-        }
-
         public async Task<IEnumerable<Genre>> GetBookGenresAsync(string bookId)
         {
             var genres = await this.GetManyToManyAsync(b => b.BookId == bookId,

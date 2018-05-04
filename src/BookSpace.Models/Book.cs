@@ -20,13 +20,13 @@ namespace BookSpace.Models
 
         public string Description { get; set; }
 
+        public string Author { get; set; }
+
         public ICollection<Comment> Comments { get; set; }
 
         public ICollection<BookUser> BookUsers { get; set; }
 
         public ICollection<BookGenre> BookGenres { get; set; }
-
-        public ICollection<BookAuthor> BookAuthors { get; set; }
 
         public ICollection<BookTag> BookTags { get; set; }
     }
