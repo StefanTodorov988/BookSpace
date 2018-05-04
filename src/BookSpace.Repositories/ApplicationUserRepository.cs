@@ -11,12 +11,12 @@ namespace BookSpace.Repositories
 {
     public class ApplicationUserRepository : BaseRepository<ApplicationUser>, IApplicationUserRepository
     {
-       
-        public ApplicationUserRepository(IDbContext dbContext) : base(dbContext) {}
+
+        public ApplicationUserRepository(IDbContext dbContext) : base(dbContext) { }
 
         public async Task<ApplicationUser> GetUserByUsernameAsync(string username)
         {
-            return await this.GetAsync(u => u.UserName == username );
+            return await this.GetAsync(u => u.UserName == username);
         }
 
         public async Task<IEnumerable<ApplicationUser>> GetPageOfUsersAscync(int take, int skip)
@@ -28,13 +28,9 @@ namespace BookSpace.Repositories
 
         public async Task<IEnumerable<Book>> GetUserBooksAsync(string userId, BookState state)
         {
-            return await this.GetAsync(user => user.Id == userId)
-                             .ContinueWith(
-                                           u => u.Result.BookUsers
-                                                        .Where( bu =>bu.State == state)
-                                                        .Select(b => b.Book)
-                                          );
-
+            return await this.GetManyToManyAsync(user => user.Id == userId,
+                                                    bu => bu.BookUsers.Where(s => s.State == state),
+                                                    b => b.Book);
         }
     }
 }

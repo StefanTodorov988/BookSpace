@@ -1,7 +1,7 @@
 ﻿
 @{
     ViewData["Title"] = "AllBooks";
-    Layout = "~/Views/Shared/_LayoutTest.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>All Books</h2>
@@ -17,18 +17,18 @@
             <th>Actions</th>
         </tr>
     </thead>
-    <tbody>//TODO:change this to book model when viewmodel is ready
+    <tbody>
         @foreach (var book in @Model)
         {
         <tr>
             <td><img src="@book.CoverUrl" height="100" width="100"></td>
             <td>@book.Title</td>
-            <td>@string.Join(", ", book.BookAuthors)</td>
+            <td>@book.Author</td>
             <td>@book.Isbn</td>
             <td>@book.PublicationYear</td>
             <td>@book.Rating</td>
             <td><a asp-area="Admin" asp-controller="Admin" asp-action="EditBook" asp-route-bookid="@book.BookId">[Edit]</a>
-            <a asp-area="Book" asp-controller="Book" asp-action="BookDetails" asp-route-bookid="@book.BookId">[Details]</a>
+            <a asp-area="" asp-controller="Book" asp-action="BookDetails" asp-route-bookid="@book.BookId">[Details]</a>
             <a asp-area="Admin" asp-controller="Admin" asp-action="DeleteBook" asp-route-bookid="@book.BookId">[Delete]</a></td>
         </tr>
         }

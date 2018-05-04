@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace BookSpace.Web.Models.BookViewModels
 {
-    public class SimpleBookViewModel
+    public class ListBookViewModel
     {
         public string BookId { get; set; }
         public string Title { get; set; }
