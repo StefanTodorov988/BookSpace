@@ -16,10 +16,6 @@ namespace BookSpace.Data
         {
         }
 
-        public DbSet<Author> Authors { get; set; }
-
-        public DbSet<BookAuthor> BooksAuthors { get; set; }
-
         public DbSet<Book> Books { get; set; }
 
         public DbSet<BookGenre> BooksGenres { get; set; }
@@ -53,8 +49,6 @@ namespace BookSpace.Data
 
             //TODO suspicios
             builder.ApplyConfiguration(new ApplicationUserConfiguration());
-            builder.ApplyConfiguration(new AuthorConfiguration());
-            builder.ApplyConfiguration(new BookAuthorConfiguration());
             builder.ApplyConfiguration(new BookConfiguration());
             builder.ApplyConfiguration(new BookGenreConfiguration());
             builder.ApplyConfiguration(new BookUserConfiguration());

@@ -21,8 +21,6 @@ namespace BookSpace.Web.Controllers
         }
         public IActionResult Index()
         {
-            var bookAuthor = this.bookRepository
-                .GetBookAuthorsAsync("0053235A-26E8-4335-9E9E-4E75936A9639").GetAwaiter().GetResult();
             var bookComments = this.bookRepository
                .GetBookCommentsAsync("0053235A-26E8-4335-9E9E-4E75936A9639").GetAwaiter().GetResult();
             var bookGenres = this.bookRepository

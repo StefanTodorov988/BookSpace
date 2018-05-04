@@ -19,6 +19,10 @@ namespace BookSpace.Models.Configurations
                 .IsUnicode(true)
                 .IsRequired(false);
 
+            builder.Property(p => p.Author)
+               .IsUnicode(true)
+               .IsRequired(true);
+
             builder.HasMany(c => c.Comments)
                 .WithOne(b => b.Book)
                 .HasForeignKey(fk => fk.BookId);
@@ -28,10 +32,6 @@ namespace BookSpace.Models.Configurations
                 .HasForeignKey(fk => fk.BookId);
 
             builder.HasMany(bu => bu.BookUsers)
-                .WithOne(b => b.Book)
-                .HasForeignKey(fk => fk.BookId);
-
-            builder.HasMany(ba => ba.BookAuthors)
                 .WithOne(b => b.Book)
                 .HasForeignKey(fk => fk.BookId);
 
