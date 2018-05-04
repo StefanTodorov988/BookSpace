@@ -7,7 +7,7 @@
 
 <div class="header-single-book">
     <div class="header-book-img">
-        <a>
+        <a asp-controller="Book" asp-action="BookDetails" asp-route-id="@Model.BookId">
             <img src="@Model.CoverUrl" alt="">
         </a>
     </div>
@@ -16,7 +16,7 @@
     <div class="header-book-info">
 
         <div class="header-book-title">
-            <a>
+            <a asp-controller="Book" asp-action="BookDetails" asp-route-id="@Model.BookId">
                 @Model.Title
             </a>
         </div>

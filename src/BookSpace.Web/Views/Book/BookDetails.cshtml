@@ -1,52 +1,108 @@
-﻿@model BookSpace.Web.Models.BookViewModels.DetailedBookViewModel
+﻿@model SingleBookViewModel
 
-@{
-    ViewData["Title"] = "BookDetails";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+<section class="content content--narrow content--no-padding-bottom">
 
-<h2>Book Details</h2>
+    <div>
+        @await Html.PartialAsync("_RatingPartial", new KeyValuePair<string, decimal>(Model.Book.Title, Model.Book.Rating));
+    </div>
+    <article class="row format-standard">
 
-<div>
-    <h4>@Model.Title</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.BookId)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.BookId)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Isbn)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Isbn)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.PublicationYear)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.PublicationYear)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Rating)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Rating)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.CoverUrl)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.CoverUrl)
-        </dd>
-    </dl>
-</div>
+        <div class="content-header col-full">
+            <h1 class="content-header-title">
+                @Model.Book.Title
+            </h1>
+            <ul class="content-header-meta">
+                <li class="date">@Model.Book.PublicationYear</li>
+                <li class="cat">
+                    In <a href="#0">@String.Join(", ", Model.Properties.Genres)</a>
+                </li>
+            </ul>
+        </div>
+        <div class="content-image col-full">
+            <img src="@Model.Book.CoverUrl" alt="">
+        </div>
+
+        <div class="col-full content-main">
+
+            <p class="lead">
+                @Model.Book.Description
+            </p>
+
+            <p class="content-tags">
+                <span>Post Tags</span>
+                <span class="content-tag-list">
+
+                    @foreach (var tag in Model.Properties.Tags)
+                    {
+                        <a href="#0">@tag</a>
+                    }
+                </span>
+            </p>
+
+            <div class="content-author">
+                <img src="~/images/avatars/user-female.png" alt="">
+                <h4>@Model.Book.Author</h4>
+            </div>
+
+        </div>
+
+    </article>
+
+    <div class="comments-wrapper">
+
+        <div id="comments" class="row">
+            <div class="col-full">
+                <h3 class="h2">2 Comments</h3>
+
+                <ol class="commentlist">
+
+                    @foreach (var comment in Model.Properties.Comments)
+                    {
+                        <li class=" comment">
+                            <div class="comment-author">
+                                <img width="50" height="50" class="avatar" src="~/images/avatars/user-male.png" alt="">
+                            </div>
+
+                            <div class="comment-content">
+
+                                <div class="comment-info">
+                                    <cite>@comment.Author</cite>
+                                    <div class="comment-meta">
+                                        <time class="comment-time">@comment.Date</time>
+                                    </div>
+                                </div>
+
+                                <div class="comment-text">
+                                    <p>@comment.Content</p>
+                                </div>
+                            </div>
+                        </li>
+
+
+                    }
+
+
+                </ol>
+
+
+                <div class="respond">
+                    <h3 class="h2">Add Comment</h3>
+
+                    <form name="contactForm" id="contactForm" method="post" action="">
+                        <fieldset>
+                            <div class="message form-field">
+                                <textarea name="comment-message" id="comment-message" class="full-width" placeholder="Your Comment"></textarea>
+                            </div>
+
+                            <button type="submit" class="submit btn--primary btn--large full-width">Comment</button>
+
+                        </fieldset>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
 
