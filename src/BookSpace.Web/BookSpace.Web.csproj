@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BookSpace.BlobStorage\BookSpace.BlobStorage.csproj" />
+    <ProjectReference Include="..\BookSpace.CognitiveServices\BookSpace.CognitiveServices.csproj" />
     <ProjectReference Include="..\BookSpace.Data\BookSpace.Data.csproj" />
     <ProjectReference Include="..\BookSpace.Factories\BookSpace.Factories.csproj" />
     <ProjectReference Include="..\BookSpace.Models\BookSpace.Models.csproj" />
@@ -29,7 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="wwwroot\css\font-awesome\css\" />
     <Folder Include="wwwroot\css\font-awesome\fonts\" />
     <Folder Include="wwwroot\fonts\metropolis\" />
