@@ -4,10 +4,10 @@
 {
     var title = book.Title.Length > 50 ? book.Title.Substring(0, 50) + "..." : book.Title;
     <article class="books-list-entry">
-        <a asp-action="Book" asp-controller="Home" class="books-list-thumb">
+        <a asp-controller="Book" asp-action="BookDetails" asp-route-id="@book.BookId" class="books-list-thumb">
             <img src="@book.CoverUrl" alt="">
         </a>
-        <span><a asp-action="Book" asp-controller="Home">@title</a></span>
+        <span><a asp-controller="Book" asp-action="BookDetails" asp-route-id="@book.BookId">@title</a></span>
         <section class="books-list-meta">
             <span class="books-list-author">By <i>@book.Author</i></span>
         </section>

@@ -2,8 +2,10 @@
 using BookSpace.Models;
 using BookSpace.Repositories.Contracts;
 using BookSpace.Web.Models.BookViewModels;
+using BookSpace.Web.Models.CommentsViewModel;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BookSpace.Web.Controllers
@@ -31,14 +33,23 @@ namespace BookSpace.Web.Controllers
             return PartialView("Book/_BooksPagePartial", await this.GetBooksPage(page));
         }
 
-        public IActionResult BookDetails(string bookId)
+        public async Task<IActionResult> BookDetails([FromRoute] string id)
         {
-            //TODO:Not finished
-            var dbModel = this.bookRepository.GetByIdAsync(bookId).Result;
-            //var dbGenre = this.bookRepository.GetBookGenresAsync(bookId).Result;
-            var mappedBookViewModel = this.objectMapper.Map<DetailedBookViewModel>(dbModel);
+            var book = await this.bookRepository.GetByIdAsync(id);
+            var comments = await this.bookRepository.GetBookCommentsAsync(id);
+            var genres = await this.bookRepository.GetBookGenresAsync(id);
+            var tags = await this.bookRepository.GetBookTagsAsync(id);
 
-            return View(mappedBookViewModel);
+
+            var bookViewModel = this.objectMapper.Map<Book, BookViewModel>(book);
+            var commentsViewModel = this.objectMapper.Map<IEnumerable<Comment>, IEnumerable<CommentViewModel>>(comments);
+            var propertiesViewModel = new BookPropertiesViewModel();
+            propertiesViewModel.Comments = commentsViewModel ;
+            propertiesViewModel.Tags = tags.ToList().Select(t => t.Value);
+            propertiesViewModel.Genres = genres.ToList().Select(g => g.Name);
+
+            var singleBookViewModel = new SingleBookViewModel { Book = bookViewModel, Properties = propertiesViewModel };
+            return View(singleBookViewModel);
         }
 
 
