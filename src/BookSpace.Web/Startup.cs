@@ -14,6 +14,8 @@ using Microsoft.Extensions.Logging;
 using AutoMapper;
 using BookSpace.BlobStorage.Contracts;
 using BookSpace.BlobStorage;
+using BookSpace.CognitiveServices;
+using BookSpace.CognitiveServices.Contract;
 
 namespace BookSpace.Web
 {
@@ -54,7 +56,11 @@ namespace BookSpace.Web
             services.AddSingleton<BlobStorageInfo>(
                 Configuration.GetSection(nameof(BlobStorageInfo))
                 .Get<BlobStorageInfo>());
-
+            //FaceApi Storage
+            services.AddSingleton<IFaceService, FaceService>();
+            services.AddSingleton<FaceServiceStorageInfo>(
+                Configuration.GetSection(nameof(FaceServiceStorageInfo))
+                    .Get<FaceServiceStorageInfo>());
 
             services.AddAutoMapper();
             services.AddMvc();
