@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@model RegisterViewModel
+@model List<BookViewModel>
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
@@ -20,8 +20,8 @@
             @if (!SignInManager.IsSignedIn(User))
             {
             <div class="header-forms">
-                @await Html.PartialAsync("../Account/Login")
-                @await Html.PartialAsync("../Account/Register")
+                @await Html.PartialAsync("../Account/Login", new LoginViewModel())
+                @await Html.PartialAsync("../Account/Register", new RegisterViewModel())
             </div>
             }
             else
@@ -40,43 +40,12 @@
     <div class="row masonry-wrap">
         <div class="masonry">
 
-            <article class="masonry-brick entry format-standard">
+           @foreach (var book in Model)
+           {
+               @await Html.PartialAsync("_BookPartial", book)
+           }
 
-                <div class="brick-thumb">
-                    <a href="post.html" class="brick-thumb-link">
-                        <img src="images/books/on_the_road.jpg" alt="">
-                    </a>
-                </div>
 
-                <div class="brick-text">
-                    <div class="brick-header">
-
-                        <div class="brick-date">
-                            <a href="post.html">April 10, 2018</a>
-                        </div>
-                        <h1 class="brick-title"><a href="post.html">On the Road <br /> by <i>Duluoz Legend</i></a></h1>
-
-                    </div>
-                    <div class="entry-meta">
-                        <span class="entry-meta-links">
-                            Category: <a href="category.html">Books, Modern</a>
-                        </span>
-                        <div>
-                            @await Html.PartialAsync("_RatingPartial")
-                            <span class="entry-meta-rating">Rating : 3.5</span>
-                        </div>
-                        <div class="entry-learn-more">
-                            <span>
-                                <a class="learn-more-btn" href="category.html">Learn more</a>
-                            </span>
-                        </div>
-                       
-       
-                    </div>
-                </div>
-            </article>
-
-           
         </div>
     </div>
 </section>

@@ -1,4 +1,31 @@
-﻿
-@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model BookViewModel
+
+<article class="masonry-brick entry format-standard">
+
+    <div class="brick">
+        <div class="brick-header">
+            <a href="post.html" class="brick-thumb-link">
+                <img src="@Model.CoverUrl" alt="">
+            </a>
+           
+            <div class="brick-date">
+                <a href="post.html">@Model.PublicationYear</a>
+            </div>
+            <h1 class="brick-title"><a href="post.html">@Model.Title <br /> by <i>Duluoz Legend!</i></a></h1>
+
+        </div>
+        <div class="entry-meta">
+            <div>
+                @await Html.PartialAsync("_RatingPartial")
+                <span class="entry-meta-rating">Rating : @Model.Rating</span>
+            </div>
+            <div class="entry-learn-more">
+                <span>
+                    <a class="learn-more-btn" href="category.html">Learn more</a>
+                </span>
+            </div>
+
+
+        </div>
+    </div>
+</article>

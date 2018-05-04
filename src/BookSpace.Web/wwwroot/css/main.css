@@ -517,30 +517,32 @@ button {
     width: 40%;
     margin: 0 auto;
     align-content: center !important;
-    padding-top: rem
 }
 
+.masonry{
+    display: flex;
+    flex-wrap: wrap;
+}
 .masonry .entry {
     margin-bottom: 40px;
 }
 
-.masonry .brick-thumb,
-.masonry .brick-text {
+.masonry .brick {
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05);
 }
 
-.masonry .brick-thumb {
+.masonry .brick{
     position: relative;
     overflow: hidden;
 }
 
-.masonry .brick-thumb-link img {
-    vertical-align: bottom;
+.brick-thumb-link img {
     -webkit-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
+    border: 1px solid #19191b;
 }
 
-.masonry .brick-thumb-link::before {
+.brick::before {
     content: "";
     display: block;
     background: rgba(0, 0, 0, 0.8);
@@ -556,7 +558,7 @@ button {
     z-index: 1;
 }
 
-.masonry .brick-thumb-link::after {
+.brick::after {
     content: "...";
     font-family: georgia, serif;
     font-size: 2.7rem;
@@ -582,13 +584,17 @@ button {
     transform: scale(0.5);
 }
 
-.masonry .brick-thumb:hover .brick-thumb-link img {
+.masonry .brick-thumb-link:hover img {
     -webkit-transform: scale(1.05);
     -ms-transform: scale(1.05);
     transform: scale(1.05);
 }
 
-.masonry .brick-text {
+.masonry .brick-header{
+    text-align: center;
+}
+
+.masonry .brick {
     padding: 3rem 2.8rem 2.6rem;
     background-color: #FFFFFF;
 }

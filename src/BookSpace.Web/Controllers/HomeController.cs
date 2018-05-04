@@ -8,28 +8,27 @@ using BookSpace.Models;
 using Microsoft.AspNetCore.Mvc;
 using BookSpace.Web.Models;
 using BookSpace.Repositories.Contracts;
+using BookSpace.Web.Models.BookViewModels;
+using AutoMapper;
 
 namespace BookSpace.Web.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IBookRepository bookRepository;
+        private readonly IMapper objectMapper;
 
-        public HomeController(IBookRepository bookRepository)
+        public HomeController(IBookRepository bookRepository, IMapper mapper)
         {
             this.bookRepository = bookRepository;
+            this.objectMapper = mapper;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var bookAuthor = this.bookRepository
-                .GetBookAuthorsAsync("0053235A-26E8-4335-9E9E-4E75936A9639").GetAwaiter().GetResult();
-            var bookComments = this.bookRepository
-               .GetBookCommentsAsync("0053235A-26E8-4335-9E9E-4E75936A9639").GetAwaiter().GetResult();
-            var bookGenres = this.bookRepository
-               .GetBookGenresAsync("0053235A-26E8-4335-9E9E-4E75936A9639").GetAwaiter().GetResult();
-            var bookTags = this.bookRepository
-               .GetBookTagsAsync("0053235A-26E8-4335-9E9E-4E75936A9639").GetAwaiter().GetResult();
-            return View();
+            var books = await this.bookRepository.FindByExpressionOrdered(book => book.Rating, 12);
+            var booksViewModels = this.objectMapper.Map<IEnumerable<Book>, IEnumerable<BookViewModel>>(books);
+
+            return View(booksViewModels);
         }
 
         public IActionResult About()
