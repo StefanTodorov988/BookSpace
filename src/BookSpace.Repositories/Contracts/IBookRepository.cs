@@ -9,7 +9,6 @@ namespace BookSpace.Repositories.Contracts
     {
         Task<Book> GetBookByTitleAsync(string title);
         Task<IEnumerable<Book>> GetPageOfBooksAscync(int take, int skip);
-        Task<IEnumerable<Author>> GetBookAuthorsAsync(string bookId);
         Task<IEnumerable<Genre>> GetBookGenresAsync(string bookId);
         Task<IEnumerable<Comment>> GetBookCommentsAsync(string bookId);
         Task<IEnumerable<Tag>> GetBookTagsAsync(string bookId);

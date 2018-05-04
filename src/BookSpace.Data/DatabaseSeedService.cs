@@ -28,12 +28,12 @@ namespace BookSpace.Data
         {
             this.SeedBooks();
             this.SeedGenres();
-            this.SeedAuthors();
+            //this.SeedAuthors();
             this.SeedRoles();
             this.SeedUsers();
             this.SeedComments();
             this.SeedGenresBooks();
-            this.SeedBookAuthors();
+            //this.SeedBookAuthors();
             this.SeedBookUsers();
         }
 
@@ -69,28 +69,28 @@ namespace BookSpace.Data
             }
         }
 
-        private void SeedBookAuthors()
-        {
-            if (!ctx.BooksAuthors.Any())
-            {
-                string[] bookIds = ctx.Books.Select(b => b.BookId).ToArray();
-                string[] authorIds = ctx.Authors.Select(a => a.AuthorId).ToArray();
+        //private void SeedBookAuthors()
+        //{
+        //    if (!ctx.BooksAuthors.Any())
+        //    {
+        //        string[] bookIds = ctx.Books.Select(b => b.BookId).ToArray();
+        //        string[] authorIds = ctx.Authors.Select(a => a.AuthorId).ToArray();
 
-                List<BookAuthor> bookAuthors = new List<BookAuthor>();
-                Random rnd = new Random();
-                foreach (var bId in bookIds)
-                {
-                    bookAuthors.Add(new BookAuthor
-                    {
-                        BookId = bId,
-                        AuthorId = authorIds[rnd.Next(0, authorIds.Length)]
-                    });
-                }
+        //        List<BookAuthor> bookAuthors = new List<BookAuthor>();
+        //        Random rnd = new Random();
+        //        foreach (var bId in bookIds)
+        //        {
+        //            bookAuthors.Add(new BookAuthor
+        //            {
+        //                BookId = bId,
+        //                AuthorId = authorIds[rnd.Next(0, authorIds.Length)]
+        //            });
+        //        }
 
-                ctx.BooksAuthors.AddRange(bookAuthors);
-                ctx.SaveChanges();
-            }
-        }
+        //        ctx.BooksAuthors.AddRange(bookAuthors);
+        //        ctx.SaveChanges();
+        //    }
+        //}
 
         private void SeedGenresBooks()
         {
@@ -184,16 +184,16 @@ namespace BookSpace.Data
             }
         }
 
-        private void SeedAuthors()
-        {
-            if (!ctx.Authors.Any())
-            {
-                string responseBody = this.ReadJsonAsync("https://academystorage18.blob.core.windows.net/unknown/Authors.json?sv=2017-07-29&sr=b&sig=eb5EKh3itVTNsBqzqCEII1OU20z21XzYWUYCMk86ClE%3D&se=9999-12-31T21%3A59%3A59Z&sp=rd").Result;
-                Author[] allAuthors = JsonConvert.DeserializeObject<Author[]>(responseBody);
-                ctx.Authors.AddRange(allAuthors);
-                ctx.SaveChanges();
-            }
-        }
+        //private void SeedAuthors()
+        //{
+        //    if (!ctx.Authors.Any())
+        //    {
+        //        string responseBody = this.ReadJsonAsync("https://academystorage18.blob.core.windows.net/unknown/Authors.json?sv=2017-07-29&sr=b&sig=eb5EKh3itVTNsBqzqCEII1OU20z21XzYWUYCMk86ClE%3D&se=9999-12-31T21%3A59%3A59Z&sp=rd").Result;
+        //        Author[] allAuthors = JsonConvert.DeserializeObject<Author[]>(responseBody);
+        //        ctx.Authors.AddRange(allAuthors);
+        //        ctx.SaveChanges();
+        //    }
+        //}
 
         private void SeedGenres()
         {
