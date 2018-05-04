@@ -2782,13 +2782,13 @@ h1 {
     height: 280px;
     float: left;
     padding-left: 2.5rem;
-    border: 1px solid #19191b;
 }
 
 
 .books-list-thumb img {
     width: auto;
     height: auto;
+    border: 1px solid #19191b;
 }
 
 .books-list-entry span {

@@ -10,21 +10,7 @@
     </div>
     <div class="row top">
         <div class="books-list">
-
-            @foreach (var book in Model)
-            {
-                <article class="books-list-entry">
-                    <a asp-action="Book" asp-controller="Home" class="books-list-thumb">
-                        <img src="@book.CoverUrl" alt="">
-                    </a>
-                    <span><a asp-action="Book" asp-controller="Home">@book.Title</a></span>
-                    <section class="books-list-meta">
-                        <span class="books-list-author">By <i>@book.Author</i></span>
-                    </section>
-                </article>
-            }
-
-
+            @Html.Partial("Book/_BooksPagePartial")
         </div>
     </div>
 
@@ -32,15 +18,15 @@
         <div class="col-full">
             <nav class="pagination">
                 <ul>
-                    <li><a class="page-prev" href="#0">Prev</a></li>
-                    <li><a class="page-num current" href="#0">1</a></li>
-                    <li><span class="page-num">2</span></li>
-                    <li><a class="page-num" href="#0">3</a></li>
-                    <li><a class="page-num" href="#0">4</a></li>
-                    <li><a class="page-num" href="#0">5</a></li>
+                    <li><a class="page-prev">Prev</a></li>
+                    <li><a class="page-num">1</a></li>
+                    <li><a class="page-num">2</a></li>
+                    <li><a class="page-num">3</a></li>
+                    <li><a class="page-num">4</a></li>
+                    <li><a class="page-num">5</a></li>
                     <li><span class="page-num dots">…</span></li>
-                    <li><a class="page-num" href="#0">8</a></li>
-                    <li><a class="page-next" href="#0">Next</a></li>
+                    <li><a class="page-num">8</a></li>
+                    <li><a class="page-next">Next</a></li>
                 </ul>
             </nav>
         </div>
