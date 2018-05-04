@@ -2778,15 +2778,17 @@ h1 {
 }
 
 .books-list-entry {
-    width: 25.0%;
+    width: 20.0%;
+    height: 280px;
     float: left;
     padding-left: 2.5rem;
+    border: 1px solid #19191b;
 }
 
 
 .books-list-thumb img {
-    width: 160px;
-    height: 200px;
+    width: auto;
+    height: auto;
 }
 
 .books-list-entry span {
@@ -2801,6 +2803,7 @@ h1 {
     border-radius: 4px;
     text-align: center;
 }
+
 
 .success {
     color: #3c763d;

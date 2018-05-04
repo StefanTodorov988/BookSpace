@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using BookSpace.Models;
 using BookSpace.Repositories.Contracts;
 using BookSpace.Web.Models.BookViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BookSpace.Web.Controllers
 {
@@ -16,9 +19,11 @@ namespace BookSpace.Web.Controllers
             this.objectMapper = objectMapper;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var books = await this.bookRepository.GetPaged(1, 30);
+            var booksViewModels = this.objectMapper.Map<IEnumerable<Book>, IEnumerable<BooksIndexViewModel>>(books.Results);
+            return View(booksViewModels);
         }
 
         public IActionResult BookDetails(string bookId)

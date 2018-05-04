@@ -1,4 +1,4 @@
-﻿
+﻿@model List<BooksIndexViewModel>
 @{
     ViewData["Title"] = "All Books";
 }
@@ -10,81 +10,21 @@
     </div>
     <div class="row top">
         <div class="books-list">
-            <article class="books-list-entry">
-                <a asp-action="Book" asp-controller="Home" class="books-list-thumb">
-                    <img src="~/images/books/on_the_road_small.jpg" alt="">
-                </a>
-                <span><a asp-action="Book" asp-controller="Home">On the Road</a></span>
-                <section class="books-list-meta">
-                    <span class="books-list-author">By Duluoz Legend</span>
-                </section>
-            </article>
-            <article class="books-list-entry">
-                <a asp-action="Book" asp-controller="Home" class="books-list-thumb">
-                    <img src="~/images/articles/new_york-small.jpg" alt="">
-                </a>
-                <span><a asp-action="Book" asp-controller="Home">To New York and back</a></span>
-                <section class="books-list-meta">
-                    <span class="books-list-author">By Stefani Nikolova </span>
-                </section>
-            </article>
-            <article class="books-list-entry">
-                <a asp-action="Book" asp-controller="Home" class="books-list-thumb">
-                    <img src="~/images/magazines/leuropeo_small.jpg" alt="">
-                </a>
-                <span><a asp-action="Book" asp-controller="Home">L'Europeo</a></span>
-                <section class="books-list-meta">
-                    <span class="books-list-author">By Stefani Nikolova </span>
-                </section>
-            </article>
-            <article class="books-list-entry">
-                <a asp-action="Book" asp-controller="Home" class="books-list-thumb">
-                    <img src="~/images/magazines/inglobo_small.jpg" alt="">
-                </a>
-                <h3><a asp-action="Book" asp-controller="Home">Inglobo</a></h3>
-                <section class="books-list-meta">
-                    <span class="books-list-author">By Stefani Nikolova</span>
-                </section>
-            </article>
-            <article class="books-list-entry">
-                <a asp-action="Book" asp-controller="Home" class="books-list-thumb">
-                    <img src="~/images/art/basquiat-selft-portret-small.jpg" alt="">
-                </a>
-                <span><a asp-action="Book" asp-controller="Home">Jean-Michel Basquiat</a></span>
-                <section class="books-list-meta">
-                    <span class="books-list-author">By Unknown </span>
-                </section>
-            </article>
-            <article class="books-list-entry">
-                <a asp-action="Book" asp-controller="Home" class="books-list-thumb">
-                    <img src="~/images/articles/fashion-small.jpg" alt="">
-                </a>
-                <span><a asp-action="Book" asp-controller="Home">Fashion in Shanghai</a></span>
-                <section class="books-list-meta">
-                    <span class="books-list-author">By Stefani Nikolova</span>
 
-                </section>
-            </article>
-            <article class="books-list-entry">
-                <a asp-action="Book" asp-controller="Home" class="books-list-thumb">
-                    <img src="~/images/articles/fashion-small.jpg" alt="">
-                </a>
-                <span><a asp-action="Book" asp-controller="Home">Fashion in Shanghai</a></span>
-                <section class="books-list-meta">
-                    <span class="books-list-author">By Stefani Nikolova</span>
+            @foreach (var book in Model)
+            {
+                <article class="books-list-entry">
+                    <a asp-action="Book" asp-controller="Home" class="books-list-thumb">
+                        <img src="@book.CoverUrl" alt="">
+                    </a>
+                    <span><a asp-action="Book" asp-controller="Home">@book.Title</a></span>
+                    <section class="books-list-meta">
+                        <span class="books-list-author">By <i>@book.Author</i></span>
+                    </section>
+                </article>
+            }
 
-                </section>
-            </article>
-            <article class="books-list-entry">
-                <a asp-action="Book" asp-controller="Home" class="books-list-thumb">
-                    <img src="~/images/articles/fashion-small.jpg" alt="">
-                </a>
-                <span><a asp-action="Book" asp-controller="Home">Fashion in Shanghai</a></span>
-                <section class="books-list-meta">
-                    <span class="books-list-author">By Stefani Nikolova</span>
 
-                </section>
-            </article>
         </div>
     </div>
 
