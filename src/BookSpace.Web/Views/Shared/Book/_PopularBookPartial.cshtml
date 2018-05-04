@@ -4,14 +4,14 @@
 
     <div class="brick">
         <div class="brick-header">
-            <a href="post.html" class="brick-thumb-link">
+            <a asp-controller="Book" asp-action="BookDetails" asp-route-id="@Model.BookId" class="brick-thumb-link">
                 <img src="@Model.CoverUrl" alt="">
             </a>
            
             <div class="brick-date">
                 <a href="post.html">@Model.PublicationYear</a>
             </div>
-            <h1 class="brick-title"><a href="post.html">@Model.Title <br /> by <i>@Model.Author</i></a></h1>
+            <h1 class="brick-title"><a asp-controller="Book" asp-action="BookDetails" asp-route-id="@Model.BookId">@Model.Title <br /> by <i>@Model.Author</i></a></h1>
 
         </div>
         <div class="entry-meta">
@@ -21,7 +21,7 @@
             </div>
             <div class="entry-learn-more">
                 <span>
-                    <a class="learn-more-btn" href="category.html">Learn more</a>
+                    <a asp-controller="Book" asp-action="BookDetails" asp-route-id="@Model.BookId" class="learn-more-btn">Learn more</a>
                 </span>
             </div>
 
