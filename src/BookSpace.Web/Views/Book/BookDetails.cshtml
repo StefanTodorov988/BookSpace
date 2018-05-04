@@ -3,7 +3,7 @@
 <section class="content content--narrow content--no-padding-bottom">
 
     <div>
-        @await Html.PartialAsync("_RatingPartial", new KeyValuePair<string, decimal>(Model.Book.Title, Model.Book.Rating));
+        @await Html.PartialAsync("_RatingPartial", new KeyValuePair<string, decimal>(Model.Book.Title, Model.Book.Rating))
     </div>
     <article class="row format-standard">
 
