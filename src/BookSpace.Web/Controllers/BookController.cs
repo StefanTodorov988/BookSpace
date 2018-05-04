@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using BookSpace.Repositories.Contracts;
 using BookSpace.Web.Models.BookViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -32,8 +33,7 @@ namespace BookSpace.Web.Controllers
             return View(mappedBookViewModel);
         }
 
-
-        public IActionResult GetBookGenres(string bookId)
+                public IActionResult GetBookGenres(string bookId)
         {
             //TODO:Not finished
             var dbModel = this.bookRepository.GetBookGenresAsync(bookId);
