@@ -25,10 +25,23 @@ namespace BookSpace.Web.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var books = await this.bookRepository.FindByExpressionOrdered(book => book.Rating, 12);
-            var booksViewModels = this.objectMapper.Map<IEnumerable<Book>, IEnumerable<PopularBookViewModel>>(books);
+            var popularBooks = await this.bookRepository.FindByExpressionOrdered(book => book.Rating, 12);
+            var popularBooksViewModels = this.objectMapper.Map<IEnumerable<Book>, IEnumerable<PopularBookViewModel>>(popularBooks);
 
-            return View(booksViewModels);
+            var newBooks = await this.bookRepository.FindByExpressionOrdered(book => book.PublicationYear, 6);
+            var newBooksViewModels = this.objectMapper.Map<IEnumerable<Book>, IEnumerable<NewBookViewModel>>(newBooks);
+
+            var bookOfTheDay = await this.bookRepository.FindByExpressionOrdered(x => new Guid(), 1);
+            var bookOfTheDayViewModel = this.objectMapper.Map<Book, BookOfTheDayViewModel>(bookOfTheDay.FirstOrDefault());
+
+            var homePageViewModel = new HomePageViewModel()
+            {
+                BookOfTheDay = bookOfTheDayViewModel,
+                PopularBooks = popularBooksViewModels,
+                NewBooks = newBooksViewModels
+            };
+
+            return View(homePageViewModel);
         }
 
         public IActionResult About()

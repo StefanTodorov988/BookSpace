@@ -1,0 +1,39 @@
+﻿@model BookOfTheDayViewModel
+
+<div class="header-single-book">
+    <div class="header-book-heading">
+        <p>Book of the day</p>
+    </div>
+
+   
+        <div class="header-book-info">
+            <div class="header-book-img">
+                <a>
+                    <img src="@Model.CoverUrl" alt="">
+                </a>
+            </div>
+            <div class="header-book-title">
+                <a>
+                    @Model.Title
+                </a>
+            </div>
+            <div class="header-book-description">
+                <p>
+                    @*Model.Description*@
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                </p>
+            </div>
+
+            <div class="header-book-rating">
+                @await Html.PartialAsync("_RatingPartial")
+
+                <span>Rating : @Model.Rating</span>
+            </div>
+
+            <div class="header-book-btn">
+                <button>Want To Read</button>
+                <button>Currently Reading</button>
+                <button>Read</button>
+            </div>
+        </div>
+</div>

@@ -11,6 +11,6 @@ namespace BookSpace.Web.Models.BookViewModels
         public string Title { get; set; }
         public DateTime PublicationYear { get; set; }
         public string CoverUrl { get; set; }
-        public ICollection<string> BookAuthors { get; set; }
+        public string Author { get; set; }
     }
 }
