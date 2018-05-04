@@ -16,7 +16,7 @@
         </div>
         <div class="entry-meta">
             <div>
-                @await Html.PartialAsync("_RatingPartial")
+                @await Html.PartialAsync("_RatingPartial", new KeyValuePair<string,decimal>(Model.Title,Model.Rating ))
                 <span class="entry-meta-rating">Rating : @Model.Rating</span>
             </div>
             <div class="entry-learn-more">
