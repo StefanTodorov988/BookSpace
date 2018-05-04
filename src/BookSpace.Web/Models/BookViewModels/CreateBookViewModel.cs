@@ -14,6 +14,6 @@ namespace BookSpace.Web.Models.BookViewModels
         public string Author { get; set; }
         public string Description { get; set; }
         public ICollection<string> Genres { get; set; }
-
+        public ICollection<string> Tags { get; set; }
     }
 }

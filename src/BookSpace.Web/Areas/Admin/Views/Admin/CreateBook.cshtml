@@ -1,5 +1,5 @@
 ﻿@model BookSpace.Web.Models.BookViewModels.CreateBookViewModel
-
+@inject IEnumerable<Genre>
 @{
     ViewData["Title"] = "Create Book";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -8,10 +8,9 @@
 <h2>Create Book</h2>
 
 <dl class="dropdown">
-
     <dt>
         <a href="#">
-            <span class="hida">Select</span>
+            <span class="hida" onclick="dropDownMenu()">Select</span>
             <p class="multiSel"></p>
         </a>
     </dt>

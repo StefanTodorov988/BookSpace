@@ -132,6 +132,12 @@ namespace BookSpace.Web.Areas.Admin.Controllers
         [HttpGet("/CreateBook")]
         public IActionResult CreateBook()
         {
+            this.bookRepository.
+            //creating a genre view model
+            //tag view model 
+            //to pass to the viewmodel
+
+
             return View();
         }
 
@@ -139,10 +145,11 @@ namespace BookSpace.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateBookAsync(CreateBookViewModel bookViewModel)
         {
+            
+
             var bookResponse = this.objectMapper.Map<BookResponseModel>(bookViewModel);
 
             var book = this.bookFactory.Create(bookResponse);
-
             
             await this.bookRepository.AddAsync(book);
 
