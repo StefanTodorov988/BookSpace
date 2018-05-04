@@ -32,7 +32,6 @@ namespace BookSpace.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddDbContext<BookSpaceContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -52,7 +51,8 @@ namespace BookSpace.Web
             services.AddScoped<IBookRepository, BookRepository>();
 
             //Factories
-            services.AddScoped<IFactory<BookSpace.Models.Book, BookResponseModel>, BookFactory>();
+            services.AddScoped<IFactory<Book, BookResponseModel>, BookFactory>();
+
 
             //Blob Storage
             services.AddSingleton<IBlobStorageService, BlobStorageService>();

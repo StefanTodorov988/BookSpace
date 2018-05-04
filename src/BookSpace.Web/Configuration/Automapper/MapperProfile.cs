@@ -11,7 +11,7 @@ namespace BookSpace.Web.Configuration.Automapper
         public MapperProfile()
         {
             CreateMap<ApplicationUser, ApplicationUserViewModel>().ReverseMap();
-            CreateMap<Book, SimpleBookViewModel>().ReverseMap();
+            CreateMap<Book, ListBookViewModel>().ReverseMap();
             CreateMap<Book, BookResponseModel>();
 
         }

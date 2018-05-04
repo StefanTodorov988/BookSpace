@@ -90,12 +90,7 @@ namespace BookSpace.Web.Areas.Admin.Controllers
         {
             var allBooks = this.bookRepository.GetAllAsync().Result.ToList();
 
-            var mappedBooks = new List<SimpleBookViewModel>();
-
-            foreach (var book in allBooks)
-            {
-                mappedBooks.Add(this.objectMapper.Map<SimpleBookViewModel>(book));
-            }
+            var mappedBooks = this.objectMapper.Map<IEnumerable<ListBookViewModel>>(allBooks);
 
             return View(mappedBooks);
         }
@@ -124,7 +119,7 @@ namespace BookSpace.Web.Areas.Admin.Controllers
             return View(bookViewModel);
         }
 
-        public async Task<IActionResult> DeleteBook(SimpleBookViewModel bookViewModel)
+        public async Task<IActionResult> DeleteBook(ListBookViewModel bookViewModel)
         {
             var dbModel = this.bookRepository.GetByIdAsync(bookViewModel.BookId).Result;
 
@@ -134,23 +129,24 @@ namespace BookSpace.Web.Areas.Admin.Controllers
         }
 
 
-        [HttpGet("/RegisterBook")]
+        [HttpGet("/CreateBook")]
         public IActionResult CreateBook()
         {
             return View();
         }
 
-        [HttpPost("/RegisterBook")]
+        [HttpPost("/CreateBook")]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateBook(SimpleBookViewModel bookViewModel)
+        public async Task<IActionResult> CreateBookAsync(CreateBookViewModel bookViewModel)
         {
             var bookResponse = this.objectMapper.Map<BookResponseModel>(bookViewModel);
 
             var book = this.bookFactory.Create(bookResponse);
 
-            this.bookRepository.AddAsync(book);
+            
+            await this.bookRepository.AddAsync(book);
 
-            return RedirectToAction("Index");
+            return RedirectToAction("CreateBook");
         }
 
         public IActionResult Index()

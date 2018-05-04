@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BookSpace.Factories
 {
-    public interface IFactory<TEntity, TModel> where TEntity: class, where TModel : class
+    public interface IFactory<TEntity, TModel>
     {
         TEntity Create(TModel model);
     }
