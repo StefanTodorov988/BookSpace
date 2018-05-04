@@ -14,12 +14,14 @@ using Microsoft.Extensions.Logging;
 using AutoMapper;
 using BookSpace.BlobStorage.Contracts;
 using BookSpace.BlobStorage;
+using BookSpace.Factories;
+using BookSpace.Factories.ResponseModels;
 
 namespace BookSpace.Web
 {
     public class Startup
     {
-        
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -49,6 +51,9 @@ namespace BookSpace.Web
             services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
             services.AddScoped<IBookRepository, BookRepository>();
 
+            //Factories
+            services.AddScoped<IFactory<BookSpace.Models.Book, BookResponseModel>, BookFactory>();
+
             //Blob Storage
             services.AddSingleton<IBlobStorageService, BlobStorageService>();
             services.AddSingleton<BlobStorageInfo>(
@@ -64,7 +69,7 @@ namespace BookSpace.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-          
+
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
@@ -84,8 +89,8 @@ namespace BookSpace.Web
             {
                 routes.MapRoute(
                  name: "areaRoute",
-                 template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"); 
-              
+                 template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BookSpace.Factories.ResponseModels;
 using BookSpace.Models;
 using BookSpace.Web.Areas.Admin.Models.ApplicationUserViewModels;
 using BookSpace.Web.Models.BookViewModels;
@@ -11,7 +12,9 @@ namespace BookSpace.Web.Configuration.Automapper
         {
             CreateMap<ApplicationUser, ApplicationUserViewModel>().ReverseMap();
             CreateMap<Book, SimpleBookViewModel>().ReverseMap();
+            CreateMap<Book, BookResponseModel>();
+
         }
-       
+
     }
 }

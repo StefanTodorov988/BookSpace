@@ -20,8 +20,8 @@
             @if (!SignInManager.IsSignedIn(User))
             {
             <div class="header-forms">
-                @await Html.PartialAsync("~/Account/Login", new LoginViewModel())
-                @await Html.PartialAsync("~/Account/Register", new RegisterViewModel())
+                @await Html.PartialAsync("../Account/Login", new LoginViewModel())
+                @await Html.PartialAsync("../Account/Register", new RegisterViewModel())
             </div>
             }
             else

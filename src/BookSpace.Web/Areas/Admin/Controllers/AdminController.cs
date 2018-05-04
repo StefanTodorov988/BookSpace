@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BookSpace.BlobStorage.Contracts;
+using BookSpace.Factories;
+using BookSpace.Factories.ResponseModels;
 using BookSpace.Models;
 using BookSpace.Repositories.Contracts;
 using BookSpace.Web.Areas.Admin.Models.ApplicationUserViewModels;
@@ -24,17 +26,18 @@ namespace BookSpace.Web.Areas.Admin.Controllers
         private readonly IMapper objectMapper;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IBlobStorageService blobStorageService;
+        private readonly IFactory<Book, BookResponseModel> bookFactory;
 
-        //private readonly IBookFactory bookFactory;
-
-        public AdminController(IApplicationUserRepository userRepository, IBookRepository bookRepository, IMapper objectMapper, UserManager<ApplicationUser> userManager, IBlobStorageService blobStorageService)
+        public AdminController(IApplicationUserRepository userRepository, IBookRepository bookRepository,
+            IMapper objectMapper, UserManager<ApplicationUser> userManager, IBlobStorageService blobStorageService,
+            IFactory<Book,BookResponseModel> bookFactory)
         {
             this.userRepository = userRepository;
             this.bookRepository = bookRepository;
             this.objectMapper = objectMapper;
             this.userManager = userManager;
             this.blobStorageService = blobStorageService;
-            //this.bookFactory = bookFactory;
+            this.bookFactory = bookFactory;
         }
 
         public IActionResult AllUsers()
@@ -61,7 +64,6 @@ namespace BookSpace.Web.Areas.Admin.Controllers
 
             var user = this.objectMapper.Map(userViewModel, dbModel);
 
-            //TODO:THIS THROWS EX
             if (userViewModel.isAdmin)
             {
                 await this.userManager.AddToRoleAsync(user, "Admin");
@@ -133,37 +135,31 @@ namespace BookSpace.Web.Areas.Admin.Controllers
 
 
         [HttpGet("/RegisterBook")]
-        public IActionResult RegisterBook()
+        public IActionResult CreateBook()
         {
             return View();
         }
 
         [HttpPost("/RegisterBook")]
         [ValidateAntiForgeryToken]
-        public IActionResult RegisterBook(SimpleBookViewModel bookViewModel)
+        public IActionResult CreateBook(SimpleBookViewModel bookViewModel)
         {
-            var bookViewModelMap = this.objectMapper.Map<SimpleBookViewModel>(bookViewModel);
-            var bookToRegister = new BookSpace.Models.Book();
+            var bookResponse = this.objectMapper.Map<BookResponseModel>(bookViewModel);
 
-            bookToRegister.BookId = new Guid().ToString();
-            bookToRegister.Isbn = bookViewModelMap.Isbn;
-            bookToRegister.Title = bookViewModelMap.Title;
-            bookToRegister.PublicationYear = bookViewModelMap.PublicationYear;
-            bookToRegister.CoverUrl = bookViewModelMap.CoverUrl;
+            var book = this.bookFactory.Create(bookResponse);
 
-            //TODO:Does Not add book to data base
-            this.bookRepository.AddAsync(bookToRegister);
+            this.bookRepository.AddAsync(book);
 
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> IndexAsync()
+        public IActionResult Index()
         {
-            using (FileStream str = new FileStream(@"C:\Users\snikoltc\Documents\Visual Studio 2017\Projects\BookSpace\src\BookSpace.Web\wwwroot\images\art\basquiat-selft-portret.jpg", FileMode.Open))
-            {
-                await blobStorageService.UploadAsync("testName", "testcontainer", str);
-                var result = await blobStorageService.GetAsync("testName", "testcontainer");
-            }
+            //using (FileStream str = new FileStream(@"C:\Users\snikoltc\Documents\Visual Studio 2017\Projects\BookSpace\src\BookSpace.Web\wwwroot\images\art\basquiat-selft-portret.jpg", FileMode.Open))
+            //{
+            //    await blobStorageService.UploadAsync("testName", "testcontainer", str);
+            //    var result = await blobStorageService.GetAsync("testName", "testcontainer");
+            //}
             return View();
         }
     }
