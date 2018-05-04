@@ -8,12 +8,8 @@ namespace BookSpace.Factories
     public class BookFactory : IFactory<Book, BookResponseModel>
     {
 
-        //Book Create(string bookId, string isbn, string title, DateTime publicationYear, string coverUrl);
-        public Task<Book> Create()
-        {
-            throw new NotImplementedException();
-        }
-
+       //Book Create(string bookId, string isbn, string title, DateTime publicationYear, string coverUrl);
+     
         public Book Create(BookResponseModel model)
         {
             return new Book()

@@ -51,6 +51,10 @@ namespace BookSpace.Web
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
             services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
             services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<IGenreRepository, GenreRepository>();
+            services.AddScoped<ITagRepository, TagRepository>();
+
+
 
             //Factories
             services.AddScoped<IFactory<Book, BookResponseModel>, BookFactory>();
@@ -61,6 +65,7 @@ namespace BookSpace.Web
             services.AddSingleton<BlobStorageInfo>(
                 Configuration.GetSection(nameof(BlobStorageInfo))
                 .Get<BlobStorageInfo>());
+
             //FaceApi Storage
             services.AddSingleton<IFaceService, FaceService>();
             services.AddSingleton<FaceServiceStorageInfo>(

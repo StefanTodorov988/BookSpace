@@ -33,7 +33,7 @@ namespace BookSpace.Web.Controllers
             return View(mappedBookViewModel);
         }
 
-                public IActionResult GetBookGenres(string bookId)
+        public IActionResult GetBookGenres(string bookId)
         {
             //TODO:Not finished
             var dbModel = this.bookRepository.GetBookGenresAsync(bookId);
@@ -44,7 +44,7 @@ namespace BookSpace.Web.Controllers
 
         public IActionResult BooksByAuthor(string bookId)
         {
-            
+
             return View();
         }
 
