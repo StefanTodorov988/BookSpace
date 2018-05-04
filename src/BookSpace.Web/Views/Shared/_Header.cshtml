@@ -53,7 +53,7 @@
                     <ul class="header-nav nav-user">
                         <li><a asp-area="" asp-controller="UserBooks" asp-action="Index" class="nav-user">My Books</a></li>
                         <li>
-                            <a asp-area="" asp-controller="Home" asp-action="Index" class="nav-user has-children">Hello, User!</a>
+                            <a asp-area="" asp-controller="Home" asp-action="Index" class="nav-user has-children">Hello, @User.Identity.Name!</a>
                             <ul class="sub-menu">
                                 <li><a asp-area="" asp-controller="Home" asp-action="Category">Profile</a></li>
                                 <li>

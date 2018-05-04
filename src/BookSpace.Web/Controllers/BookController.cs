@@ -22,6 +22,7 @@ namespace BookSpace.Web.Controllers
             return View();
         }
 
+        [HttpGet("/BookDetails/{bookid}")]
         public IActionResult BookDetails(string bookId)
         {
             //TODO:Not finished

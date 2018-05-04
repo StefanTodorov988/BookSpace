@@ -5,24 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>
         @ViewData["Title"] - BookS
-    .Web
-</title>
+        .Web
+    </title>
 
-<link rel="stylesheet" href="~/css/base.css" />
-<link rel="stylesheet" href="~/css/main.css" />
-<link rel="icon" href="~/images/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="~/css/base.css" />
+    <link rel="stylesheet" href="~/css/main.css" />
+    <link rel="stylesheet" href="~/css/drop-down/drop-down.css" />
+    <link rel="icon" href="~/images/favicon.ico" type="image/x-icon" />
 
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"
-        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-        crossorigin="anonymous">
-</script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous">
+    </script>
 
-<environment exclude="Development">
-    <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
-          asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-          asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-    <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-</environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
 </head>
 <body>
     @*<nav class="navbar navbar-inverse navbar-fixed-top">
@@ -54,7 +55,15 @@
         </nav>*@
 
     <div>
-        @await Html.PartialAsync("_Header")
+        @if (User.IsInRole("Admin"))
+        {
+            @await Html.PartialAsync("/Areas/Admin/Views/Shared/_AdminHeader.cshtml");
+        }
+        else
+        {
+            @await Html.PartialAsync("_Header");
+
+        }
     </div>
     <div class="container body-content">
         @RenderBody()
@@ -78,6 +87,7 @@
                 integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
+        <script src="~/js/drop-down.js" asp-append-version="true"></script>
     </environment>
 
     @RenderSection("Scripts", required: false)

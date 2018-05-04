@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BookSpace.BlobStorage.Contracts;
+using BookSpace.Factories;
+using BookSpace.Factories.ResponseModels;
 using BookSpace.Models;
 using BookSpace.Repositories.Contracts;
 using BookSpace.Web.Areas.Admin.Models.ApplicationUserViewModels;
@@ -24,17 +26,18 @@ namespace BookSpace.Web.Areas.Admin.Controllers
         private readonly IMapper objectMapper;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IBlobStorageService blobStorageService;
+        private readonly IFactory<Book, BookResponseModel> bookFactory;
 
-        //private readonly IBookFactory bookFactory;
-
-        public AdminController(IApplicationUserRepository userRepository, IBookRepository bookRepository, IMapper objectMapper, UserManager<ApplicationUser> userManager, IBlobStorageService blobStorageService)
+        public AdminController(IApplicationUserRepository userRepository, IBookRepository bookRepository,
+            IMapper objectMapper, UserManager<ApplicationUser> userManager, IBlobStorageService blobStorageService,
+            IFactory<Book,BookResponseModel> bookFactory)
         {
             this.userRepository = userRepository;
             this.bookRepository = bookRepository;
             this.objectMapper = objectMapper;
             this.userManager = userManager;
             this.blobStorageService = blobStorageService;
-            //this.bookFactory = bookFactory;
+            this.bookFactory = bookFactory;
         }
 
         public IActionResult AllUsers()
@@ -61,7 +64,6 @@ namespace BookSpace.Web.Areas.Admin.Controllers
 
             var user = this.objectMapper.Map(userViewModel, dbModel);
 
-            //TODO:THIS THROWS EX
             if (userViewModel.isAdmin)
             {
                 await this.userManager.AddToRoleAsync(user, "Admin");
@@ -88,12 +90,7 @@ namespace BookSpace.Web.Areas.Admin.Controllers
         {
             var allBooks = this.bookRepository.GetAllAsync().Result.ToList();
 
-            var mappedBooks = new List<SimpleBookViewModel>();
-
-            foreach (var book in allBooks)
-            {
-                mappedBooks.Add(this.objectMapper.Map<SimpleBookViewModel>(book));
-            }
+            var mappedBooks = this.objectMapper.Map<IEnumerable<ListBookViewModel>>(allBooks);
 
             return View(mappedBooks);
         }
@@ -122,7 +119,7 @@ namespace BookSpace.Web.Areas.Admin.Controllers
             return View(bookViewModel);
         }
 
-        public async Task<IActionResult> DeleteBook(SimpleBookViewModel bookViewModel)
+        public async Task<IActionResult> DeleteBook(ListBookViewModel bookViewModel)
         {
             var dbModel = this.bookRepository.GetByIdAsync(bookViewModel.BookId).Result;
 
@@ -132,38 +129,33 @@ namespace BookSpace.Web.Areas.Admin.Controllers
         }
 
 
-        [HttpGet("/RegisterBook")]
-        public IActionResult RegisterBook()
+        [HttpGet("/CreateBook")]
+        public IActionResult CreateBook()
         {
             return View();
         }
 
-        [HttpPost("/RegisterBook")]
+        [HttpPost("/CreateBook")]
         [ValidateAntiForgeryToken]
-        public IActionResult RegisterBook(SimpleBookViewModel bookViewModel)
+        public async Task<IActionResult> CreateBookAsync(CreateBookViewModel bookViewModel)
         {
-            var bookViewModelMap = this.objectMapper.Map<SimpleBookViewModel>(bookViewModel);
-            var bookToRegister = new BookSpace.Models.Book();
+            var bookResponse = this.objectMapper.Map<BookResponseModel>(bookViewModel);
 
-            bookToRegister.BookId = new Guid().ToString();
-            bookToRegister.Isbn = bookViewModelMap.Isbn;
-            bookToRegister.Title = bookViewModelMap.Title;
-            bookToRegister.PublicationYear = bookViewModelMap.PublicationYear;
-            bookToRegister.CoverUrl = bookViewModelMap.CoverUrl;
+            var book = this.bookFactory.Create(bookResponse);
 
-            //TODO:Does Not add book to data base
-            this.bookRepository.AddAsync(bookToRegister);
+            
+            await this.bookRepository.AddAsync(book);
 
-            return RedirectToAction("Index");
+            return RedirectToAction("CreateBook");
         }
 
-        public async Task<IActionResult> IndexAsync()
+        public IActionResult Index()
         {
-            using (FileStream str = new FileStream(@"C:\Users\snikoltc\Documents\Visual Studio 2017\Projects\BookSpace\src\BookSpace.Web\wwwroot\images\art\basquiat-selft-portret.jpg", FileMode.Open))
-            {
-                await blobStorageService.UploadAsync("testName", "testcontainer", str);
-                var result = await blobStorageService.GetAsync("testName", "testcontainer");
-            }
+            //using (FileStream str = new FileStream(@"C:\Users\snikoltc\Documents\Visual Studio 2017\Projects\BookSpace\src\BookSpace.Web\wwwroot\images\art\basquiat-selft-portret.jpg", FileMode.Open))
+            //{
+            //    await blobStorageService.UploadAsync("testName", "testcontainer", str);
+            //    var result = await blobStorageService.GetAsync("testName", "testcontainer");
+            //}
             return View();
         }
     }

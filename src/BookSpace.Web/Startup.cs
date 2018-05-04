@@ -16,12 +16,14 @@ using BookSpace.BlobStorage.Contracts;
 using BookSpace.BlobStorage;
 using BookSpace.CognitiveServices;
 using BookSpace.CognitiveServices.Contract;
+using BookSpace.Factories;
+using BookSpace.Factories.ResponseModels;
 
 namespace BookSpace.Web
 {
     public class Startup
     {
-        
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -32,7 +34,6 @@ namespace BookSpace.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddDbContext<BookSpaceContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -50,6 +51,10 @@ namespace BookSpace.Web
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
             services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
             services.AddScoped<IBookRepository, BookRepository>();
+
+            //Factories
+            services.AddScoped<IFactory<Book, BookResponseModel>, BookFactory>();
+
 
             //Blob Storage
             services.AddSingleton<IBlobStorageService, BlobStorageService>();
@@ -70,7 +75,7 @@ namespace BookSpace.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-          
+
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
@@ -90,8 +95,8 @@ namespace BookSpace.Web
             {
                 routes.MapRoute(
                  name: "areaRoute",
-                 template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"); 
-              
+                 template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
