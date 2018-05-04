@@ -2701,49 +2701,32 @@ h1 {
 
 /****** Style Star Rating Widget *****/
 
-.rating {
-    border: none;
-    float: left;
+.stars-outer {
+    display: inline-block;
+    position: relative;
+    font-family: FontAwesome;
+    font-size : 2.0rem;
 }
 
-    .rating > input {
-        display: none;
+    .stars-outer::before {
+        content: "\f006\f006\f006\f006\f006";
     }
 
-    .rating > label:before {
-        margin: 5px;
-        font-size: 1.25em;
-        font-family: FontAwesome;
-        display: inline-block;
-        content: "\f005";
+.stars-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 0;
+}
+
+    .stars-inner::before {
+        content: "\f005\f005\f005\f005\f005";
+        color: #f8ce0b;
     }
 
-    .rating > .half:before {
-        content: "\f089";
-        position: absolute;
-    }
-
-    .rating > label {
-        color: #ddd;
-        float: right;
-    }
-
-    /***** CSS Magic to Highlight Stars on Hover *****/
-
-    .rating > input:checked ~ label, /* show gold star when clicked */
-    .rating:not(:checked) > label:hover, /* hover current star */
-    .rating:not(:checked) > label:hover ~ label {
-        color: #FFD700;
-    }
-        /* hover previous stars in list */
-
-        .rating > input:checked + label:hover, /* hover current star when changing rating */
-        .rating > input:checked ~ label:hover,
-        .rating > label:hover ~ input:checked ~ label, /* lighten current selection */
-        .rating > input:checked ~ label:hover ~ label {
-            color: #FFED85;
-        }
-
+/*-----User Books----*/
 
 .user-books-wrapper {
     padding: 1px;
@@ -2795,17 +2778,50 @@ h1 {
 }
 
 .books-list-entry {
-    width: 25.0%;
+    width: 20.0%;
+    height: 280px;
     float: left;
     padding-left: 2.5rem;
 }
 
 
 .books-list-thumb img {
-    width: 160px;
-    height: 200px;
+    width: auto;
+    height: auto;
+    border: 1px solid #19191b;
 }
 
 .books-list-entry span {
     display: block;
+}
+
+/*  Message boxes */
+
+.alert-box {
+    padding: 25px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    text-align: center;
+}
+
+
+.success {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+    display: none;
+}
+
+.failure {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    display: none;
+}
+
+.warning {
+    color: #8a6d3b;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+    display: none;
 }

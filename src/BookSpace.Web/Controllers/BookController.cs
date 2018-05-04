@@ -1,8 +1,10 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
+using BookSpace.Models;
 using BookSpace.Repositories.Contracts;
 using BookSpace.Web.Models.BookViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BookSpace.Web.Controllers
 {
@@ -10,6 +12,7 @@ namespace BookSpace.Web.Controllers
     {
         private readonly IBookRepository bookRepository;
         private readonly IMapper objectMapper;
+        private const int recordsOnPage = 30;
 
         public BookController(IBookRepository bookRepository, IMapper objectMapper)
         {
@@ -17,12 +20,17 @@ namespace BookSpace.Web.Controllers
             this.objectMapper = objectMapper;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            return View(await this.GetBooksPage(1));
         }
 
-        [HttpGet("/BookDetails/{bookid}")]
+        [HttpGet]
+        public async Task<IActionResult> BooksList([FromQuery] int page)
+        {
+            return PartialView("Book/_BooksPagePartial", await this.GetBooksPage(page));
+        }
+
         public IActionResult BookDetails(string bookId)
         {
             //TODO:Not finished
@@ -32,6 +40,7 @@ namespace BookSpace.Web.Controllers
 
             return View(mappedBookViewModel);
         }
+
 
         public IActionResult GetBookGenres(string bookId)
         {
@@ -44,7 +53,7 @@ namespace BookSpace.Web.Controllers
 
         public IActionResult BooksByAuthor(string bookId)
         {
-
+            
             return View();
         }
 
@@ -62,5 +71,15 @@ namespace BookSpace.Web.Controllers
         {
             return View();
         }
+
+        #region Helpers
+
+        private async Task<IEnumerable<BooksIndexViewModel>> GetBooksPage(int page)
+        {
+            var books = await this.bookRepository.GetPaged(page, recordsOnPage);
+            var booksViewModels = this.objectMapper.Map<IEnumerable<Book>, IEnumerable<BooksIndexViewModel>>(books.Results);
+            return booksViewModels;
+        }
+        #endregion
     }
 }

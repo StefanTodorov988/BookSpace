@@ -1,0 +1,15 @@
+﻿@model List<BooksIndexViewModel>
+
+@foreach (var book in Model)
+{
+    var title = book.Title.Length > 50 ? book.Title.Substring(0, 50) + "..." : book.Title;
+    <article class="books-list-entry">
+        <a asp-action="Book" asp-controller="Home" class="books-list-thumb">
+            <img src="@book.CoverUrl" alt="">
+        </a>
+        <span><a asp-action="Book" asp-controller="Home">@title</a></span>
+        <section class="books-list-meta">
+            <span class="books-list-author">By <i>@book.Author</i></span>
+        </section>
+    </article>
+}
