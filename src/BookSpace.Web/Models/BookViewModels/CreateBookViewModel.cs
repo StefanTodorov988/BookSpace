@@ -13,7 +13,7 @@ namespace BookSpace.Web.Models.BookViewModels
         public string CoverUrl { get; set; }
         public string Author { get; set; }
         public string Description { get; set; }
-        public ICollection<string> Genres { get; set; }
-        public ICollection<string> Tags { get; set; }
+        public string Genres { get; set; }
+        public string Tags { get; set; }
     }
 }
