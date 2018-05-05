@@ -14,6 +14,9 @@ using BookSpace.Web.Models.ManageViewModels;
 using BookSpace.Web.Services;
 using BookSpace.Models;
 using BookSpace.Web.Extensions;
+using BookSpace.BlobStorage.Contracts;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace BookSpace.Web.Controllers
 {
@@ -25,6 +28,8 @@ namespace BookSpace.Web.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly UrlEncoder _urlEncoder;
+        private readonly IBlobStorageService blobStorageService;
+        private const string blobContainer = "bookspace";
 
         private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
         private const string RecoveryCodesKey = nameof(RecoveryCodesKey);
@@ -33,12 +38,14 @@ namespace BookSpace.Web.Controllers
           UserManager<ApplicationUser> userManager,
           SignInManager<ApplicationUser> signInManager,
           IEmailSender emailSender,
-          UrlEncoder urlEncoder)
+          UrlEncoder urlEncoder,
+          IBlobStorageService blobService)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _emailSender = emailSender;
-            _urlEncoder = urlEncoder;
+            this._userManager = userManager;
+            this._signInManager = signInManager;
+            this._emailSender = emailSender;
+            this._urlEncoder = urlEncoder;
+            this.blobStorageService = blobService;
         }
 
         [TempData]
@@ -101,6 +108,23 @@ namespace BookSpace.Web.Controllers
             }
 
             StatusMessage = "Your profile has been updated";
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost("UploadPicture")]
+        public async Task<IActionResult> UploadPicture(IFormFile file)
+        {
+            using (var stream = new MemoryStream())
+            {
+                await file.CopyToAsync(stream);
+                var user = await this._userManager.GetUserAsync(HttpContext.User);
+                stream.Seek(0, SeekOrigin.Begin);
+                var buf = new byte[stream.Length];
+                stream.Read(buf, 0, buf.Length);
+
+                await this.blobStorageService.UploadAsync(user.Id, blobContainer, stream);
+            }
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -356,7 +380,7 @@ namespace BookSpace.Web.Controllers
                 throw new ApplicationException($"Unexpected error occured disabling 2FA for user with ID '{user.Id}'.");
             }
 
-       
+
             return RedirectToAction(nameof(TwoFactorAuthentication));
         }
 
@@ -405,7 +429,7 @@ namespace BookSpace.Web.Controllers
             }
 
             await _userManager.SetTwoFactorEnabledAsync(user, true);
-    
+
             var recoveryCodes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
             TempData[RecoveryCodesKey] = recoveryCodes.ToArray();
 
@@ -443,7 +467,7 @@ namespace BookSpace.Web.Controllers
 
             await _userManager.SetTwoFactorEnabledAsync(user, false);
             await _userManager.ResetAuthenticatorKeyAsync(user);
-      
+
 
             return RedirectToAction(nameof(EnableAuthenticator));
         }
