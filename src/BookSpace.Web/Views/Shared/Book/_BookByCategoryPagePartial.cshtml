@@ -5,6 +5,7 @@
     string bookTitle = book.Title.Length > 25 ? book.Title.Substring(0,25) + "..." : book.Title;
 
     <article class="category-entry">
+
         <a asp-action="BookDetails" asp-controller="Book" asp-route-id="@book.BookId" class="category-thumb">
             <img src="@book.CoverUrl" alt="">
         </a>
