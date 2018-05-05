@@ -8,9 +8,9 @@
 
     <nav class="user-vertical-nav">
         <ul class="user-collections">
-            <li><button id="favourite" class="user-collections-btn">Want to read</button></li>
-            <li><button id="reading" class="user-collections-btn">Currently reading</button></li>
-            <li><button id="read" class="user-collections-btn">Read</button></li>
+            <li><button id="toRead" onclick="toRead()" class="user-collections-btn">Want to read</button></li>
+            <li><button id="currentlyReading" onclick="currentlyReading()" class="user-collections-btn">Currently reading</button></li>
+            <li><button id="read" onclick="read()" class="user-collections-btn">Read</button></li>
         </ul>
     </nav>
     <div id="renderPartial" style="display:none"></div>
@@ -19,11 +19,7 @@
 <script>
     const renderSection = $('#renderPartial');
 
-    $('#read').on('click', readBooks);
-    $('#reading').on('click', readingBooks);
-    $('#favourite').on('click', favouriteBooks);
-
-    function readBooks(e) {
+    function read() {
         $(".user-collections-btn.current").removeClass("current");
         $.ajax({
             type: "POST",
@@ -40,7 +36,7 @@
         $(this).addClass("current");
     }
 
-    function readingBooks(e) {
+    function toRead() {
         $(".user-collections-btn.current").removeClass("current");
         $.ajax({
             type: "POST",
@@ -56,12 +52,12 @@
         $(this).addClass("current");
     }
 
-    function favouriteBooks() {
+    function currentlyReading() {
         $(".user-collections-btn.current").removeClass("current");
         $.ajax({
             type: "POST",
             url: "/UserBooks/_UserBooksPartialListAsync",
-            data: { statusEnum: 'Favourite' },
+            data: { statusEnum: 'CurrentlyReading' },
             success: (htmlData) => {
                 renderSection.html(htmlData).fadeIn();
             },
@@ -72,5 +68,5 @@
         $(this).addClass("current");
     }
 
-    (() => readingBooks())(); // Default is reading books
+    (() => toRead())(); // Default is reading books
 </script>

@@ -1,6 +1,7 @@
 ﻿@model BookOfTheDayViewModel
 
 
+
 <div class="header-book-heading">
     <p>Book of the day</p>
 </div>
@@ -34,9 +35,47 @@
         </div>
 
         <div class="header-book-btn">
-            <button onclick="showSuccessMessage('You have successfully added the book to your list')">Want To Read</button>
-            <button>Currently Reading</button>
-            <button>Read</button>
+            <button id="addToRead" onclick="addToRead()">Want To Read</button>
+            <button id="addCurrentlyReading" onclick="addCurrentyReading()">Currently Reading</button>
+            <button id="addRead" onclick="addRead()">Read</button>
         </div>
     </div>
 </div>
+
+<script>
+    function addRead() {
+        $.ajax({
+            type: "POST",
+            url: "/UserBooks/AddBook",
+            data: { id: "@Model.BookId", collection : 'Read' },
+            success: (response) => {
+                alert(response);
+            },
+            error: (response) => {
+                displayError('Error adding book to collection');
+            }
+        })
+    }
+
+    function addToRead() {
+        $.ajax({
+            type: "POST",
+            url: "/UserBooks/AddBook",
+            data: { id: "@Model.BookId", collection : 'ToRead' },
+            error: (response) => {
+                displayError('Error adding book to collection');
+            }
+        })
+    }
+
+    function addCurrentyReading() {
+        $.ajax({
+            type: "POST",
+            url: "/UserBooks/AddBook",
+            data: { id: "@Model.BookId", collection: 'CurrentlyReading' },
+            error: (response) => {
+                displayError('Error adding book to collection');
+            }
+        })
+    }
+</script>
