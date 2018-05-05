@@ -1,13 +1,30 @@
-﻿@model IEnumerable<CategoryBookViewModel>
+﻿@model CategoryPageViewModel
 @{
     ViewData["Title"] = "Category";
 }
 
+<script>
+    $().ready(function () {
+        $(".page-num-category").on("click", function () {
+            $(".page-num-category.current").removeClass("current");
+            $(this).addClass("current");
+            var page = parseInt($(this).html());
+
+            $.ajax({
+                url: '@Url.Action("BooksByCategoryList", "Book", new { id = Model.Genre.GenreId})',
+                data: { "page": page },
+                success: function (data) {
+                    $("#paged-by-category").html(data);
+                }
+            });
+        });
+    });
+</script>
 <section class="content">
 
     <div class="row narrow">
         <div class="col-full content-header">
-            <h1>Category: Clasics</h1>
+            <h1>Category: @Model.Genre.Name</h1>
             <p class="lead">
                 A biography (from the Greek words bios meaning "life",
                 and graphos meaning "write") is an account of a person's life,

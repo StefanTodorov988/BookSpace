@@ -1,6 +1,6 @@
-﻿@model IEnumerable<CategoryBookViewModel>
+﻿@model CategoryPageViewModel
 
-@foreach (var book in Model)
+@foreach (var book in Model.Books)
 {
     <article class="category-entry">
         <a asp-action="Book" asp-controller="Home" class="category-thumb">

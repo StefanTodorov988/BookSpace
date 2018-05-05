@@ -374,7 +374,8 @@ button {
             padding: 0;
         }
 
-.page-num {
+.page-num,
+.page-num-category {
     font-family: "metropolis-bold", sans-serif;
     font-size: 1.5rem;
     line-height: 2.4rem;
@@ -388,7 +389,8 @@ button {
     transition: all 0.3s ease-in-out;
 }
 
-    .page-num:hover {
+    .page-num:hover,
+    .page-num-category:hover{
         background: #c4c4c4;
         color: #151515;
     }

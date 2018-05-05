@@ -4,6 +4,7 @@ using BookSpace.Repositories;
 using BookSpace.Repositories.Contracts;
 using BookSpace.Web.Models.BookViewModels;
 using BookSpace.Web.Models.CommentsViewModel;
+using BookSpace.Web.Models.GenreViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace BookSpace.Web.Controllers
         private readonly IBookRepository bookRepository;
         private readonly IMapper objectMapper;
         private readonly IGenreRepository genreRepository;
-        private const int recordsOnPage = 30;
+        private const int recordsOnPage = 5;
 
         public BookController(IBookRepository bookRepository,IGenreRepository genreRepository, IMapper objectMapper)
         {
@@ -32,7 +33,12 @@ namespace BookSpace.Web.Controllers
 
         public async Task<IActionResult> Category([FromRoute] string id, int page = 1)
         {
-            return View(await this.GetBooksByCategoryPage(id,page));
+            var genre = await this.genreRepository.GetByIdAsync(id);
+            var genreViewModel = this.objectMapper.Map<Genre, GenreViewModel>(genre);
+            var books = await this.GetBooksByCategoryPage(id, page);
+            var categoryViewModel = new CategoryPageViewModel { Genre = genreViewModel, Books = books };
+
+            return View(categoryViewModel);
         }
 
         [HttpGet]
@@ -44,7 +50,12 @@ namespace BookSpace.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> BooksByCategoryList([FromRoute] string id,[FromQuery] int page)
         {
-            return PartialView("Book/_BooksPagePartial", await this.GetBooksByCategoryPage(id,page));
+            var genre = await this.genreRepository.GetByIdAsync(id);
+            var genreViewModel = this.objectMapper.Map<Genre, GenreViewModel>(genre);
+            var books = await this.GetBooksByCategoryPage(id, page);
+            var categoryViewModel = new CategoryPageViewModel { Genre = genreViewModel, Books = books };
+
+            return PartialView("Book/_BookByCategoryPagePartial", categoryViewModel);
         }
 
         public async Task<IActionResult> BookDetails([FromRoute] string id)
