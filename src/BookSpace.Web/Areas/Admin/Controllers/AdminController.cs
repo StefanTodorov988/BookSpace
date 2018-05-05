@@ -30,7 +30,7 @@ namespace BookSpace.Web.Areas.Admin.Controllers
         private readonly IGenreRepository genreRepository;
         private readonly IMapper objectMapper;
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly BookServices bookServices;
+        private readonly BookDataServices bookServices;
         private readonly IBlobStorageService blobStorageService;
         private readonly IFactory<Book, BookResponseModel> bookFactory;
         private readonly IFactory<Genre, GenreResponseModel> genreFactory;
@@ -38,7 +38,7 @@ namespace BookSpace.Web.Areas.Admin.Controllers
 
         public AdminController(IApplicationUserRepository userRepository, IBookRepository bookRepository, ITagRepository tagRepository, IGenreRepository genreRepository,
             IFactory<Book, BookResponseModel> bookFactory, IFactory<Genre, GenreResponseModel> genreFactory, IFactory<Tag, TagResponseModel> tagFactory,
-            IMapper objectMapper, UserManager<ApplicationUser> userManager, BookServices bookServices, IBlobStorageService blobStorageService)
+            IMapper objectMapper, UserManager<ApplicationUser> userManager, BookDataServices bookServices, IBlobStorageService blobStorageService)
         {
             this.userRepository = userRepository;
             this.bookRepository = bookRepository;
