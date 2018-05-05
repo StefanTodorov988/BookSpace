@@ -26,6 +26,8 @@ namespace BookSpace.Data.Contracts
                                      Expression<Func<TEntity, IEnumerable<TProperty>>> selectorMany,
                                      Expression<Func<TProperty, TResultProperty>> selector);
 
+        Task<IEnumerable<TEntity>> Search(Expression<Func<TEntity, bool>> filter);
+
         Task AddAsync(TEntity entity);
         Task UpdateAsync(TEntity entity);
         Task DeleteAsync(TEntity entity);
