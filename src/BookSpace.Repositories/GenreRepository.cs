@@ -14,11 +14,12 @@ namespace BookSpace.Repositories
     {
         public GenreRepository(IDbContext dbContext) : base(dbContext) { }
 
-        public async Task<IEnumerable<Book>> GetBooksWithGenreAsync(string genreId)
+        public async Task<PagedResult<Book>> GetBooksByGenrePageAsync(string genreId, int page, int pageSize)
         {
-            var books = await this.GetManyToManyAsync(g => g.GenreId == genreId,
+            var books = await this.GetPagedManyToMany(g => g.GenreId == genreId,
                                                       b => b.GenreBooks,
-                                                      x => x.Book
+                                                      x => x.Book,
+                                                      page, pageSize
             );
 
             if (books == null)

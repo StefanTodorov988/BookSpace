@@ -12,6 +12,7 @@ using BookSpace.Web.Models.BookViewModels;
 using AutoMapper;
 using BookSpace.Data.Contracts;
 using BookSpace.Repositories;
+using BookSpace.Web.Models.GenreViewModels;
 
 namespace BookSpace.Web.Controllers
 {
