@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BookSpace.Models;
+using BookSpace.Repositories;
 using BookSpace.Repositories.Contracts;
 using BookSpace.Web.Models.BookViewModels;
 using BookSpace.Web.Models.CommentsViewModel;
@@ -14,11 +15,13 @@ namespace BookSpace.Web.Controllers
     {
         private readonly IBookRepository bookRepository;
         private readonly IMapper objectMapper;
+        private readonly IGenreRepository genreRepository;
         private const int recordsOnPage = 30;
 
-        public BookController(IBookRepository bookRepository, IMapper objectMapper)
+        public BookController(IBookRepository bookRepository,IGenreRepository genreRepository, IMapper objectMapper)
         {
             this.bookRepository = bookRepository;
+            this.genreRepository = genreRepository;
             this.objectMapper = objectMapper;
         }
 
@@ -27,9 +30,12 @@ namespace BookSpace.Web.Controllers
             return View(await this.GetBooksPage(page));
         }
 
-        public IActionResult Category([FromRoute] string id)
+        public async Task<IActionResult> Category([FromRoute] string id)
         {
-            return View();
+            var books = await this.genreRepository.GetBooksWithGenreAsync(id);
+            var booksViewModel = this.objectMapper.Map<IEnumerable<Book>, IEnumerable<CategoryBookViewModel>>(books);
+
+            return View(booksViewModel);
         }
 
         [HttpGet]

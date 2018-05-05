@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<CategoryBookViewModel>
 @{
     ViewData["Title"] = "Category";
 }
@@ -20,85 +20,23 @@
 
         <div class="col-full">
             <div class="block-m-full">
-                <article class="category-entry">
-                    <a asp-action="Book" asp-controller="Home" class="category-thumb">
-                        <img src="~/images/books/on_the_road_small.jpg" alt="">
-                    </a>
-                    <h3><a asp-action="Book" asp-controller="Home">On the Road</a></h3>
-                    <section class="category-meta">
-                        <span class="category-author"><span>By</span> Duluoz Legend</span>
-                    </section>
-                    <div class="category-entry-description">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
-                    </div>
-                </article>
-                <hr />
-                <article class="category-entry">
-                    <a asp-action="Book" asp-controller="Home" class="category-thumb">
-                        <img src="~/images/articles/new_york-small.jpg" alt="">
-                    </a>
-                    <h3><a asp-action="Book" asp-controller="Home">To New York and back</a></h3>
-                    <section class="category-meta">
-                        <span class="category-author"><span>By</span> Stefani Nikolova </span>
-                    </section>
-                    <div class="category-entry-description">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
-                    </div>
-                </article>
-                <hr />
-                <article class="category-entry">
-                    <a asp-action="Book" asp-controller="Home" class="category-thumb">
-                        <img src="~/images/magazines/leuropeo_small.jpg" alt="">
-                    </a>
-                    <h3><a asp-action="Book" asp-controller="Home">L'Europeo</a></h3>
-                    <section class="category-meta">
-                        <span class="category-date"><span>on</span> <time datetime="2018-04-1">April 1, 2018</time></span>
-                    </section>
-                    <div class="category-entry-description">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
-                    </div>
-                </article>
-                <hr />
-                <article class="category-entry">
-                    <a asp-action="Book" asp-controller="Home" class="category-thumb">
-                        <img src="~/images/magazines/inglobo_small.jpg" alt="">
-                    </a>
-                    <h3><a asp-action="Book" asp-controller="Home">Inglobo</a></h3>
-                    <section class="category-meta">
-                        <span class="category-date"><span>on</span> <time datetime="2018-03-24">March 24, 2018</time></span>
-                    </section>
-                    <div class="category-entry-description">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
-                    </div>
-                </article>
-                <hr />
-                <article class="category-entry">
-                    <a asp-action="Book" asp-controller="Home" class="category-thumb">
-                        <img src="~/images/art/basquiat-selft-portret-small.jpg" alt="">
-                    </a>
-                    <h3><a asp-action="Book" asp-controller="Home">Jean-Michel Basquiat</a></h3>
-                    <section class="category-meta">
-                        <span class="category-author"><span>By</span> Unknown </span>
-                        <span class="category-date"><span>on</span> <time datetime="2018-03-02">March 2, 2018</time></span>
-                    </section>
-                    <div class="category-entry-description">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
-                    </div>
-                </article>
-                <hr />
-                <article class="category-entry">
-                    <a asp-action="Book" asp-controller="Home" class="category-thumb">
-                        <img src="~/images/articles/fashion-small.jpg" alt="">
-                    </a>
-                    <h3><a asp-action="Book" asp-controller="Home">Fashion in Shanghai</a></h3>
-                    <section class="category-meta">
-                        <span class="category-author"><span>By</span> Stefani Nikolova</span>
-                        <span class="category-date"><span>on</span> <time datetime="2017-02-24">February 24, 2018</time></span>
-                    </section>
-                    <div class="category-entry-description">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
-                    </div>
-                </article>
+                @foreach (var book in Model)
+                {
+                    <article class="category-entry">
+                        <a asp-action="Book" asp-controller="Home" class="category-thumb">
+                            <img src="@book.CoverUrl" alt="">
+                        </a>
+                        <h3><a asp-action="Book" asp-controller="Home">@book.Title</a></h3>
+                        <section class="category-meta">
+                            <span class="category-author"><span>By</span> @book.Author</span>
+                        </section>
+                        <div class="category-entry-description">
+                            <p>@book.Description</p>
+                        </div>
+                    </article>
+                    <hr />
+                }
+
             </div>
         </div>
     </div>
