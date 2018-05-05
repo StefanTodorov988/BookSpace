@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BookSpace.BlobStorage
+﻿namespace BookSpace.BlobStorage
 {
     public class BlobStorageInfo
     {

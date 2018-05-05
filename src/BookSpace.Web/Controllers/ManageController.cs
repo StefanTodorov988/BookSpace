@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -8,8 +7,6 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using BookSpace.Web.Models;
 using BookSpace.Web.Models.ManageViewModels;
 using BookSpace.Web.Services;
 using BookSpace.Models;
@@ -17,6 +14,7 @@ using BookSpace.Web.Extensions;
 using BookSpace.BlobStorage.Contracts;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using BookSpace.CognitiveServices.Contract;
 
 namespace BookSpace.Web.Controllers
 {
@@ -28,6 +26,7 @@ namespace BookSpace.Web.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly UrlEncoder _urlEncoder;
+        private readonly IFaceService faceService;
         private readonly IBlobStorageService blobStorageService;
         private const string blobContainer = "bookspace";
 
@@ -39,13 +38,15 @@ namespace BookSpace.Web.Controllers
           SignInManager<ApplicationUser> signInManager,
           IEmailSender emailSender,
           UrlEncoder urlEncoder,
-          IBlobStorageService blobService)
+          IBlobStorageService blobService,
+          IFaceService faceService)
         {
             this._userManager = userManager;
             this._signInManager = signInManager;
             this._emailSender = emailSender;
             this._urlEncoder = urlEncoder;
             this.blobStorageService = blobService;
+            this.faceService = faceService;
         }
 
         [TempData]
@@ -118,11 +119,7 @@ namespace BookSpace.Web.Controllers
             {
                 await file.CopyToAsync(stream);
                 var user = await this._userManager.GetUserAsync(HttpContext.User);
-                stream.Seek(0, SeekOrigin.Begin);
-                var buf = new byte[stream.Length];
-                stream.Read(buf, 0, buf.Length);
-
-                await this.blobStorageService.UploadAsync(user.Id, blobContainer, stream);
+                await this.blobStorageService.UploadAsync(user.Id, blobContainer, stream.ToArray());
             }
 
             return RedirectToAction(nameof(Index));

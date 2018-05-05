@@ -14,6 +14,7 @@ using BookSpace.Services;
 using BookSpace.Web.Areas.Admin.Models.ApplicationUserViewModels;
 using BookSpace.Web.Models.BookViewModels;
 using BookSpace.Web.Models.GenreViewModels;
+using BookSpace.Web.Services.SmtpService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -30,7 +31,7 @@ namespace BookSpace.Web.Areas.Admin.Controllers
         private readonly IGenreRepository genreRepository;
         private readonly IMapper objectMapper;
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly BookServices bookServices;
+        private readonly BookDataServices bookServices;
         private readonly IBlobStorageService blobStorageService;
         private readonly IFactory<Book, BookResponseModel> bookFactory;
         private readonly IFactory<Genre, GenreResponseModel> genreFactory;
@@ -38,7 +39,7 @@ namespace BookSpace.Web.Areas.Admin.Controllers
 
         public AdminController(IApplicationUserRepository userRepository, IBookRepository bookRepository, ITagRepository tagRepository, IGenreRepository genreRepository,
             IFactory<Book, BookResponseModel> bookFactory, IFactory<Genre, GenreResponseModel> genreFactory, IFactory<Tag, TagResponseModel> tagFactory,
-            IMapper objectMapper, UserManager<ApplicationUser> userManager, BookServices bookServices, IBlobStorageService blobStorageService)
+            IMapper objectMapper, UserManager<ApplicationUser> userManager, BookDataServices bookServices, IBlobStorageService blobStorageService)
         {
             this.userRepository = userRepository;
             this.bookRepository = bookRepository;
@@ -238,7 +239,7 @@ namespace BookSpace.Web.Areas.Admin.Controllers
             //{
             //    await blobStorageService.UploadAsync("testName", "testcontainer", str);
             //    var result = await blobStorageService.GetAsync("testName", "testcontainer");
-            //}
+            //}          
             return View();
         }
     }

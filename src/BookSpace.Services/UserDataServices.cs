@@ -1,24 +1,20 @@
-﻿using BookSpace.Data;
-using BookSpace.Data.Contracts;
+﻿using BookSpace.Data.Contracts;
 using BookSpace.Models;
 using BookSpace.Repositories;
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace BookSpace.Services
 {
-    public class BookServices
+    public class UserDataServices
     {
-        private const string regexPatern = @"[^\w-]+";
-
-
         private readonly IDbContext dbContext;
         private readonly IGenreRepository genreRepository;
         private readonly ITagRepository tagRepository;
 
-        public BookServices(IDbContext dbCtx, IGenreRepository genreRepository, ITagRepository tagRepository)
+        public UserDataServices(IDbContext dbCtx, IGenreRepository genreRepository, ITagRepository tagRepository)
         {
             this.dbContext = dbCtx ?? throw new ArgumentNullException(nameof(dbContext));
             this.genreRepository = genreRepository;
@@ -26,11 +22,7 @@ namespace BookSpace.Services
         }
 
         //splitting tags genres response to seperate entities
-        public IEnumerable<string> FormatStringResponse(string response)
-        {
-            var handledString = Regex.Split(response, regexPatern, RegexOptions.None);
-            return handledString;
-        }
+       
 
         public async Task MatchGenresToBookAsync(IEnumerable<string> genres, string bookId)
         {
@@ -68,4 +60,5 @@ namespace BookSpace.Services
             await this.dbContext.SaveAsync();
         }
     }
+
 }

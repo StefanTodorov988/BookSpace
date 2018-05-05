@@ -19,6 +19,7 @@ using BookSpace.CognitiveServices.Contract;
 using BookSpace.Factories;
 using BookSpace.Factories.ResponseModels;
 using BookSpace.Services;
+using BookSpace.Web.Services.SmtpService;
 
 namespace BookSpace.Web
 {
@@ -55,9 +56,11 @@ namespace BookSpace.Web
             services.AddScoped<IGenreRepository, GenreRepository>();
             services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<IBookUserRepository, BookUserRepository>();
+            services.AddScoped<IBookTagRepository, BookTagRepository>();
+            services.AddScoped<IBookGenreRepository, BookGenreRepository>();
 
             //bookservices
-            services.AddScoped<BookServices>();
+            services.AddScoped<BookDataServices>();
 
             //Factories
             services.AddScoped<IFactory<Book, BookResponseModel>, BookFactory>();
@@ -66,10 +69,10 @@ namespace BookSpace.Web
 
 
             //Blob Storage
-            services.AddSingleton<IBlobStorageService, BlobStorageService>();
             services.AddSingleton<BlobStorageInfo>(
                 Configuration.GetSection(nameof(BlobStorageInfo))
-                .Get<BlobStorageInfo>());
+                    .Get<BlobStorageInfo>());
+            services.AddSingleton<IBlobStorageService, BlobStorageService>();
 
             //FaceApi Storage
             services.AddSingleton<IFaceService, FaceService>();
