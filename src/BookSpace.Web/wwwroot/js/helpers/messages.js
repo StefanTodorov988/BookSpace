@@ -12,3 +12,13 @@ function showWarningMessage(message) {
     $("div.warning").empty().append(`<p>${message}</p>`);
     $("div.warning").fadeIn(300).delay(1500).fadeOut(400);
 };
+
+// Global Ajax Call listener
+$(document).on({
+    ajaxStart: function () {
+        $("#loadingBox").show()
+    },
+    ajaxStop: function () {
+        $("#loadingBox").fadeOut(1000)
+    }
+});

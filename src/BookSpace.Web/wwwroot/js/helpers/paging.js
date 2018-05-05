@@ -3,7 +3,7 @@
         $(".page-num.current").removeClass("current");
         $(this).addClass("current");
         var page = parseInt($(this).html());
-   
+
         $.ajax({
             url: 'Book/BooksList',
             data: { "page": page },

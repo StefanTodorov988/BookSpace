@@ -4,7 +4,6 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
-
 <div class="pageheader-content row">
     <div class="col-full">
         <div class="featured">
@@ -39,13 +38,10 @@
     </div>
     <div class="row masonry-wrap">
         <div class="masonry">
-
            @foreach (var book in Model.PopularBooks)
            {
                @await Html.PartialAsync("Book/_PopularBookPartial", book)
            }
-
-
         </div>
     </div>
 </section>

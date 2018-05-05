@@ -1,6 +1,4 @@
-﻿
-
-<div class="user-books-wrapper">
+﻿<div class="user-books-wrapper">
 
     <div class="user-books-heading">
         <span>Hello, Bookworm!</span>
@@ -14,34 +12,62 @@
 
     <nav class="user-vertical-nav">
         <ul>
-            @*Create controller action for each partial view*@
-            <li class="current"><button id="read" asp-controller="UserBooks" asp-action="Index">Read(12)</button></li>
-            <li><a asp-controller="UserBooks" asp-action="Index">Currently reading(1)</a></li>
-            <li><a asp-controller="UserBooks" asp-action="Index">Favourite(23)</a></li>
+            <li><button id="read">Read</button></li>
+            <li><button id="reading">Reading</button></li>
+            <li><button id="favourite">Favourite</button></li>
         </ul>
     </nav>
-
-    <section id="renderPartial">
-
-    </section>
+    <div id="renderPartial" style="display:none"></div>
 </div>
 
 <script>
+    const renderSection = $('#renderPartial');
+
     $('#read').on('click', readBooks);
+    $('#reading').on('click', readingBooks);
+    $('#favourite').on('click', favouriteBooks);
 
     function readBooks(e) {
-        //e.preventDefault();
-        //e.stopPropagation();
-
-        const renderSection = $('#renderPartial');
-
         $.ajax({
             type: "POST",
-            url: "/UserBooks/_ReadBooksPartialListAsync",
-            success: (htmlData) => renderSection.html(htmlData),
-            error: (response) => alert('Error')
+            url: "/UserBooks/_UserBooksPartialListAsync",
+            data: { statusEnum: 'Read' },
+            success: (htmlData) => {
+                renderSection.html(htmlData).fadeIn();
+            },
+            error: (response) => {
+                displayError('Error loading content');
+            }
         })
     }
 
-    (() => readBooks())();
+    function readingBooks(e) {
+        $.ajax({
+            type: "POST",
+            url: "/UserBooks/_UserBooksPartialListAsync",
+            data: { statusEnum: 'ToRead' },
+            success: (htmlData) => {
+                renderSection.html(htmlData).fadeIn();
+            },
+            error: (response) => {
+                displayError('Error loading content');
+            }
+        })
+    }
+
+    function favouriteBooks() {
+        $.ajax({
+            type: "POST",
+            url: "/UserBooks/_UserBooksPartialListAsync",
+            data: { statusEnum: 'Favourite' },
+            success: (htmlData) => {
+                renderSection.html(htmlData).fadeIn();
+            },
+            error: (response) => {
+                displayError('Error loading content');
+            }
+        })
+    }
+
+    (() => readingBooks())(); // Default is reading books
 </script>

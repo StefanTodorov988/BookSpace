@@ -30,24 +30,25 @@ namespace BookSpace.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult _ReadBooksPartialListAsync()
+        public async Task<IActionResult> _UserBooksPartialListAsync(string statusEnum)
         {
             if (!User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Index", "Home");
             }
 
-            var user = this.applicationUserRepository.GetUserByUsernameAsync(User.Identity.Name).Result;
-            var userReadBooks = this.applicationUserRepository.GetUserBooksAsync(user.Id, BookState.Read).Result;
 
-            IEnumerable<UserBookViewModel> mappedBooksToViewModel = null; 
-
-            if(userReadBooks != null)
+            BookState parsedEnum = BookState.Read;
+            if(!Enum.TryParse<BookState>(statusEnum, out parsedEnum))
             {
-                mappedBooksToViewModel = Mapper.Map<IEnumerable<Book>, IEnumerable<UserBookViewModel>>(userReadBooks);
+                throw new ArgumentException("Cannot parse enum");
             }
 
-            return PartialView("_ReadBooksPartial", mappedBooksToViewModel);
+            var user = await this.applicationUserRepository.GetUserByUsernameAsync(User.Identity.Name);
+            var userReadBooks = await this.applicationUserRepository.GetUserBooksAsync(user.Id, parsedEnum);
+            var mappedBooksToViewModel = Mapper.Map<IEnumerable<Book>, IEnumerable<UserBookViewModel>>(userReadBooks);
+
+            return PartialView("_AllUserBooksPartial", mappedBooksToViewModel);
         }
     }
 }

@@ -33,6 +33,58 @@ namespace BookSpace.Data
             await this.SeedCommentsAsync();
             await this.SeedGenresBooksAsync();
             await this.SeedBookUsersAsync();
+            await this.SeedTagsAsync();
+            await this.SeedBookTags();
+        }
+
+        private async Task SeedBookTags()
+        {
+            if (!ctx.BooksTags.Any())
+            {
+                string[] tagsIds = await this.ctx.Tags.Select(i => i.TagId).ToAsyncEnumerable().ToArray();
+                string[] bookIds = await this.ctx.Books.Select(i => i.BookId).ToAsyncEnumerable().ToArray();
+
+                List<BookTag> bookTags = new List<BookTag>();
+
+                // For each book add 3 tags
+                int chunkSize = tagsIds.Length / 3;
+                Random rnd = new Random();
+                for (int i = 0; i < tagsIds.Length; i++)
+                {
+                    bookTags.Add(new BookTag()
+                    {
+                        BookId = bookIds[i],
+                        TagId = tagsIds[rnd.Next(0, chunkSize)]
+                    });
+
+                    bookTags.Add(new BookTag()
+                    {
+                        BookId = bookIds[i],
+                        TagId = tagsIds[rnd.Next(0 + chunkSize, chunkSize * 2)]
+                    });
+
+                    bookTags.Add(new BookTag()
+                    {
+                        BookId = bookIds[i],
+                        TagId = tagsIds[rnd.Next(0 + 2 * chunkSize, chunkSize * 3)]
+                    });
+                }
+
+                await ctx.BooksTags.AddRangeAsync(bookTags);
+                await ctx.SaveChangesAsync();
+            }
+        }
+
+        private async Task SeedTagsAsync()
+        {
+            if (!ctx.Tags.Any())
+            {
+                string responseBody = await this.ReadJsonAsync("https://academystorage18.blob.core.windows.net/unknown/Tags.json?sv=2017-07-29&sr=b&sig=aNbPcDqhFTrwwB2qDhTIP4UlUEj6dq%2BspzQbyI6KR2k%3D&se=9999-12-31T21%3A59%3A59Z&sp=rd");
+                Tag[] allTags = JsonConvert.DeserializeObject<Tag[]>(responseBody);
+
+                await ctx.Tags.AddRangeAsync(allTags);
+                await ctx.SaveChangesAsync();
+            }
         }
 
         private async Task SeedBookUsersAsync()
@@ -94,7 +146,7 @@ namespace BookSpace.Data
         {
             if (!ctx.Comments.Any())
             {
-                string responseBody = this.ReadJsonAsync("https://academystorage18.blob.core.windows.net/unknown/Comments.json?sv=2017-07-29&sr=b&sig=uLLXu01htpg8zgc0y5B6n%2BLzU4lSY%2BPSYse5MjTgeSg%3D&se=9999-12-31T21%3A59%3A59Z&sp=rd").Result;
+                string responseBody = await this.ReadJsonAsync("https://academystorage18.blob.core.windows.net/unknown/Comments.json?sv=2017-07-29&sr=b&sig=uLLXu01htpg8zgc0y5B6n%2BLzU4lSY%2BPSYse5MjTgeSg%3D&se=9999-12-31T21%3A59%3A59Z&sp=rd");
                 Comment[] allComments = JsonConvert.DeserializeObject<Comment[]>(responseBody);
 
                 string[] usersIds = ctx.Users.Select(i => i.Id).ToArray();
