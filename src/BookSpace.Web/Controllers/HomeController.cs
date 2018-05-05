@@ -10,17 +10,22 @@ using BookSpace.Web.Models;
 using BookSpace.Repositories.Contracts;
 using BookSpace.Web.Models.BookViewModels;
 using AutoMapper;
+using BookSpace.Data.Contracts;
+using BookSpace.Repositories;
+using BookSpace.Web.Models.GenreViewModels;
 
 namespace BookSpace.Web.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IBookRepository bookRepository;
+        private readonly IGenreRepository genreRepository;
         private readonly IMapper objectMapper;
 
-        public HomeController(IBookRepository bookRepository, IMapper mapper)
+        public HomeController(IBookRepository bookRepository,IGenreRepository genreRepository, IMapper mapper)
         {
             this.bookRepository = bookRepository;
+            this.genreRepository = genreRepository;
             this.objectMapper = mapper;
         }
         public async Task<IActionResult> Index()
@@ -74,5 +79,16 @@ namespace BookSpace.Web.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        #region Helpers
+        public async Task<IActionResult> GenresNav()
+        {
+            var genres = await this.genreRepository.GetAllAsync();
+            var genresViewModels = this.objectMapper.Map<IEnumerable<Genre>, IEnumerable<GenreViewModel>>(genres);
+
+            return PartialView("_BookGenresNavPartial", genresViewModels);
+        }
+
+        #endregion
     }
 }

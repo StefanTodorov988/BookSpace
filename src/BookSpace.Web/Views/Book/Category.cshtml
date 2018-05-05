@@ -1,0 +1,60 @@
+﻿@model CategoryPageViewModel
+@{
+    ViewData["Title"] = "Category";
+}
+
+<script>
+    $().ready(function () {
+        $(".page-num-category").on("click", function () {
+            $(".page-num-category.current").removeClass("current");
+            $(this).addClass("current");
+            var page = parseInt($(this).html());
+
+            $.ajax({
+                url: '@Url.Action("BooksByCategoryList", "Book", new { id = Model.Genre.GenreId})',
+                data: { "page": page },
+                success: function (data) {
+                    $("#paged-by-category").html(data);
+                }
+            });
+
+            $('html, body').animate({ scrollTop: 0 }, 'slow');
+        });
+    });
+</script>
+<section class="content">
+
+    <div class="row narrow">
+        <div class="col-full content-header">
+            <h1>Category: @Model.Genre.Name</h1>
+        </div>
+    </div>
+
+    <div class="row top">
+
+        <div class="col-full">
+            <div class="block-m-full" id="paged-by-category">
+                @Html.Partial("Book/_BookByCategoryPagePartial")
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-full">
+            <nav class="pagination">
+                <ul>
+                    <li><a class="page-prev" href="#0">Prev</a></li>
+                    <li><a class="page-num-category" href="#0">1</a></li>
+                    <li><a class="page-num-category" href="#0">2</a></li>
+                    <li><a class="page-num-category" href="#0">3</a></li>
+                    <li><a class="page-num-category" href="#0">4</a></li>
+                    <li><a class="page-num-category" href="#0">5</a></li>
+                    <li><span class="page-num dots">…</span></li>
+                    <li><a class="page-num-category" href="#0">8</a></li>
+                    <li><a class="page-num-category" href="#0">Next</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+</section>

@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using BookSpace.Models;
+using BookSpace.Repositories;
 using BookSpace.Repositories.Contracts;
 using BookSpace.Web.Models.BookViewModels;
 using BookSpace.Web.Models.CommentsViewModel;
+using BookSpace.Web.Models.GenreViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,23 +16,47 @@ namespace BookSpace.Web.Controllers
     {
         private readonly IBookRepository bookRepository;
         private readonly IMapper objectMapper;
-        private const int recordsOnPage = 30;
+        private readonly IGenreRepository genreRepository;
+        private const int recordsOnPageIndex = 30;
+        private const int recordsOnPageCategory = 10;
 
-        public BookController(IBookRepository bookRepository, IMapper objectMapper)
+        public BookController(IBookRepository bookRepository,IGenreRepository genreRepository, IMapper objectMapper)
         {
             this.bookRepository = bookRepository;
+            this.genreRepository = genreRepository;
             this.objectMapper = objectMapper;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
-            return View(await this.GetBooksPage(1));
+            return View(await this.GetBooksPage(page));
+        }
+
+        public async Task<IActionResult> Category([FromRoute] string id, int page = 1)
+        {
+            var genre = await this.genreRepository.GetByIdAsync(id);
+            var genreViewModel = this.objectMapper.Map<Genre, GenreViewModel>(genre);
+            var books = await this.GetBooksByCategoryPage(id, page);
+            var categoryViewModel = new CategoryPageViewModel { Genre = genreViewModel, Books = books };
+
+            return View(categoryViewModel);
         }
 
         [HttpGet]
         public async Task<IActionResult> BooksList([FromQuery] int page)
         {
             return PartialView("Book/_BooksPagePartial", await this.GetBooksPage(page));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> BooksByCategoryList([FromRoute] string id,[FromQuery] int page)
+        {
+            var genre = await this.genreRepository.GetByIdAsync(id);
+            var genreViewModel = this.objectMapper.Map<Genre, GenreViewModel>(genre);
+            var books = await this.GetBooksByCategoryPage(id, page);
+            var categoryViewModel = new CategoryPageViewModel { Genre = genreViewModel, Books = books };
+
+            return PartialView("Book/_BookByCategoryPagePartial", categoryViewModel);
         }
 
         public async Task<IActionResult> BookDetails([FromRoute] string id)
@@ -87,9 +113,16 @@ namespace BookSpace.Web.Controllers
 
         private async Task<IEnumerable<BooksIndexViewModel>> GetBooksPage(int page)
         {
-            var books = await this.bookRepository.GetPaged(page, recordsOnPage);
+            var books = await this.bookRepository.GetPaged(page, recordsOnPageIndex);
             var booksViewModels = this.objectMapper.Map<IEnumerable<Book>, IEnumerable<BooksIndexViewModel>>(books.Results);
             return booksViewModels;
+        }
+
+        private async Task<IEnumerable<CategoryBookViewModel>> GetBooksByCategoryPage(string genreId, int page)
+        {
+            var books = await this.genreRepository.GetBooksByGenrePageAsync(genreId, page, recordsOnPageCategory);
+            var booksViewModel = this.objectMapper.Map<IEnumerable<Book>, IEnumerable<CategoryBookViewModel>>(books.Results);
+            return booksViewModel;
         }
         #endregion
     }

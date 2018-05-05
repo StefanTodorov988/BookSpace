@@ -66,6 +66,12 @@ namespace BookSpace.Data
                    .ToListAsync();
         }
 
+        public async Task<IEnumerable<TEntity>> Search(Expression<Func<TEntity, bool>> filter)
+        {
+            return await this.dbContext.DbSet<TEntity>()
+                    .Where(filter)
+                    .ToListAsync();
+        }
 
 
         public async Task AddAsync(TEntity entity)
@@ -94,6 +100,30 @@ namespace BookSpace.Data
 
             var skip = (page - 1) * pageSize;
             result.Results = await this.dbContext.DbSet<TEntity>().Skip(skip).Take(pageSize).ToListAsync();
+
+            return result;
+        }
+
+        public async Task<PagedResult<TResultProperty>> GetPagedManyToMany<TProperty, TResultProperty>
+                                 (Expression<Func<TEntity, bool>> where,
+                                  Expression<Func<TEntity, IEnumerable<TProperty>>> selectorMany,
+                                  Expression<Func<TProperty, TResultProperty>> selector,
+                                  int page, int pageSize) where TResultProperty : class
+
+        {
+            var result = new PagedResult<TResultProperty>();
+            result.Page = page;
+            result.PageSize = pageSize;
+
+            var skip = (page - 1) * pageSize;
+
+            result.Results = await this.dbContext.DbSet<TEntity>()
+                   .Where(where)
+                   .SelectMany(selectorMany)
+                   .Select(selector)
+                   .Skip(skip)
+                   .Take(pageSize)
+                   .ToListAsync();
 
             return result;
         }

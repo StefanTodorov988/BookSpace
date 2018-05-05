@@ -26,12 +26,21 @@ namespace BookSpace.Data.Contracts
                                      Expression<Func<TEntity, IEnumerable<TProperty>>> selectorMany,
                                      Expression<Func<TProperty, TResultProperty>> selector);
 
+        Task<IEnumerable<TEntity>> Search(Expression<Func<TEntity, bool>> filter);
+
         Task AddAsync(TEntity entity);
         Task UpdateAsync(TEntity entity);
         Task DeleteAsync(TEntity entity);
 
         Task<PagedResult<TEntity>> GetPaged(int page, int pageSize);
-        Task<IEnumerable<TEntity>> FindByExpressionOrdered<TProperty>
+
+        Task<PagedResult<TResultProperty>> GetPagedManyToMany<TProperty, TResultProperty>
+                                  (Expression<Func<TEntity, bool>> where,
+                                   Expression<Func<TEntity, IEnumerable<TProperty>>> selectorMany,
+                                   Expression<Func<TProperty, TResultProperty>> selector,
+                                   int page, int pageSize) where TResultProperty : class;
+ 
+         Task<IEnumerable<TEntity>> FindByExpressionOrdered<TProperty>
                                     (Expression<Func<TEntity, TProperty>> order,
                                      int recordsCount);
 

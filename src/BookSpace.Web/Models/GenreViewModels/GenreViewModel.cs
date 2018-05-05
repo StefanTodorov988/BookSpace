@@ -1,4 +1,4 @@
-﻿namespace BookSpace.Web.Models.BookViewModels
+﻿namespace BookSpace.Web.Models.GenreViewModels
 {
     public class GenreViewModel
     {
