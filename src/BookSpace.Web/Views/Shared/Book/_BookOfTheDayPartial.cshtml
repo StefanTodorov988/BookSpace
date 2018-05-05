@@ -36,7 +36,7 @@
 
         <div class="header-book-btn">
             <button id="addToRead" onclick="addToRead()">Want To Read</button>
-            <button id="addFavourite" onclick="addFavourite()">Currently Reading</button>
+            <button id="addCurrentlyReading" onclick="addCurrentyReading()">Currently Reading</button>
             <button id="addRead" onclick="addRead()">Read</button>
         </div>
     </div>
@@ -45,7 +45,7 @@
 <script>
     function addRead() {
         $.ajax({
-            type: "DELETE",
+            type: "POST",
             url: "/UserBooks/AddBook",
             data: { id: "@Model.BookId", collection : 'Read' },
             success: (response) => {
@@ -59,7 +59,7 @@
 
     function addToRead() {
         $.ajax({
-            type: "DELETE",
+            type: "POST",
             url: "/UserBooks/AddBook",
             data: { id: "@Model.BookId", collection : 'ToRead' },
             error: (response) => {
@@ -68,11 +68,11 @@
         })
     }
 
-    function addFavourite() {
+    function addCurrentyReading() {
         $.ajax({
-            type: "DELETE",
+            type: "POST",
             url: "/UserBooks/AddBook",
-            data: { id: "@Model.BookId", collection : 'Favourite' },
+            data: { id: "@Model.BookId", collection: 'CurrentlyReading' },
             error: (response) => {
                 displayError('Error adding book to collection');
             }

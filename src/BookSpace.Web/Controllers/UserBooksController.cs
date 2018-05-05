@@ -65,7 +65,7 @@ namespace BookSpace.Web.Controllers
             return View("Index");
         }
 
-        [HttpDelete]
+        [HttpPost]
         public async Task<IActionResult> AddBook(string id, string collection)
         {
             var bookState = new BookState();
