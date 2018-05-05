@@ -2310,7 +2310,7 @@ footer {
 }
 
 .content-header-title {
-    font-size: 4.2rem;
+    font-size: 2.2rem;
     line-height: 1.214;
     margin-bottom: .9rem;
 }
@@ -2370,8 +2370,9 @@ footer {
 
 
 .content-tags {
-    margin-top: 6rem;
     font-family: "metropolis-regular", sans-serif;
+    width: 50%;
+    float: right;
 }
 
     .content-tags span {
@@ -2472,7 +2473,7 @@ footer {
     }
 
     .content-header-title {
-        font-size: 3.8rem;
+        font-size: 1.8rem;
     }
 
     .content-main {
@@ -2505,7 +2506,7 @@ footer {
 
 @media only screen and (max-width:800px) {
     .content-header-title {
-        font-size: 3.6rem;
+        font-size: 1.6rem;
     }
 
     .content-author {
@@ -2529,7 +2530,7 @@ footer {
 
 @media only screen and (max-width:500px) {
     .content-header-title {
-        font-size: 3.4rem;
+        font-size: 1.4rem;
     }
 }
 
@@ -2546,7 +2547,7 @@ footer {
     }
 
     .content-header-title {
-        font-size: 3.3rem;
+        font-size: 1.3rem;
     }
 }
 
@@ -2825,3 +2826,127 @@ h1 {
     border-color: #faebcc;
     display: none;
 }
+
+
+/*   Book Details Page */
+
+.book-details-title{
+    font-size: 2.5rem;
+    border-bottom: 1px dotted #000;
+    margin-bottom: 2.3rem;
+}
+
+.book-details-meta{
+    list-style: none;
+    margin-left: 1.5rem;
+    padding-left: 0px;
+}
+
+.book-details-meta li{
+    display: table-cell;
+    padding-right: 1.5rem;
+}
+
+.book-details-meta .genres a{
+    padding: 5px;
+    background: #e2e2e2;
+    color: #000;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.book-details-rating{
+    padding-left: 1.5rem;
+}
+
+.number-of-ratings{
+    padding-left: 2.5rem;
+}
+
+.book-details-image {
+    float: left;
+    padding-left: 4.5rem;
+  
+    position: absolute;
+    width: 15%;
+}
+.book-details-author{
+    padding-left: 1.5rem;
+}
+.book-details-author span{
+    font-weight: bold;
+    font-size: 1.8rem;
+}
+.book-details-content {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    width: 90%;
+    max-width: 90%;
+    height: 264px;
+}
+.book-details-description {
+    width: 50%;
+    margin: 0 auto;
+    color: #000;
+    font-size: 1.5rem;
+}
+
+.book-details-description a{
+    font-weight: bold;
+    color: #0054a5;
+}
+
+
+/* Dropdown rating */
+
+.dropbtn {
+    background-color: #0054a5;
+    color: white;
+    font-size: 12px;
+    line-height: 3.0rem;
+    height: 3.0rem;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown-rating {
+    position: relative;
+    display: inline-block;
+    margin-left: 4.5rem;
+    margin-top: 1.0rem;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 100px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+    .dropdown-content a {
+        color: black;
+        padding: 0px 16px;
+        text-decoration: none;
+        display: block;
+        margin: 0 auto;
+    }
+        .dropdown-content a:hover {
+            background-color: #f1f1f1
+        }
+
+.dropdown-rating:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: #3e8e41;
+}
+
+.book-details-after .content-tags{
+    float: right;
+}
+

@@ -22,9 +22,9 @@ namespace BookSpace.Web.Controllers
             this.objectMapper = objectMapper;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
-            return View(await this.GetBooksPage(1));
+            return View(await this.GetBooksPage(page));
         }
 
         [HttpGet]
