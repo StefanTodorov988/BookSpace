@@ -14,6 +14,7 @@ using BookSpace.Services;
 using BookSpace.Web.Areas.Admin.Models.ApplicationUserViewModels;
 using BookSpace.Web.Models.BookViewModels;
 using BookSpace.Web.Models.GenreViewModels;
+using BookSpace.Web.Services.SmtpService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -238,7 +239,7 @@ namespace BookSpace.Web.Areas.Admin.Controllers
             //{
             //    await blobStorageService.UploadAsync("testName", "testcontainer", str);
             //    var result = await blobStorageService.GetAsync("testName", "testcontainer");
-            //}
+            //}          
             return View();
         }
     }
