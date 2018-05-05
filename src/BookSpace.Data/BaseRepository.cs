@@ -66,6 +66,12 @@ namespace BookSpace.Data
                    .ToListAsync();
         }
 
+        public async Task<IEnumerable<TEntity>> Search(Expression<Func<TEntity, bool>> filter)
+        {
+            return await this.dbContext.DbSet<TEntity>()
+                    .Where(filter)
+                    .ToListAsync();
+        }
 
 
         public async Task AddAsync(TEntity entity)

@@ -27,6 +27,11 @@ namespace BookSpace.Web.Controllers
             return View(await this.GetBooksPage(page));
         }
 
+        public IActionResult Category([FromRoute] string id)
+        {
+            return View();
+        }
+
         [HttpGet]
         public async Task<IActionResult> BooksList([FromQuery] int page)
         {
