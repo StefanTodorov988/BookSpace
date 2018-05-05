@@ -4,6 +4,6 @@
     {
         Read,
         ToRead,
-        Favourite
+        CurrentlyReading
     }
 }
