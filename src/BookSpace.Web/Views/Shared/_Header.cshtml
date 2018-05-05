@@ -22,20 +22,23 @@
                 </a>
             </div>
 
-            <a class="header-search-btn" href="@Url.Action("SearchResult", "Search")"></a>
+            @*<a class="header-search-btn" href="@Url.Action("SearchResult", "Search")"></a>*@
 
-            <div class="header-search">
-                <form role="search" method="get" class="header-search-form" action="#">
-                    <label>
-                        <span class="hide-content">Search for:</span>
-                        <input type="search" class="search-field" placeholder="Type Keywords" value="" name="s" title="Search for:">
-                    </label>
-                    <div class="form-submit-btn">
-                        <button type="submit" class="submit btn--primary btn--large full-width">Search</button>
-                    </div>
-                </form>
-                <a href="#0" title="Close Search" class="header-search-close">Close</a>
-            </div>
+            @await Html.PartialAsync("../Search/Search", new SearchedBookViewModel());
+
+
+            @*<div class="header-search">
+            <form role="search" method="get" class="header-search-form" action="#">
+                <label>
+                    <span class="hide-content">Search for:</span>
+                    <input type="search" class="search-field" placeholder="Type Keywords" value="" name="s" title="Search for:">
+                </label>
+                <div class="form-submit-btn">
+                    <button type="submit" class="submit btn--primary btn--large full-width">Search</button>
+                </div>
+            </form>
+            <a href="#0" title="Close Search" class="header-search-close">Close</a>
+        </div>*@
 
             <a class="header-toggle-menu" href="#0" title="Menu"><span>Menu</span></a>
             <nav class="header-nav-wrappper">
@@ -46,22 +49,22 @@
                 </ul>
 
                 @if (SignInManager.IsSignedIn(User))
-                {
-                    <ul class="header-nav nav-user">
-                        <li><a asp-area="" asp-controller="UserBooks" asp-action="Index" class="nav-user">My Books</a></li>
+        {
+            <ul class="header-nav nav-user">
+                <li><a asp-area="" asp-controller="UserBooks" asp-action="Index" class="nav-user">My Books</a></li>
+                <li>
+                    <a asp-area="" asp-controller="Home" asp-action="Index" class="nav-user has-children">Hello, @User.Identity.Name!</a>
+                    <ul class="sub-menu">
+                        <li><a asp-area="" asp-controller="Home" asp-action="Category">Profile</a></li>
                         <li>
-                            <a asp-area="" asp-controller="Home" asp-action="Index" class="nav-user has-children">Hello, @User.Identity.Name!</a>
-                            <ul class="sub-menu">
-                                <li><a asp-area="" asp-controller="Home" asp-action="Category">Profile</a></li>
-                                <li>
-                                    <form asp-controller="Account" asp-action="Logout" method="post">
-                                        <button class="logout-btn" type="submit">Log out</button>
-                                    </form>
-                                </li>
-                            </ul>
+                            <form asp-controller="Account" asp-action="Logout" method="post">
+                                <button class="logout-btn" type="submit">Log out</button>
+                            </form>
                         </li>
                     </ul>
-                }
+                </li>
+            </ul>
+}
 
             </nav>
         </div>
