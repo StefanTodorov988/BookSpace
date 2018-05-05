@@ -17,12 +17,12 @@
     <header class="header">
         <div class="header-content row">
             <div class="header-logo">
-                <a class="logo" href="index.html">
+                <a class="logo" href="@Url.Action("Index", "Home")">
                     <img src="~/images/logo.png" alt="Homepage">
                 </a>
             </div>
 
-            <a class="header-search-btn" href="#0"></a>
+            <a class="header-search-btn" href="@Url.Action("SearchResult", "Search")"></a>
 
             <div class="header-search">
                 <form role="search" method="get" class="header-search-form" action="#">
