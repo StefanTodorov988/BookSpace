@@ -1,28 +1,11 @@
 ﻿@model UserBookViewModel
 
-<article class="masonry-brick entry format-standard">
-    <div class="brick">
-        <div class="brick-header">
-            <a href="post.html" class="brick-thumb-link">
-                <img src="@Model.CoverUrl" alt="">
-            </a>
-
-            <div class="brick-date">
-                <a href="post.html">@Model.PublicationYear</a>
-            </div>
-            <h1 class="brick-title"><a href="post.html">@Model.Title <br /> by <i>@Model.Author</i></a></h1>
-
-        </div>
-        <div class="entry-meta">
-            <div>
-                @await Html.PartialAsync("_RatingPartial")
-                <span class="entry-meta-rating">Rating : @Model.Rating</span>
-            </div>
-            <div class="entry-learn-more">
-                <span>
-                    <a class="learn-more-btn" href="category.html">Learn more</a>
-                </span>
-            </div>
-        </div>
-    </div>
+<article style="width:100px; margin:20px">
+    <a asp-action="Book" asp-controller="Home" class="books-list-thumb">
+        <img src="@Model.CoverUrl" alt="">
+    </a>
+    <section><a asp-action="Book" asp-controller="Home">@Model.Title</a></section>
+    <section class="books-list-meta">
+        <span class="books-list-author">By <i>@Model.Author</i></span>
+    </section>
 </article>
