@@ -64,9 +64,9 @@
         </div>
         <div class="book-details-btn">
 
-            <button onclick="showSuccessMessage('You have successfully added the book to your list')">Want To Read</button>
-            <button>Currently Reading</button>
-            <button>Read</button>
+            <button onclick="addToRead()">Want To Read</button>
+            <button onclick="addFavourite()">Currently Reading</button>
+            <button onclick="addRead()">Read</button>
             <br />
             <span>Add to yor collections</span>
         </div>
@@ -132,4 +132,39 @@
         </div>
     </div>
 </section>
+
+<script>
+    function addRead() {
+        $.ajax({
+            type: "DELETE",
+            url: "/UserBooks/AddBook",
+            data: { id: "@Model.Book.BookId", collection : 'Read' },
+            error: (response) => {
+                displayError('Error adding book to collection');
+            }
+        })
+    }
+
+    function addToRead() {
+        $.ajax({
+            type: "DELETE",
+            url: "/UserBooks/AddBook",
+            data: { id: "@Model.Book.BookId", collection : 'ToRead' },
+            error: (response) => {
+                displayError('Error adding book to collection');
+            }
+        })
+    }
+
+    function addFavourite() {
+        $.ajax({
+            type: "DELETE",
+            url: "/UserBooks/AddBook",
+            data: { id: "@Model.Book.BookId", collection : 'Favourite' },
+            error: (response) => {
+                displayError('Error adding book to collection');
+            }
+        })
+    }
+</script>
 
