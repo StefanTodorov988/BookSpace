@@ -80,6 +80,13 @@ namespace BookSpace.Data
             await this.dbContext.SaveAsync();
         }
 
+        //public async Task AddGenericAsync<T>(T entity) where T : class
+        //{
+        //    await this.dbContext.DbSet<T>().AddAsync(entity);
+        //    await this.dbContext.SaveAsync();
+        //}
+
+
         public async Task DeleteAsync(TEntity entity)
         {
             this.dbContext.DbSet<TEntity>().Remove(entity);

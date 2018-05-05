@@ -18,6 +18,7 @@ using BookSpace.CognitiveServices;
 using BookSpace.CognitiveServices.Contract;
 using BookSpace.Factories;
 using BookSpace.Factories.ResponseModels;
+using BookSpace.Services;
 
 namespace BookSpace.Web
 {
@@ -54,7 +55,8 @@ namespace BookSpace.Web
             services.AddScoped<IGenreRepository, GenreRepository>();
             services.AddScoped<ITagRepository, TagRepository>();
 
-
+            //bookservices
+            services.AddScoped<BookServices>();
 
             //Factories
             services.AddScoped<IFactory<Book, BookResponseModel>, BookFactory>();
