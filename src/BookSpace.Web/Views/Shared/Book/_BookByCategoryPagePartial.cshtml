@@ -1,0 +1,18 @@
+﻿@model IEnumerable<CategoryBookViewModel>
+
+@foreach (var book in Model)
+{
+    <article class="category-entry">
+        <a asp-action="Book" asp-controller="Home" class="category-thumb">
+            <img src="@book.CoverUrl" alt="">
+        </a>
+        <h3><a asp-action="Book" asp-controller="Home">@book.Title</a></h3>
+        <section class="category-meta">
+            <span class="category-author"><span>By</span> @book.Author</span>
+        </section>
+        <div class="category-entry-description">
+            <p>@book.Description</p>
+        </div>
+    </article>
+    <hr />
+}

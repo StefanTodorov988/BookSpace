@@ -30,18 +30,21 @@ namespace BookSpace.Web.Controllers
             return View(await this.GetBooksPage(page));
         }
 
-        public async Task<IActionResult> Category([FromRoute] string id)
+        public async Task<IActionResult> Category([FromRoute] string id, int page = 1)
         {
-            var books = await this.genreRepository.GetBooksWithGenreAsync(id);
-            var booksViewModel = this.objectMapper.Map<IEnumerable<Book>, IEnumerable<CategoryBookViewModel>>(books);
-
-            return View(booksViewModel);
+            return View(await this.GetBooksByCategoryPage(id,page));
         }
 
         [HttpGet]
         public async Task<IActionResult> BooksList([FromQuery] int page)
         {
             return PartialView("Book/_BooksPagePartial", await this.GetBooksPage(page));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> BooksByCategoryList([FromRoute] string id,[FromQuery] int page)
+        {
+            return PartialView("Book/_BooksPagePartial", await this.GetBooksByCategoryPage(id,page));
         }
 
         public async Task<IActionResult> BookDetails([FromRoute] string id)
@@ -101,6 +104,13 @@ namespace BookSpace.Web.Controllers
             var books = await this.bookRepository.GetPaged(page, recordsOnPage);
             var booksViewModels = this.objectMapper.Map<IEnumerable<Book>, IEnumerable<BooksIndexViewModel>>(books.Results);
             return booksViewModels;
+        }
+
+        private async Task<IEnumerable<CategoryBookViewModel>> GetBooksByCategoryPage(string genreId, int page)
+        {
+            var books = await this.genreRepository.GetBooksByGenrePageAsync(genreId, page, recordsOnPage);
+            var booksViewModel = this.objectMapper.Map<IEnumerable<Book>, IEnumerable<CategoryBookViewModel>>(books.Results);
+            return booksViewModel;
         }
         #endregion
     }
