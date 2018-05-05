@@ -1,20 +1,16 @@
 ﻿<div class="user-books-wrapper">
-
-    <div class="user-books-heading">
-        <span>Hello, Bookworm!</span>
-    </div>
     <div class="user-books-description">
         <p>
-            Here you can keep track of your personal bookshelves.
+            Here you can keep track of your personal bookshelves.<br/>
             Keep exploring and tell us which are your favourite books!
         </p>
     </div>
 
     <nav class="user-vertical-nav">
-        <ul>
-            <li><button id="read">Read</button></li>
-            <li><button id="reading">Reading</button></li>
-            <li><button id="favourite">Favourite</button></li>
+        <ul class="user-collections">
+            <li><button id="favourite" class="user-collections-btn">Want to read</button></li>
+            <li><button id="reading" class="user-collections-btn">Currently reading</button></li>
+            <li><button id="read" class="user-collections-btn">Read</button></li>
         </ul>
     </nav>
     <div id="renderPartial" style="display:none"></div>
@@ -28,6 +24,7 @@
     $('#favourite').on('click', favouriteBooks);
 
     function readBooks(e) {
+        $(".user-collections-btn.current").removeClass("current");
         $.ajax({
             type: "POST",
             url: "/UserBooks/_UserBooksPartialListAsync",
@@ -39,9 +36,12 @@
                 displayError('Error loading content');
             }
         })
+
+        $(this).addClass("current");
     }
 
     function readingBooks(e) {
+        $(".user-collections-btn.current").removeClass("current");
         $.ajax({
             type: "POST",
             url: "/UserBooks/_UserBooksPartialListAsync",
@@ -53,9 +53,11 @@
                 displayError('Error loading content');
             }
         })
+        $(this).addClass("current");
     }
 
     function favouriteBooks() {
+        $(".user-collections-btn.current").removeClass("current");
         $.ajax({
             type: "POST",
             url: "/UserBooks/_UserBooksPartialListAsync",
@@ -67,6 +69,7 @@
                 displayError('Error loading content');
             }
         })
+        $(this).addClass("current");
     }
 
     (() => readingBooks())(); // Default is reading books

@@ -2997,3 +2997,51 @@ h1 {
         max-height: 100%;
         object-fit: contain;
     }
+
+
+/* User books */
+.user-books-description {
+    width: 70%;
+    margin: 0 auto;
+    font-size: 2.5rem;
+    margin-top: 2.5rem;
+}
+
+.user-collections-btn{
+    height: 3.2rem;
+    line-height: 3.2rem;
+}
+    .user-collections-btn.current{
+        background-color: #000;
+        color: white;
+        border-radius: 3px;
+        border: none;
+    }
+    .user-books-table {
+        margin: 0 auto;
+        border-collapse: collapse;
+        width: 80%;
+        margin-bottom: 3.0rem;
+    }
+
+td, th {
+    border: 1px solid #19191b;
+    text-align: center;
+    padding: 8px;
+}
+
+td img{
+    width: 70px;
+    height: 90px;
+}
+td a{
+    font-size: 2.3rem;
+    color: #000;
+}
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+.fa.fa-trash{
+    font-size: 3.0rem;
+}
