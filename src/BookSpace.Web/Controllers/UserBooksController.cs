@@ -14,11 +14,15 @@ namespace BookSpace.Web.Controllers
     public class UserBooksController : Controller
     {
         private readonly IApplicationUserRepository applicationUserRepository;
+        private readonly IBookUserRepository bookUserRepository;
         private readonly IMapper objectMapper;
 
-        public UserBooksController(IApplicationUserRepository applicationUserRepository, IMapper objectMapper)
+        public UserBooksController(IApplicationUserRepository applicationUserRepository,
+                                    IBookUserRepository bookUserRepository, 
+                                    IMapper objectMapper)
         {
             this.applicationUserRepository = applicationUserRepository;
+            this.bookUserRepository = bookUserRepository;
             this.objectMapper = objectMapper;
         }
 
@@ -49,6 +53,13 @@ namespace BookSpace.Web.Controllers
             var mappedBooksToViewModel = Mapper.Map<IEnumerable<Book>, IEnumerable<UserBookViewModel>>(userReadBooks);
 
             return PartialView("_AllUserBooksPartial", mappedBooksToViewModel);
+        }
+
+        public async Task<IActionResult> RemoveBook(string id)
+        {
+            var bookUser = await this.bookUserRepository.GetAsync(bu => bu.BookId == id);
+            await this.bookUserRepository.DeleteAsync(bookUser);
+            return View("Index");
         }
     }
 }

@@ -2,13 +2,26 @@
 
 @if (!Model.Any())
 {
-    <h3 style="text-align:center">Sorry pal! No books here.</h3>
+    <h3 style="text-align:center">You don't have any books in this collection.</h3>
 }
 else
 {
     <h3 style="text-align:center">You have @Model.ToList().Count books here</h3>
-    @foreach (var b in Model)
-    {
-        @Html.Partial("_BookPartial", b);
-    }
+
+    <table class="user-books-table">
+        <tr>
+            <th>Cover</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Rating</th>
+            <th>Published on</th>
+            <th>Remove</th>
+        </tr>
+        @foreach (var b in Model)
+        {
+            @Html.Partial("_BookPartial", b);
+        }
+    </table>
+
+
 }

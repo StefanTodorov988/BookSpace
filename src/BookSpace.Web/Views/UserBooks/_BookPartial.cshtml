@@ -1,11 +1,13 @@
 ﻿@model UserBookViewModel
-
-<article style="width:100px; margin:20px">
-    <a asp-action="Book" asp-controller="Home" class="books-list-thumb">
-        <img src="@Model.CoverUrl" alt="">
-    </a>
-    <section><a asp-action="Book" asp-controller="Home">@Model.Title</a></section>
-    <section class="books-list-meta">
-        <span class="books-list-author">By <i>@Model.Author</i></span>
-    </section>
-</article>
+<tr>
+    <td>
+        <a asp-action="BookDetails" asp-controller="Book" asp-route-id="@Model.BookId">
+            <img src="@Model.CoverUrl" alt="">
+        </a>
+    </td>
+    <td><a asp-action="BookDetails" asp-controller="Book" asp-route-id="@Model.BookId">@Model.Title</a></td>
+    <td>@Model.Author</td>
+    <td>@Model.Rating</td>
+    <td>@Model.PublicationYear.ToString("MMMM dd yyyy")</td>
+    <td><a asp-controller="UserBooks" asp-action="RemoveBook" asp-route-id="@Model.BookId"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+</tr>

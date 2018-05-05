@@ -54,6 +54,7 @@ namespace BookSpace.Web
             services.AddScoped<IBookRepository, BookRepository>();
             services.AddScoped<IGenreRepository, GenreRepository>();
             services.AddScoped<ITagRepository, TagRepository>();
+            services.AddScoped<IBookUserRepository, BookUserRepository>();
 
             //bookservices
             services.AddScoped<BookServices>();
