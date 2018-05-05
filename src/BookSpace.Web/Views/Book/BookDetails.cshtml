@@ -2,49 +2,76 @@
 
 <section class="content content--narrow content--no-padding-bottom">
 
-    <div>
-        @await Html.PartialAsync("_RatingPartial", new KeyValuePair<string, decimal>(Model.Book.Title, Model.Book.Rating))
-    </div>
     <article class="row format-standard">
 
-        <div class="content-header col-full">
-            <h1 class="content-header-title">
+        <div class="col-full">
+            <h1 class="book-details-title">
                 @Model.Book.Title
             </h1>
-            <ul class="content-header-meta">
-                <li class="date">@Model.Book.PublicationYear</li>
-                <li class="cat">
-                    In <a href="#0">@String.Join(", ", Model.Properties.Genres)</a>
+            <div class="book-details-author">
+                By <span>@Model.Book.Author</span>
+            </div>
+            <ul class="book-details-meta">
+                <li class="date">Published on @Model.Book.PublicationYear.ToString("MMMM dd, yyyy")</li>
+                <li class="genres">
+                    Genre: <a href="#0">@String.Join(", ", Model.Properties.Genres)</a>
                 </li>
             </ul>
+            <div class="book-details-rating">
+                <span>Rating : </span>
+                @await Html.PartialAsync("_RatingPartial", new KeyValuePair<string, decimal>(Model.Book.Title, Model.Book.Rating))
+                <span>@Model.Book.Rating</span>
+                <span class="number-of-ratings">Number of ratings : 1204</span>
+            </div>
         </div>
-        <div class="content-image col-full">
-            <img src="@Model.Book.CoverUrl" alt="">
-        </div>
+        <div class="book-details-content">
+            <div class="book-details-image">
+                <img src="@Model.Book.CoverUrl" alt="">
+            </div>
 
-        <div class="col-full content-main">
-
-            <p class="lead">
+            <p class="book-details-description">
                 @Model.Book.Description
+
+                Lorem ipsum dolor sit amet, no sit melius voluptua hendrerit,
+                dolorem perpetua salutatus ei pri. Pro ex omnis perpetua,
+                in quem delenit expetendis usu, dicunt fabellas ea usu...
+                <a class="description-see-more">more</a>
             </p>
 
+        </div>
+
+        <div class="book-details-after">
+            <div class="dropdown-rating">
+                <button class="dropbtn">Rate Book</button>
+                <div class="dropdown-content">
+                    <a href="#">1 - Bad</a>
+                    <a href="#">2 - Ok</a>
+                    <a href="#">3 - Liked it</a>
+                    <a href="#">4 - Good</a>
+                    <a href="#">5 - Great!</a>
+                </div>
+            </div>
             <p class="content-tags">
                 <span>Post Tags</span>
                 <span class="content-tag-list">
 
                     @foreach (var tag in Model.Properties.Tags)
-                    {
-                        <a href="#0">@tag</a>
-                    }
+                {
+                    <a href="#0">@tag</a>
+            }
                 </span>
             </p>
-
-            <div class="content-author">
-                <img src="~/images/avatars/user-female.png" alt="">
-                <h4>@Model.Book.Author</h4>
-            </div>
-
         </div>
+        <div class="book-details-btn">
+
+            <button onclick="showSuccessMessage('You have successfully added the book to your list')">Want To Read</button>
+            <button>Currently Reading</button>
+            <button>Read</button>
+            <br />
+            <span>Add to yor collections</span>
+        </div>
+
+
 
     </article>
 
