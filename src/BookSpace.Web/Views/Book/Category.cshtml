@@ -17,6 +17,8 @@
                     $("#paged-by-category").html(data);
                 }
             });
+
+            $('html, body').animate({ scrollTop: 0 }, 'slow');
         });
     });
 </script>
@@ -25,11 +27,6 @@
     <div class="row narrow">
         <div class="col-full content-header">
             <h1>Category: @Model.Genre.Name</h1>
-            <p class="lead">
-                A biography (from the Greek words bios meaning "life",
-                and graphos meaning "write") is an account of a person's life,
-                usually published in the form of a book or essay, or in some other form, such as a film.
-            </p>
         </div>
     </div>
 

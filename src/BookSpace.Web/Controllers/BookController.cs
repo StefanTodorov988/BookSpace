@@ -17,7 +17,8 @@ namespace BookSpace.Web.Controllers
         private readonly IBookRepository bookRepository;
         private readonly IMapper objectMapper;
         private readonly IGenreRepository genreRepository;
-        private const int recordsOnPage = 5;
+        private const int recordsOnPageIndex = 30;
+        private const int recordsOnPageCategory = 10;
 
         public BookController(IBookRepository bookRepository,IGenreRepository genreRepository, IMapper objectMapper)
         {
@@ -112,14 +113,14 @@ namespace BookSpace.Web.Controllers
 
         private async Task<IEnumerable<BooksIndexViewModel>> GetBooksPage(int page)
         {
-            var books = await this.bookRepository.GetPaged(page, recordsOnPage);
+            var books = await this.bookRepository.GetPaged(page, recordsOnPageIndex);
             var booksViewModels = this.objectMapper.Map<IEnumerable<Book>, IEnumerable<BooksIndexViewModel>>(books.Results);
             return booksViewModels;
         }
 
         private async Task<IEnumerable<CategoryBookViewModel>> GetBooksByCategoryPage(string genreId, int page)
         {
-            var books = await this.genreRepository.GetBooksByGenrePageAsync(genreId, page, recordsOnPage);
+            var books = await this.genreRepository.GetBooksByGenrePageAsync(genreId, page, recordsOnPageCategory);
             var booksViewModel = this.objectMapper.Map<IEnumerable<Book>, IEnumerable<CategoryBookViewModel>>(books.Results);
             return booksViewModel;
         }

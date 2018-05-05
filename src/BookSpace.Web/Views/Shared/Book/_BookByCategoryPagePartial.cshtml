@@ -2,17 +2,22 @@
 
 @foreach (var book in Model.Books)
 {
+    string bookTitle = book.Title.Length > 25 ? book.Title.Substring(0,25) + "..." : book.Title;
+
     <article class="category-entry">
         <a asp-action="Book" asp-controller="Home" class="category-thumb">
             <img src="@book.CoverUrl" alt="">
         </a>
-        <h3><a asp-action="Book" asp-controller="Home">@book.Title</a></h3>
+        <span class="category-entry-title"><a asp-action="Book" asp-controller="Home">@bookTitle</a></span="category-entry-title">
         <section class="category-meta">
             <span class="category-author"><span>By</span> @book.Author</span>
         </section>
         <div class="category-entry-description">
             <p>@book.Description</p>
         </div>
+        <div class="category-entry-rating">
+            <span>Rating : @book.Rating</span>
+            @await Html.PartialAsync("_RatingPartial", new KeyValuePair<string, decimal>(book.Title, book.Rating))
+        </div>
     </article>
-    <hr />
 }
