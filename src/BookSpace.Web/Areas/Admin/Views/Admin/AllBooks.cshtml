@@ -28,7 +28,7 @@
             <td>@book.PublicationYear</td>
             <td>@book.Rating</td>
             <td><a asp-area="Admin" asp-controller="Admin" asp-action="EditBook" asp-route-bookid="@book.BookId">[Edit]</a>
-            <a asp-area="" asp-controller="Book" asp-action="BookDetails" asp-route-bookid="@book.BookId">[Details]</a>
+            <a asp-area="" asp-controller="Book" asp-action="BookDetails"asp-route-id="@book.BookId" >[Details]</a>
             <a asp-area="Admin" asp-controller="Admin" asp-action="DeleteBook" asp-route-bookid="@book.BookId">[Delete]</a></td>
         </tr>
         }

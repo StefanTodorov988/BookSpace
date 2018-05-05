@@ -1,16 +1,14 @@
-﻿@model CategoryPageViewModel
+﻿@model IEnumerable<SearchedBookViewModel>
 
-@foreach (var book in Model.Books)
+@foreach (var book in Model)
 {
-    string bookTitle = book.Title.Length > 25 ? book.Title.Substring(0,25) + "..." : book.Title;
+    string bookTitle = book.Title.Length > 25 ? book.Title.Substring(0, 25) + "..." : book.Title;
 
     <article class="category-entry">
-
-        <a asp-action="BookDetails" asp-controller="Book" asp-route-id="@book.BookId" class="category-thumb">
+        <a asp-action="Book" asp-controller="Home" class="category-thumb">
             <img src="@book.CoverUrl" alt="">
         </a>
-        <span class="category-entry-title"><a asp-action="BookDetails" asp-controller="Book" asp-route-id="@book.BookId">
-            @bookTitle</a></span="category-entry-title">
+        <span class="category-entry-title"><a asp-action="Book" asp-controller="Home">@bookTitle</a></span>
         <section class="category-meta">
             <span class="category-author"><span>By</span> @book.Author</span>
         </section>

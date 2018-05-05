@@ -10,6 +10,7 @@ using BookSpace.Factories.ResponseModels;
 using BookSpace.Models;
 using BookSpace.Repositories;
 using BookSpace.Repositories.Contracts;
+using BookSpace.Services;
 using BookSpace.Web.Areas.Admin.Models.ApplicationUserViewModels;
 using BookSpace.Web.Models.BookViewModels;
 using BookSpace.Web.Models.GenreViewModels;
@@ -29,6 +30,7 @@ namespace BookSpace.Web.Areas.Admin.Controllers
         private readonly IGenreRepository genreRepository;
         private readonly IMapper objectMapper;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly BookServices bookServices;
         private readonly IBlobStorageService blobStorageService;
         private readonly IFactory<Book, BookResponseModel> bookFactory;
         private readonly IFactory<Genre, GenreResponseModel> genreFactory;
@@ -36,7 +38,7 @@ namespace BookSpace.Web.Areas.Admin.Controllers
 
         public AdminController(IApplicationUserRepository userRepository, IBookRepository bookRepository, ITagRepository tagRepository, IGenreRepository genreRepository,
             IFactory<Book, BookResponseModel> bookFactory, IFactory<Genre, GenreResponseModel> genreFactory, IFactory<Tag, TagResponseModel> tagFactory,
-            IMapper objectMapper, UserManager<ApplicationUser> userManager, IBlobStorageService blobStorageService)
+            IMapper objectMapper, UserManager<ApplicationUser> userManager, BookServices bookServices, IBlobStorageService blobStorageService)
         {
             this.userRepository = userRepository;
             this.bookRepository = bookRepository;
@@ -44,6 +46,7 @@ namespace BookSpace.Web.Areas.Admin.Controllers
             this.genreRepository = genreRepository;
             this.objectMapper = objectMapper;
             this.userManager = userManager;
+            this.bookServices = bookServices;
             this.blobStorageService = blobStorageService;
             this.bookFactory = bookFactory;
             this.genreFactory = genreFactory;
@@ -154,6 +157,14 @@ namespace BookSpace.Web.Areas.Admin.Controllers
             var bookResponse = this.objectMapper.Map<BookResponseModel>(bookViewModel);
             var book = this.bookFactory.Create(bookResponse);
 
+            await this.bookRepository.AddAsync(book);
+
+            var genres = this.bookServices.FormatStringResponse(bookViewModel.Genres);
+            var tags = this.bookServices.FormatStringResponse(bookViewModel.Tags);
+
+            await this.bookServices.MatchGenresToBookAsync(genres, book.BookId);
+            await this.bookServices.MatchTagToBookAsync(tags, book.BookId);
+
             //ADDING GENRES TO BOOK
             //search for genres with the names from the controller in the database  get their Ids
             //create new BookGenre record with bookId and GenreId add it to database
@@ -179,7 +190,6 @@ namespace BookSpace.Web.Areas.Admin.Controllers
             //Same as above just with genres
 
 
-            await this.bookRepository.AddAsync(book);
 
             return RedirectToAction("CreateBook");
         }
