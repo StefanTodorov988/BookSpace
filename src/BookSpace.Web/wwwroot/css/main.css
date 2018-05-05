@@ -2554,7 +2554,7 @@ footer {
 .comments-wrapper {
     background-color: #e5e5e5;
     padding: 8.4rem 0 9rem;
-    margin-top: 10.2rem;
+    margin-top: 3.2rem;
 }
 
 #comments {
@@ -2948,5 +2948,16 @@ h1 {
 
 .book-details-after .content-tags{
     float: right;
+}
+
+.book-details-btn{
+    margin-top: 5.5rem;
+    text-align: center;
+}
+
+.book-details-btn button{
+    margin-right: 2.0rem;
+    height: 3.2rem;
+    line-height: 3.2rem;
 }
 

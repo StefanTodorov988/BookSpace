@@ -56,13 +56,20 @@
                 <span class="content-tag-list">
 
                     @foreach (var tag in Model.Properties.Tags)
-                    {
-                        <a href="#0">@tag</a>
-                    }
+                {
+                    <a href="#0">@tag</a>
+            }
                 </span>
             </p>
         </div>
+        <div class="book-details-btn">
 
+            <button onclick="showSuccessMessage('You have successfully added the book to your list')">Want To Read</button>
+            <button>Currently Reading</button>
+            <button>Read</button>
+            <br />
+            <span>Add to yor collections</span>
+        </div>
 
 
 
