@@ -374,7 +374,8 @@ button {
             padding: 0;
         }
 
-.page-num {
+.page-num,
+.page-num-category {
     font-family: "metropolis-bold", sans-serif;
     font-size: 1.5rem;
     line-height: 2.4rem;
@@ -388,7 +389,8 @@ button {
     transition: all 0.3s ease-in-out;
 }
 
-    .page-num:hover {
+    .page-num:hover,
+    .page-num-category:hover{
         background: #c4c4c4;
         color: #151515;
     }
@@ -2075,20 +2077,42 @@ body.login-is-visible {
         line-height: 1.615;
     }
 
+.block-m-full:after {
+    content: "";
+    display: table;
+    clear: both;
+}
 .category-entry {
+    width: 50%;
+    float: left;
     position: relative;
     padding-left: 15.5rem;
-    margin-bottom: 3.3rem;
-    min-height: 13.5rem;
+    margin-bottom: 2.5rem;
+    border-bottom: 1px solid #000;
+    padding-bottom: 2.3rem;
 }
 
-.category-thumb img {
-    width: 13.5rem;
-    height: 13.5rem;
+.category-entry-title a{
+    color : #000;
+    font-size: 2.5rem;
+    font-weight: bold;
 }
+    .category-thumb img {
+        width: 13.5rem;
+        height: 13.5rem;
+    }
 
+.category-author{
+    font-size: 1.5rem;
+    font-weight: bold;
+    color : #19191b;
+}
 .category-entry-description {
+    width: 90%;
     margin: 1.8rem 0 0 0;
+}
+.category-entry-rating{
+    color: #000;
 }
 
 .content-extra .about {

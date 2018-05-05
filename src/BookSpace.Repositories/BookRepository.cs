@@ -10,9 +10,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BookSpace.Repositories
 {
-    public class BookRepository :  BaseRepository<Book>, IBookRepository
+    public class BookRepository : BaseRepository<Book>, IBookRepository
     {
-        public BookRepository(IDbContext dbContext) : base(dbContext) {}
+        public BookRepository(IDbContext dbContext) : base(dbContext) { }
 
 
         public async Task<Book> GetBookByTitleAsync(string title)
@@ -22,7 +22,7 @@ namespace BookSpace.Repositories
 
         public async Task<IEnumerable<Book>> GetPageOfBooksAscync(int take, int skip)
         {
-            var pageRecords = await this.GetPaged(take,skip);
+            var pageRecords = await this.GetPaged(take, skip);
 
             return pageRecords.Results;
         }
@@ -69,8 +69,7 @@ namespace BookSpace.Repositories
             return tags;
         }
 
-
-
+  
         public async Task RemoveBookAync(string bookId)
         {
             var bookToRemove = await this.GetByIdAsync(bookId);
