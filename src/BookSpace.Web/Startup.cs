@@ -55,9 +55,11 @@ namespace BookSpace.Web
             services.AddScoped<IGenreRepository, GenreRepository>();
             services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<IBookUserRepository, BookUserRepository>();
+            services.AddScoped<IBookTagRepository, BookTagRepository>();
+            services.AddScoped<IBookGenreRepository, BookGenreRepository>();
 
             //bookservices
-            services.AddScoped<BookServices>();
+            services.AddScoped<BookDataServices>();
 
             //Factories
             services.AddScoped<IFactory<Book, BookResponseModel>, BookFactory>();
