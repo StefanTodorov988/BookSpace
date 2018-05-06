@@ -792,7 +792,7 @@ button {
 .header-logo {
     display: inline-block;
     margin: 0;
-    padding: 0;
+    padding-left: 16.0rem;
     z-index: 501;
 }
 
@@ -2099,7 +2099,7 @@ body.login-is-visible {
 }
     .category-thumb img {
         width: 13.5rem;
-        height: 13.5rem;
+        height: 18.5rem;
     }
 
 .category-author{
@@ -3049,4 +3049,58 @@ tr:nth-child(even) {
 
 .fa.fa-trash{
     font-size: 3.0rem;
+}
+
+/* Search form */
+
+.search-form{
+    float: right;
+    width: 25%;
+}
+
+.search-input{
+    width: 80%;
+    height: 3.2rem;
+    border-radius: 3px;
+    border: 1px solid #19191b;
+    padding-left: 5px;
+    margin-top: 1.2rem;
+}
+
+button.search-btn {
+    all: unset;
+    color: white;
+    font-size:3.2rem;
+    padding-left: 1.0rem;
+    position: absolute;
+}
+    .search-btn:hover {
+        color: #ccc;
+        background: none;
+    }
+
+    .search-form-page{
+        width: 60%;
+        margin: 0 auto;
+        margin-bottom: 6.0rem;
+    }
+
+    .search-input.page{
+        height: 5.0rem;
+        font-size: 3.0rem;
+    }
+
+    .search-btn.page{
+        color: #000;
+        font-size: 4.5rem;
+        padding-left: 3.0rem;
+    }
+.serach-from-radio-buttons{
+    display: -webkit-inline-box;
+    margin-top: 2.0rem;
+}
+.serach-from-radio-buttons label{
+    padding-left: 10px;
+    padding-right: 15px;
+    font-size: 2.0rem;
 }
