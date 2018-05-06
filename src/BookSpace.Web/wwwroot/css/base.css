@@ -321,6 +321,14 @@ textarea {
     width: 100%;
 }
 
+.searchForm {
+    bottom: 50px;
+    left: 900px;
+    position: relative;
+    max-width: 300px;
+    height: 0px;
+}
+
 form.searchForm input[type=text] {
     padding: 10px;
     font-size: 17px;
@@ -335,6 +343,8 @@ form.searchForm button {
     border: 1px solid grey;
     border-left: none;
     cursor: pointer;
+    height: 30px;
+    line-height: 0;
 }
 
     form.searchForm button:hover {
