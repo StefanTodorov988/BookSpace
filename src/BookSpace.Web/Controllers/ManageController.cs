@@ -15,6 +15,7 @@ using BookSpace.BlobStorage.Contracts;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using BookSpace.CognitiveServices.Contract;
+using BookSpace.Web.Services.SmtpService.Contract;
 
 namespace BookSpace.Web.Controllers
 {
@@ -27,6 +28,7 @@ namespace BookSpace.Web.Controllers
         private readonly IEmailSender _emailSender;
         private readonly UrlEncoder _urlEncoder;
         private readonly IFaceService faceService;
+        private readonly ISmtpSender smtpSender;
         private readonly IBlobStorageService blobStorageService;
         private const string blobContainer = "bookspace";
 
@@ -39,7 +41,8 @@ namespace BookSpace.Web.Controllers
           IEmailSender emailSender,
           UrlEncoder urlEncoder,
           IBlobStorageService blobService,
-          IFaceService faceService)
+          IFaceService faceService,
+          ISmtpSender smtpSender)
         {
             this._userManager = userManager;
             this._signInManager = signInManager;
@@ -47,6 +50,7 @@ namespace BookSpace.Web.Controllers
             this._urlEncoder = urlEncoder;
             this.blobStorageService = blobService;
             this.faceService = faceService;
+            this.smtpSender = smtpSender;
         }
 
         [TempData]
@@ -115,12 +119,22 @@ namespace BookSpace.Web.Controllers
         [HttpPost("UploadPicture")]
         public async Task<IActionResult> UploadPicture(IFormFile file)
         {
+            string currentUserEmail;
+            string userId;
             using (var stream = new MemoryStream())
             {
                 await file.CopyToAsync(stream);
                 var user = await this._userManager.GetUserAsync(HttpContext.User);
+                currentUserEmail = user.Email;
+                userId = user.Id;
                 await this.blobStorageService.UploadAsync(user.Id, blobContainer, stream.ToArray());
             }
+
+            var faceAtributes = faceService.DetectFaceAtribytesAsync(blobStorageService.GetAsync(userId,blobContainer).Result.Url);
+            smtpSender.SendMail(currentUserEmail, GenerateMessageByEmotion(
+                faceAtributes.Result[0].Emotion.Happiness,
+                faceAtributes.Result[0].Emotion.Sadness,
+                faceAtributes.Result[0].Emotion.Anger));
 
             return RedirectToAction(nameof(Index));
         }
@@ -519,6 +533,22 @@ namespace BookSpace.Web.Controllers
             }
         }
 
+        private string GenerateMessageByEmotion(float happiness, float sadness, float anger)
+        {
+            if (happiness > 0.5f && sadness < 0.1f)
+            {
+                return "Happy email Message.";
+            }
+            else if (happiness < 0.2 && sadness > 0.4)
+            {
+                return "Sad email message.";
+            }
+            else if (anger > 0.34)
+            {
+                return "Angry email message.";
+            }
+            return "Default email message";
+        }
         private string FormatKey(string unformattedKey)
         {
             var result = new StringBuilder();
@@ -532,7 +562,6 @@ namespace BookSpace.Web.Controllers
             {
                 result.Append(unformattedKey.Substring(currentPosition));
             }
-
             return result.ToString().ToLowerInvariant();
         }
 
@@ -553,7 +582,6 @@ namespace BookSpace.Web.Controllers
                 await _userManager.ResetAuthenticatorKeyAsync(user);
                 unformattedKey = await _userManager.GetAuthenticatorKeyAsync(user);
             }
-
             model.SharedKey = FormatKey(unformattedKey);
             model.AuthenticatorUri = GenerateQrCodeUri(user.Email, unformattedKey);
         }

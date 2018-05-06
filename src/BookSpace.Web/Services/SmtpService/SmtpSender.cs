@@ -4,9 +4,11 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Net.Mail;
+using BookSpace.Web.Services.SmtpService.Contract;
+
 namespace BookSpace.Web.Services.SmtpService
 {
-    public class SmtpSender
+    public class SmtpSender : ISmtpSender
     {
         private readonly SmtpClient smtpClient;
         private const string appEmail = "bookspaceteam@gmail.com";

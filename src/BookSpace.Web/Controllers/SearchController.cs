@@ -18,7 +18,7 @@ namespace BookSpace.Web.Controllers
             this.bookRepository = bookRepository;
             this.objectMapper = mapper;
         }
-        public async Task<IActionResult> SearchResult(string searchedString)
+        public async Task<IActionResult> Index(string searchedString)
         {
 
             var searchedBooks = await bookRepository.Search(x => x.Title.Contains(searchedString) || x.Author.Contains(searchedString));

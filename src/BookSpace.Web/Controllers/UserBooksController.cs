@@ -90,6 +90,10 @@ namespace BookSpace.Web.Controllers
             }
             else
             {
+                if(bookUser.State == bookState)
+                {
+                    throw new ArgumentException("The book is already present in this collection");
+                }
                 bookUser.State = bookState;
                 await this.bookUserRepository.UpdateAsync(bookUser);
             }
@@ -103,9 +107,11 @@ namespace BookSpace.Web.Controllers
             var book = await this.bookRepository.GetByIdAsync(id);
             var user = await this.applicationUserRepository.GetUserByUsernameAsync(User.Identity.Name);
             var bookUser = await this.bookUserRepository.GetAsync(bu => bu.BookId == id && bu.UserId == user.Id);
+            bool isNewUser = false;
 
             if (bookUser == null)
             {
+                isNewUser = true;
                 var bookUserEntity = new BookUser
                 {
                     BookId = book.BookId,
@@ -114,7 +120,7 @@ namespace BookSpace.Web.Controllers
                     HasRatedBook = true,
                     State = BookState.Default
                 };
-
+                
                 await this.bookUserRepository.AddAsync(bookUserEntity);
             }
             else
@@ -124,7 +130,7 @@ namespace BookSpace.Web.Controllers
 
                 await this.bookUserRepository.UpdateAsync(bookUser);
             }
-            return RedirectToAction("UpdateBookRating", "Book", new { id, rate });
+            return RedirectToAction("UpdateBookRating", "Book", new { id, rate, isNewUser });
         }
     }
 }
