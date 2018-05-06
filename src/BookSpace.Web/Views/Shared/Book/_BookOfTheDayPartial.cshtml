@@ -35,44 +35,9 @@
         </div>
 
         <div class="header-book-btn">
-            <button id="addToRead" onclick="addToRead()">Want To Read</button>
-            <button id="addCurrentlyReading" onclick="addCurrentyReading()">Currently Reading</button>
-            <button id="addRead" onclick="addRead()">Read</button>
+            <button id="addToRead" onclick="addToRead('@Model.BookId', '@Model.Title')">Want To Read</button>
+            <button id="addCurrentlyReading" onclick="addCurrentyReading('@Model.BookId', '@Model.Title')">Currently Reading</button>
+            <button id="addRead" onclick="addRead('@Model.BookId', '@Model.Title')">Read</button>
         </div>
     </div>
 </div>
-
-<script>
-    function addRead() {
-        $.ajax({
-            type: "POST",
-            url: "/UserBooks/AddBook",
-            data: { id: "@Model.BookId", collection: 'Read' },
-            error: (response) => {
-                displayError('Error adding book to collection');
-            }
-        })
-    }
-
-    function addToRead() {
-        $.ajax({
-            type: "POST",
-            url: "/UserBooks/AddBook",
-            data: { id: "@Model.BookId", collection : 'ToRead' },
-            error: (response) => {
-                displayError('Error adding book to collection');
-            }
-        })
-    }
-
-    function addCurrentyReading() {
-        $.ajax({
-            type: "POST",
-            url: "/UserBooks/AddBook",
-            data: { id: "@Model.BookId", collection: 'CurrentlyReading' },
-            error: (response) => {
-                displayError('Error adding book to collection');
-            }
-        })
-    }
-</script>

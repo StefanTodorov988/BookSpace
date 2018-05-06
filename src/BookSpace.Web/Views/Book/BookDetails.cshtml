@@ -46,11 +46,11 @@
 
                 <button class="dropbtn">Rate Book</button>
                 <div class="dropdown-content">
-                    <a href="#" onclick="rate(1)">1 - Bad</a>
-                    <a href="#" onclick="rate(2)">2 - Ok</a>
-                    <a href="#" onclick="rate(3)">3 - Liked it</a>
-                    <a href="#" onclick="rate(4)">4 - Good</a>
-                    <a href="#" onclick="rate(5)">5 - Great!</a>
+                    <a href="#" onclick="rate('@Model.Book.BookId', '@Model.Book.Title', 1)">1 - Bad</a>
+                    <a href="#" onclick="rate('@Model.Book.BookId', '@Model.Book.Title', 2)">2 - Ok</a>
+                    <a href="#" onclick="rate('@Model.Book.BookId', '@Model.Book.Title', 3)">3 - Liked it</a>
+                    <a href="#" onclick="rate('@Model.Book.BookId', '@Model.Book.Title', 4)">4 - Good</a>
+                    <a href="#" onclick="rate('@Model.Book.BookId', '@Model.Book.Title', 5)">5 - Great!</a>
                 </div>
 
             </div>
@@ -66,9 +66,9 @@
             </p>
         </div>
         <div class="book-details-btn">
-            <button id="addToRead" onclick="addToRead()">Want To Read</button>
-            <button id="addCurrentlyReading" onclick="addCurrentyReading()">Currently Reading</button>
-            <button id="addRead" onclick="addRead()">Read</button>
+            <button id="addToRead" onclick="addToRead('@Model.Book.BookId', '@Model.Book.Title')" >Want To Read</button>
+            <button id="addCurrentlyReading" onclick="addCurrentyReading('@Model.Book.BookId', '@Model.Book.Title')">Currently Reading</button>
+            <button id="addRead" onclick="addRead('@Model.Book.BookId', '@Model.Book.Title')">Read</button>
             <br />
             <span>Add to yor collections</span>
         </div>
@@ -126,54 +126,4 @@
         </div>
     </div>
 </section>
-
-<script>
-    function addRead() {
-        $.ajax({
-            type: "POST",
-            url: "/UserBooks/AddBook",
-            data: { id: "@Model.Book.BookId", collection: 'Read' },
-            error: (response) => {
-                displayError('Error adding book to collection');
-            }
-        })
-    }
-
-    function addToRead() {
-        $.ajax({
-            type: "POST",
-            url: "/UserBooks/AddBook",
-            data: { id: "@Model.Book.BookId", collection : 'ToRead' },
-            error: (response) => {
-                displayError('Error adding book to collection');
-            }
-        })
-    }
-
-    function addCurrentyReading() {
-        $.ajax({
-            type: "POST",
-            url: "/UserBooks/AddBook",
-            data: { id: "@Model.Book.BookId", collection: 'CurrentlyReading' },
-            error: (response) => {
-                displayError('Error adding book to collection');
-            }
-        })
-    }
-
-     function rate(userRate) {
-         $.ajax({
-             type: "POST",
-             url: "/UserBooks/RateBook",
-             data: { id: "@Model.Book.BookId", rate: userRate },
-             success: function (data) {
-                  location.reload();
-             },
-             error: (response) => {
-                displayError('Error adding book to collection');
-             },
-             cache: false
-        })
-    }
-</script>
 
