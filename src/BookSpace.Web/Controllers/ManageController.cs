@@ -129,16 +129,21 @@ namespace BookSpace.Web.Controllers
                 userId = user.Id;
                 await this.blobStorageService.UploadAsync(user.Id, blobContainer, stream.ToArray());
             }
+            var faceAtributes = faceService.DetectFaceAtribytesAsync(blobStorageService.GetAsync(userId, blobContainer).Result.Url);
 
-            var faceAtributes = faceService.DetectFaceAtribytesAsync(blobStorageService.GetAsync(userId,blobContainer).Result.Url);
-            smtpSender.SendMail(currentUserEmail, GenerateMessageByEmotion(
-                faceAtributes.Result[0].Emotion.Happiness,
-                faceAtributes.Result[0].Emotion.Sadness,
-                faceAtributes.Result[0].Emotion.Anger));
-
+            try
+            {
+                smtpSender.SendMail(currentUserEmail, GenerateMessageByEmotion(
+                        faceAtributes.Result[0].Emotion.Happiness,
+                        faceAtributes.Result[0].Emotion.Sadness,
+                        faceAtributes.Result[0].Emotion.Anger));
+            }
+            catch (IndexOutOfRangeException e)
+            {
+                smtpSender.SendMail(currentUserEmail, "No face on picture");
+            }
             return RedirectToAction(nameof(Index));
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SendVerificationEmail(IndexViewModel model)
