@@ -14,22 +14,10 @@
                 </a>
             </div>
 
-            @Html.Partial("../Search/Search")
-
-            @*<a class="header-search-btn" href="#0"></a>
-
-                <div class="header-search">
-                    <form role="search" method="get" class="header-search-form" action="#">
-                        <label>
-                            <span class="hide-content">Search for:</span>
-                            <input type="search" class="search-field" placeholder="Type Keywords" value="" name="s" title="Search for:">
-                        </label>
-                        <div class="form-submit-btn">
-                            <button type="submit" class="submit btn--primary btn--large full-width">Search</button>
-                        </div>
-                    </form>
-                    <a href="#0" title="Close Search" class="header-search-close">Close</a>
-                </div>*@
+            <form class="search-form" asp-controller="Search" asp-action="Index">
+                <input name="filter" class="search-input" placeholder="Search Books" />
+                <button type="submit" class="search-btn"><i class="fa fa-search"></i></button>
+            </form>
 
             <a class="header-toggle-menu" href="#0" title="Menu"><span>Menu</span></a>
             <nav class="header-nav-wrappper">

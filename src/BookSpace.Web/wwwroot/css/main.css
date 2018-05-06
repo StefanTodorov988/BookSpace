@@ -3078,3 +3078,29 @@ button.search-btn {
         color: #ccc;
         background: none;
     }
+
+    .search-form-page{
+        width: 60%;
+        margin: 0 auto;
+        margin-bottom: 6.0rem;
+    }
+
+    .search-input.page{
+        height: 5.0rem;
+        font-size: 3.0rem;
+    }
+
+    .search-btn.page{
+        color: #000;
+        font-size: 4.5rem;
+        padding-left: 3.0rem;
+    }
+.serach-from-radio-buttons{
+    display: -webkit-inline-box;
+    margin-top: 2.0rem;
+}
+.serach-from-radio-buttons label{
+    padding-left: 10px;
+    padding-right: 15px;
+    font-size: 2.0rem;
+}

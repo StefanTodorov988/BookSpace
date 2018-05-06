@@ -2,15 +2,32 @@
 @{
     ViewData["Title"] = "SearchResult";
 }
+
+<script>
+    $('.search-form').hide();
+</script>
 <section class="content">
 
     <div class="row narrow">
         <div class="col-full content-header">
-            <h1>Search Results</h1>
+            <h1>Search</h1>
         </div>
     </div>
 
     <div class="row top">
+
+        <form class="search-form-page" asp-controller="Search" asp-action="Index">
+            <input name="filter" class="search-input page" placeholder="Search Books" />
+            <button type="submit" class="search-btn page"><i class="fa fa-search"></i></button>
+            <div class="serach-from-radio-buttons">
+                <input type="radio" name="filter" /> <label>Title</label>
+                <input type="radio" name="filter" /><label>Author</label>
+                <input type="radio" name="filter" /><label>Genre</label>
+                <input type="radio" name="filter" /><label>Tag</label>
+            </div>
+           
+        </form>
+
 
         <div class="col-full">
             <div class="block-m-full" id="paged-by-category">
