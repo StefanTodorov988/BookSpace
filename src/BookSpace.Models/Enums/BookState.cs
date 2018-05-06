@@ -4,6 +4,7 @@
     {
         Read,
         ToRead,
-        CurrentlyReading
+        CurrentlyReading,
+        Default
     }
 }

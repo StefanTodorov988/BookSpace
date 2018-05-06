@@ -85,5 +85,29 @@ namespace BookSpace.Web.Controllers
             return Ok();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> RateBook(string id, string rate)
+        {
+            int userRate = int.Parse(rate);
+            var book = await this.bookRepository.GetByIdAsync(id);
+            var user = await this.applicationUserRepository.GetUserByUsernameAsync(User.Identity.Name);
+
+            var bookUser = new BookUser
+            {
+                Book = book,
+                BookId = book.BookId,
+                User = user,
+                UserId = user.Id,
+                Rate = userRate,
+                HasRatedBook = true
+            };
+
+            await this.bookUserRepository.AddAsync(bookUser);
+
+            return RedirectToAction("UpdateBookRating", "Book", id, rate);
+        }
+
+
+
     }
 }

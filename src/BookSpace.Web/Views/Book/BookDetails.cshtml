@@ -38,23 +38,34 @@
 
         <div class="book-details-after">
             <div class="dropdown-rating">
-                <button class="dropbtn">Rate Book</button>
-                <div class="dropdown-content">
-                    <a href="#">1 - Bad</a>
-                    <a href="#">2 - Ok</a>
-                    <a href="#">3 - Liked it</a>
-                    <a href="#">4 - Good</a>
-                    <a href="#">5 - Great!</a>
-                </div>
+
+                @if (Model.IsRated)
+                {
+                    <button class="dropbtn" disabled>Rate Book</button>
+
+                }
+                else
+                {
+
+                    <button class="dropbtn">Rate Book</button>
+                    <div class="dropdown-content">
+                        <a id="rate-1" href="#">1 - Bad</a>
+                        <a id="rate-2" href="#">2 - Ok</a>
+                        <a id="rate-3" href="#">3 - Liked it</a>
+                        <a id="rate-4" href="#">4 - Good</a>
+                        <a id="rate-5" href="#">5 - Great!</a>
+                    </div>
+                }
+
             </div>
             <p class="content-tags">
                 <span>Post Tags</span>
                 <span class="content-tag-list">
 
                     @foreach (var tag in Model.Properties.Tags)
-                {
-                    <a href="#0">@tag</a>
-            }
+                    {
+                        <a href="#0">@tag</a>
+                    }
                 </span>
             </p>
         </div>
@@ -150,6 +161,17 @@
         $.ajax({
             type: "POST",
             url: "/UserBooks/AddBook",
+            data: { id: "@Model.Book.BookId", collection: 'CurrentlyReading' },
+            error: (response) => {
+                displayError('Error adding book to collection');
+            }
+        })
+    }
+
+     function rate(userRate) {
+        $.ajax({
+            type: "POST",
+            url: "/UserBooks/RateBook",
             data: { id: "@Model.Book.BookId", collection: 'CurrentlyReading' },
             error: (response) => {
                 displayError('Error adding book to collection');

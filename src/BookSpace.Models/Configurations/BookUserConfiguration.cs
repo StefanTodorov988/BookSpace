@@ -11,6 +11,12 @@ namespace BookSpace.Models.Configurations
             builder.Property(p => p.HasRatedBook)
                .HasDefaultValue(false);
 
+            builder.Property(p => p.State)
+                .HasDefaultValue(BookState.Default);
+
+            builder.Property(p => p.Rate)
+                .HasDefaultValue(0);
+
             builder.ToTable("BooksUsers");
 
             builder.HasKey(pk => new { pk.BookId, pk.UserId });
