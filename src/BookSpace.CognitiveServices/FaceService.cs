@@ -21,6 +21,7 @@ namespace BookSpace.CognitiveServices
 
         public async Task<FaceAttributes[]> DetectFaceAtribytesAsync(string url)
         {
+            
             var faces = await faceServiceClient.DetectAsync(url, true,
                 true,
                 new FaceAttributeType[] {

@@ -25,7 +25,9 @@ namespace BookSpace.Web.Controllers
         {
             this.applicationUserRepository = applicationUserRepository;
             this.bookUserRepository = bookUserRepository;
+
             this.bookRepository = bookRepository;
+
             this.objectMapper = objectMapper;
         }
 
@@ -124,8 +126,5 @@ namespace BookSpace.Web.Controllers
             }
             return RedirectToAction("UpdateBookRating", "Book", new { id, rate });
         }
-
-
-
     }
 }
