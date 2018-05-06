@@ -91,20 +91,30 @@ namespace BookSpace.Web.Controllers
             int userRate = int.Parse(rate);
             var book = await this.bookRepository.GetByIdAsync(id);
             var user = await this.applicationUserRepository.GetUserByUsernameAsync(User.Identity.Name);
+            var bookUser = await this.bookUserRepository.GetAsync(bu => bu.BookId == id);
 
-            var bookUser = new BookUser
+            if (bookUser == null)
             {
-                Book = book,
-                BookId = book.BookId,
-                User = user,
-                UserId = user.Id,
-                Rate = userRate,
-                HasRatedBook = true
-            };
+                var bookUserEntity = new BookUser
+                {
+                    Book = book,
+                    BookId = book.BookId,
+                    User = user,
+                    UserId = user.Id,
+                    Rate = userRate,
+                    HasRatedBook = true
+                };
 
-            await this.bookUserRepository.AddAsync(bookUser);
+                await this.bookUserRepository.AddAsync(bookUserEntity);
+            }
+            else
+            {
+                bookUser.Rate = userRate;
+                bookUser.HasRatedBook = true;
 
-            return RedirectToAction("UpdateBookRating", "Book", id, rate);
+                await this.bookUserRepository.UpdateAsync(bookUser);
+            }
+            return RedirectToAction("UpdateBookRating", "Book", new { id, rate });
         }
 
 

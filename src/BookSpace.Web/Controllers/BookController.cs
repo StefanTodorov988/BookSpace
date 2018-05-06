@@ -7,6 +7,7 @@ using BookSpace.Web.Models.CommentsViewModel;
 using BookSpace.Web.Models.GenreViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -68,6 +69,7 @@ namespace BookSpace.Web.Controllers
             return PartialView("Book/_BookByCategoryPagePartial", categoryViewModel);
         }
 
+        [ResponseCache(NoStore = true, Duration = 0)]
         public async Task<IActionResult> BookDetails([FromRoute] string id)
         {
             var book = await this.bookRepository.GetByIdAsync(id);
@@ -83,12 +85,14 @@ namespace BookSpace.Web.Controllers
             propertiesViewModel.Tags = tags.ToList().Select(t => t.Value);
             propertiesViewModel.Genres = genres.ToList().Select(g => g.Name);
             bool isRated = bookUser == null || bookUser.HasRatedBook == false ? false : true; 
+            int userRating = bookUser == null || bookUser.HasRatedBook == false ? 0 : bookUser.Rate;
 
             var singleBookViewModel = new SingleBookViewModel
             {
                 Book = bookViewModel,
                 Properties = propertiesViewModel,
-                IsRated = isRated
+                IsRated = isRated,
+                UserRating = userRating
             };
             return View(singleBookViewModel);
         }
@@ -99,7 +103,7 @@ namespace BookSpace.Web.Controllers
             book.RatesCount++;
             book.Rating = (book.Rating + int.Parse(rate)) / book.RatesCount;
             await this.bookRepository.UpdateAsync(book);
-            return RedirectToAction("BookDetails", id);
+            return RedirectToAction("BookDetails","Book", new { id });
         }
 
         public IActionResult GetBookGenres(string bookId)

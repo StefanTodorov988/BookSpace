@@ -21,7 +21,7 @@
                 <span>Rating : </span>
                 @await Html.PartialAsync("_RatingPartial", new KeyValuePair<string, decimal>(Model.Book.Title, Model.Book.Rating))
                 <span>@Model.Book.Rating</span>
-                <span class="number-of-ratings">Number of ratings : 1204</span>
+                <span class="number-of-ratings">Number of ratings : @Model.Book.RatesCount</span>
             </div>
         </div>
         <div class="book-details-content">
@@ -41,21 +41,17 @@
 
                 @if (Model.IsRated)
                 {
-                    <button class="dropbtn" disabled>Rate Book</button>
-
+                    <span>You have alredy rated this book! <br /> Your rating is : @Model.UserRating <br /></span>
                 }
-                else
-                {
 
-                    <button class="dropbtn">Rate Book</button>
-                    <div class="dropdown-content">
-                        <a id="rate-1" href="#">1 - Bad</a>
-                        <a id="rate-2" href="#">2 - Ok</a>
-                        <a id="rate-3" href="#">3 - Liked it</a>
-                        <a id="rate-4" href="#">4 - Good</a>
-                        <a id="rate-5" href="#">5 - Great!</a>
-                    </div>
-                }
+                <button class="dropbtn">Rate Book</button>
+                <div class="dropdown-content">
+                    <a href="#" onclick="rate(1)">1 - Bad</a>
+                    <a href="#" onclick="rate(2)">2 - Ok</a>
+                    <a href="#" onclick="rate(3)">3 - Liked it</a>
+                    <a href="#" onclick="rate(4)">4 - Good</a>
+                    <a href="#" onclick="rate(5)">5 - Great!</a>
+                </div>
 
             </div>
             <p class="content-tags">
@@ -169,13 +165,17 @@
     }
 
      function rate(userRate) {
-        $.ajax({
-            type: "POST",
-            url: "/UserBooks/RateBook",
-            data: { id: "@Model.Book.BookId", collection: 'CurrentlyReading' },
-            error: (response) => {
+         $.ajax({
+             type: "POST",
+             url: "/UserBooks/RateBook",
+             data: { id: "@Model.Book.BookId", rate: userRate },
+             success: function (data) {
+                  location.reload();
+             },
+             error: (response) => {
                 displayError('Error adding book to collection');
-            }
+             },
+             cache: false
         })
     }
 </script>
