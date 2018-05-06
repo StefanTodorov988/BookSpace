@@ -66,15 +66,12 @@
             </p>
         </div>
         <div class="book-details-btn">
-
-            <button onclick="addToRead()">Want To Read</button>
-            <button onclick="addCurrentlyReading()">Currently Reading</button>
-            <button onclick="addRead()">Read</button>
+            <button id="addToRead" onclick="addToRead()">Want To Read</button>
+            <button id="addCurrentlyReading" onclick="addCurrentyReading()">Currently Reading</button>
+            <button id="addRead" onclick="addRead()">Read</button>
             <br />
             <span>Add to yor collections</span>
         </div>
-
-
 
     </article>
 
@@ -135,7 +132,7 @@
         $.ajax({
             type: "POST",
             url: "/UserBooks/AddBook",
-            data: { id: "@Model.Book.BookId", collection : 'Read' },
+            data: { id: "@Model.Book.BookId", collection: 'Read' },
             error: (response) => {
                 displayError('Error adding book to collection');
             }
@@ -153,7 +150,7 @@
         })
     }
 
-    function addCurrentlyReading() {
+    function addCurrentyReading() {
         $.ajax({
             type: "POST",
             url: "/UserBooks/AddBook",

@@ -19,7 +19,7 @@ namespace BookSpace.Web.Controllers
         private readonly IMapper objectMapper;
 
         public UserBooksController(IApplicationUserRepository applicationUserRepository,
-                                    IBookUserRepository bookUserRepository, 
+                                    IBookUserRepository bookUserRepository,
                                     IBookRepository bookRepository,
                                     IMapper objectMapper)
         {
@@ -46,7 +46,7 @@ namespace BookSpace.Web.Controllers
 
 
             BookState parsedEnum = BookState.Read;
-            if(!Enum.TryParse<BookState>(statusEnum, out parsedEnum))
+            if (!Enum.TryParse<BookState>(statusEnum, out parsedEnum))
             {
                 throw new ArgumentException("Cannot parse enum");
             }
@@ -60,7 +60,8 @@ namespace BookSpace.Web.Controllers
 
         public async Task<IActionResult> RemoveBook([FromRoute] string id)
         {
-            var bookUser = await this.bookUserRepository.GetAsync(bu => bu.BookId == id);
+            var user = await this.applicationUserRepository.GetUserByUsernameAsync(User.Identity.Name);
+            var bookUser = await this.bookUserRepository.GetAsync(bu => bu.BookId == id && bu.UserId == user.Id);
             await this.bookUserRepository.DeleteAsync(bookUser);
             return View("Index");
         }
@@ -68,20 +69,28 @@ namespace BookSpace.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddBook(string id, string collection)
         {
-            var bookState = new BookState();
+            var bookState = BookState.Default;
             Enum.TryParse<BookState>(collection, out bookState);
             var book = await this.bookRepository.GetByIdAsync(id);
-            var user =  await this.applicationUserRepository.GetUserByUsernameAsync(User.Identity.Name);
-            var bookUser = new BookUser
-            {
-                Book = book,
-                BookId = book.BookId,
-                User = user,
-                UserId = user.Id,
-                State = bookState
-            };
+            var user = await this.applicationUserRepository.GetUserByUsernameAsync(User.Identity.Name);
+            var bookUser = await this.bookUserRepository.GetAsync(bu => bu.BookId == id && bu.UserId == user.Id);
 
-            await this.bookUserRepository.AddAsync(bookUser);
+            if (bookUser == null)
+            {
+                var bookUserEntity = new BookUser
+                {
+                    BookId = book.BookId,
+                    UserId = user.Id,
+                    State = bookState
+                };
+
+                await this.bookUserRepository.AddAsync(bookUserEntity);
+            }
+            else
+            {
+                bookUser.State = bookState;
+                await this.bookUserRepository.UpdateAsync(bookUser);
+            }
             return Ok();
         }
 
@@ -91,18 +100,17 @@ namespace BookSpace.Web.Controllers
             int userRate = int.Parse(rate);
             var book = await this.bookRepository.GetByIdAsync(id);
             var user = await this.applicationUserRepository.GetUserByUsernameAsync(User.Identity.Name);
-            var bookUser = await this.bookUserRepository.GetAsync(bu => bu.BookId == id);
+            var bookUser = await this.bookUserRepository.GetAsync(bu => bu.BookId == id && bu.UserId == user.Id);
 
             if (bookUser == null)
             {
                 var bookUserEntity = new BookUser
                 {
-                    Book = book,
                     BookId = book.BookId,
-                    User = user,
                     UserId = user.Id,
                     Rate = userRate,
-                    HasRatedBook = true
+                    HasRatedBook = true,
+                    State = BookState.Default
                 };
 
                 await this.bookUserRepository.AddAsync(bookUserEntity);

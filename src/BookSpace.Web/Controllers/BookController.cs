@@ -101,7 +101,7 @@ namespace BookSpace.Web.Controllers
         {
             var book = await this.bookRepository.GetByIdAsync(id);
             book.RatesCount++;
-            book.Rating = (book.Rating + int.Parse(rate)) / book.RatesCount;
+            book.Rating = (book.Rating) + (int.Parse(rate) / book.RatesCount);
             await this.bookRepository.UpdateAsync(book);
             return RedirectToAction("BookDetails","Book", new { id });
         }
