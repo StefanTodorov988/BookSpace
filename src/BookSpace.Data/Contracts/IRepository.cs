@@ -28,6 +28,9 @@ namespace BookSpace.Data.Contracts
 
         Task<IEnumerable<TEntity>> Search(Expression<Func<TEntity, bool>> filter);
 
+        Task<IEnumerable<TEntity>> SearchByNavigationProperty(string include, string includeProp,
+                                     Expression<Func<TEntity, bool>> filter);
+
         Task AddAsync(TEntity entity);
         Task UpdateAsync(TEntity entity);
         Task DeleteAsync(TEntity entity);

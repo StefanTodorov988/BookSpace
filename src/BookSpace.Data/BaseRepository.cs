@@ -73,6 +73,16 @@ namespace BookSpace.Data
                     .ToListAsync();
         }
 
+        public async Task<IEnumerable<TEntity>> SearchByNavigationProperty(string include, string includeProp,
+                                     Expression<Func<TEntity, bool>> filter)
+        {
+            return await this.dbContext.DbSet<TEntity>()
+                    .Include(include)
+                    .Include(includeProp)
+                    .Where(filter)
+                    .ToListAsync();
+        }
+
 
         public async Task AddAsync(TEntity entity)
         {
