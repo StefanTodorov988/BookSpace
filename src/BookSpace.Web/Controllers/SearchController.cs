@@ -18,10 +18,10 @@ namespace BookSpace.Web.Controllers
             this.bookRepository = bookRepository;
             this.objectMapper = mapper;
         }
-        public async Task<IActionResult> Index(string searchedString)
+        public async Task<IActionResult> Index(string filter)
         {
 
-            var searchedBooks = await bookRepository.Search(x => x.Title.Contains(searchedString) || x.Author.Contains(searchedString));
+            var searchedBooks = await bookRepository.Search(x => x.Title.Contains(filter) || x.Author.Contains(filter));
 
             var searchedBookViewModels = this.objectMapper.Map<IEnumerable<Book>, IEnumerable<SearchedBookViewModel>>(searchedBooks);
 
