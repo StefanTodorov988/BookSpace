@@ -135,6 +135,7 @@ namespace BookSpace.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddComment(string id, string comment, string userId)
         {
             //creating response object from input
@@ -150,7 +151,7 @@ namespace BookSpace.Web.Controllers
 
 
 
-            return RedirectToAction("Index");
+            return RedirectToAction("BookDetails");
         }
 
         public IActionResult BooksByAuthor(string bookId)

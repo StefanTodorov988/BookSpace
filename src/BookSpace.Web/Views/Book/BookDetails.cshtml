@@ -114,7 +114,7 @@
                             <textarea name="comment-message" id="comment-message" class="full-width" placeholder="Your Comment"></textarea>
                         </div>
 
-                        <button id="addComment" onclick="addComment()"  class="submit btn--primary btn--large full-width">Comment</button>
+                        <button id="addComment" onclick="addComment('@Model.Book.BookId','@User.Id')"  class="submit btn--primary btn--large full-width">Comment</button>
 
                     </fieldset>
 
