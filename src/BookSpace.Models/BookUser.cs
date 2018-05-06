@@ -11,5 +11,9 @@ namespace BookSpace.Models
         public ApplicationUser User { get; set; }
 
         public BookState State { get; set; }
+
+        public bool HasRatedBook { get; set; }
+
+        public int Rate { get; set; }
     }
 }

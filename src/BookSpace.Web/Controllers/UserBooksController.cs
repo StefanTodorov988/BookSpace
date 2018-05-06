@@ -15,14 +15,19 @@ namespace BookSpace.Web.Controllers
     {
         private readonly IApplicationUserRepository applicationUserRepository;
         private readonly IBookUserRepository bookUserRepository;
+        private readonly IBookRepository bookRepository;
         private readonly IMapper objectMapper;
 
         public UserBooksController(IApplicationUserRepository applicationUserRepository,
-                                    IBookUserRepository bookUserRepository, 
+                                    IBookUserRepository bookUserRepository,
+                                    IBookRepository bookRepository,
                                     IMapper objectMapper)
         {
             this.applicationUserRepository = applicationUserRepository;
             this.bookUserRepository = bookUserRepository;
+
+            this.bookRepository = bookRepository;
+
             this.objectMapper = objectMapper;
         }
 
@@ -43,7 +48,7 @@ namespace BookSpace.Web.Controllers
 
 
             BookState parsedEnum = BookState.Read;
-            if(!Enum.TryParse<BookState>(statusEnum, out parsedEnum))
+            if (!Enum.TryParse<BookState>(statusEnum, out parsedEnum))
             {
                 throw new ArgumentException("Cannot parse enum");
             }
@@ -55,11 +60,71 @@ namespace BookSpace.Web.Controllers
             return PartialView("_AllUserBooksPartial", mappedBooksToViewModel);
         }
 
-        public async Task<IActionResult> RemoveBook(string id)
+        public async Task<IActionResult> RemoveBook([FromRoute] string id)
         {
-            var bookUser = await this.bookUserRepository.GetAsync(bu => bu.BookId == id);
+            var user = await this.applicationUserRepository.GetUserByUsernameAsync(User.Identity.Name);
+            var bookUser = await this.bookUserRepository.GetAsync(bu => bu.BookId == id && bu.UserId == user.Id);
             await this.bookUserRepository.DeleteAsync(bookUser);
             return View("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddBook(string id, string collection)
+        {
+            var bookState = BookState.Default;
+            Enum.TryParse<BookState>(collection, out bookState);
+            var book = await this.bookRepository.GetByIdAsync(id);
+            var user = await this.applicationUserRepository.GetUserByUsernameAsync(User.Identity.Name);
+            var bookUser = await this.bookUserRepository.GetAsync(bu => bu.BookId == id && bu.UserId == user.Id);
+
+            if (bookUser == null)
+            {
+                var bookUserEntity = new BookUser
+                {
+                    BookId = book.BookId,
+                    UserId = user.Id,
+                    State = bookState
+                };
+
+                await this.bookUserRepository.AddAsync(bookUserEntity);
+            }
+            else
+            {
+                bookUser.State = bookState;
+                await this.bookUserRepository.UpdateAsync(bookUser);
+            }
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RateBook(string id, string rate)
+        {
+            int userRate = int.Parse(rate);
+            var book = await this.bookRepository.GetByIdAsync(id);
+            var user = await this.applicationUserRepository.GetUserByUsernameAsync(User.Identity.Name);
+            var bookUser = await this.bookUserRepository.GetAsync(bu => bu.BookId == id && bu.UserId == user.Id);
+
+            if (bookUser == null)
+            {
+                var bookUserEntity = new BookUser
+                {
+                    BookId = book.BookId,
+                    UserId = user.Id,
+                    Rate = userRate,
+                    HasRatedBook = true,
+                    State = BookState.Default
+                };
+
+                await this.bookUserRepository.AddAsync(bookUserEntity);
+            }
+            else
+            {
+                bookUser.Rate = userRate;
+                bookUser.HasRatedBook = true;
+
+                await this.bookUserRepository.UpdateAsync(bookUser);
+            }
+            return RedirectToAction("UpdateBookRating", "Book", new { id, rate });
         }
     }
 }

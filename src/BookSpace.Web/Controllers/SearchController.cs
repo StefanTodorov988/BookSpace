@@ -20,7 +20,9 @@ namespace BookSpace.Web.Controllers
         }
         public async Task<IActionResult> SearchResult(string searchedString)
         {
-            var searchedBooks = await bookRepository.Search(x => x.Title == searchedString || x.Author == searchedString);
+
+            var searchedBooks = await bookRepository.Search(x => x.Title.Contains(searchedString) || x.Author.Contains(searchedString));
+
             var searchedBookViewModels = this.objectMapper.Map<IEnumerable<Book>, IEnumerable<SearchedBookViewModel>>(searchedBooks);
 
             return View(searchedBookViewModels);

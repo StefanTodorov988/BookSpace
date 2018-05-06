@@ -5,10 +5,14 @@
     string bookTitle = book.Title.Length > 25 ? book.Title.Substring(0, 25) + "..." : book.Title;
 
     <article class="category-entry">
-        <a asp-action="Book" asp-controller="Home" class="category-thumb">
+        <a asp-action="BookDetails" asp-controller="Book" asp-route-id="@book.BookId" class="category-thumb">
             <img src="@book.CoverUrl" alt="">
         </a>
-        <span class="category-entry-title"><a asp-action="Book" asp-controller="Home">@bookTitle</a></span>
+        <span class="category-entry-title">
+            <a asp-action="BookDetails" asp-controller="Book" asp-route-id="@book.BookId">
+                @bookTitle
+            </a>
+        </span>
         <section class="category-meta">
             <span class="category-author"><span>By</span> @book.Author</span>
         </section>
@@ -20,4 +24,3 @@
             @await Html.PartialAsync("_RatingPartial", new KeyValuePair<string, decimal>(book.Title, book.Rating))
         </div>
     </article>
-}

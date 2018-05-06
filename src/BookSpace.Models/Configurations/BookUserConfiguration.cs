@@ -8,6 +8,12 @@ namespace BookSpace.Models.Configurations
     {
         public void Configure(EntityTypeBuilder<BookUser> builder)
         {
+            builder.Property(p => p.HasRatedBook)
+               .HasDefaultValue(false);
+
+            builder.Property(p => p.Rate)
+                .HasDefaultValue(0);
+
             builder.ToTable("BooksUsers");
 
             builder.HasKey(pk => new { pk.BookId, pk.UserId });
