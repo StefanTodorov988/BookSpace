@@ -19,6 +19,9 @@ namespace BookSpace.Models.Configurations
                 .IsUnicode(true)
                 .IsRequired(false);
 
+            builder.Property(p => p.RatesCount)
+                .HasDefaultValue(1);
+
             builder.Property(p => p.Author)
                .IsUnicode(true)
                .IsRequired(true);

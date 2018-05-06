@@ -47,10 +47,7 @@
         $.ajax({
             type: "POST",
             url: "/UserBooks/AddBook",
-            data: { id: "@Model.BookId", collection : 'Read' },
-            success: (response) => {
-                alert(response);
-            },
+            data: { id: "@Model.BookId", collection: 'Read' },
             error: (response) => {
                 displayError('Error adding book to collection');
             }

@@ -16,6 +16,8 @@ namespace BookSpace.Models
 
         public decimal Rating { get; set; }
 
+        public int RatesCount { get; set; }
+
         public string CoverUrl { get; set; }
 
         public string Description { get; set; }
