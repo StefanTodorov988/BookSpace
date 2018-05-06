@@ -1,23 +1,22 @@
 ﻿@model SingleBookViewModel
-@inject ApplicationUser User
+@inject ApplicationUser user
 
 <div class="comments-wrapper">
     <div id="comments" class="row">
         <div class="col-full">
-            <h3 class="h2">2 Comments</h3>
+            <h4 class="h2">@Model.Properties.Comments.Count() Comments</h4>
             <ol class="commentlist">
-                @foreach (var comment in Model.Properties.Comments)
+                @foreach (var comment in Model.Properties.Comments.OrderByDescending(c => c.Date))
                 {
                     <li class=" comment">
                         <div class="comment-author">
                             <img width="50" height="50" class="avatar" src="~/images/avatars/user-male.png" alt="">
+                            
                         </div>
-
                         <div class="comment-content">
-
                             <div class="comment-info">
-                                <cite>@comment.Author</cite>
                                 <div class="comment-meta">
+                                    <cite>@User.Identity.Name</cite>
                                     <time class="comment-time">@comment.Date</time>
                                 </div>
                             </div>
@@ -34,7 +33,7 @@
                     <div class="message form-field">
                         <textarea name="comment-message" id="comment-message" class="full-width" placeholder="Your Comment"></textarea>
                     </div>
-                    <button id="addComment" onclick="addComment('@Model.Book.BookId','@User.Id')" class="submit btn--primary btn--large full-width">Comment</button>
+                    <button id="addComment" onclick="addComment('@Model.Book.BookId','@user.Id')" class="submit btn--primary btn--large full-width">Comment</button>
                 </fieldset>
             </div>
         </div>

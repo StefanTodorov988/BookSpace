@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BookSpace.Web.Models.CommentsViewModel
 {
-    public class CommentViewModel
+    public class CommentViewModel 
     {
         public string Content { get; set; }
         public DateTime Date { get; set; }
