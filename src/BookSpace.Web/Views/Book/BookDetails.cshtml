@@ -1,4 +1,5 @@
 ﻿@model SingleBookViewModel
+@inject ApplicationUser User
 
 <section class="content content--narrow content--no-padding-bottom">
 
@@ -108,17 +109,14 @@
                 </ol>
                 <div class="respond">
                     <h3 class="h2">Add Comment</h3>
+                    <fieldset>
+                        <div class="message form-field">
+                            <textarea name="comment-message" id="comment-message" class="full-width" placeholder="Your Comment"></textarea>
+                        </div>
 
-                    <form name="contactForm" id="contactForm" method="post" action="">
-                        <fieldset>
-                            <div class="message form-field">
-                                <textarea name="comment-message" id="comment-message" class="full-width" placeholder="Your Comment"></textarea>
-                            </div>
+                        <button id="addComment" onclick="addComment()"  class="submit btn--primary btn--large full-width">Comment</button>
 
-                            <button type="submit" class="submit btn--primary btn--large full-width">Comment</button>
-
-                        </fieldset>
-                    </form>
+                    </fieldset>
 
                 </div>
             </div>
@@ -161,19 +159,32 @@
         })
     }
 
-     function rate(userRate) {
+    function rate(userRate) {
+        $.ajax({
+            type: "POST",
+            url: "/UserBooks/RateBook",
+            data: { id: "@Model.Book.BookId", rate: userRate },
+            success: function (data) {
+                s
+                location.reload();
+            },
+            error: (response) => {
+                displayError('Error adding book to collection');
+            },
+            cache: false
+        })
+    }
+
+    function addComment() {
+        let content = $('#comment-message').val()
          $.ajax({
              type: "POST",
-             url: "/UserBooks/RateBook",
-             data: { id: "@Model.Book.BookId", rate: userRate },
-             success: function (data) {
-                  location.reload();
-             },
+             url: "/Book/AddComment",
+             data: { id: "@Model.Book.BookId", comment: content@*, userId : @User.Id*@},
              error: (response) => {
-                displayError('Error adding book to collection');
+                displayError('Error adding comment to book');
              },
-             cache: false
-        })
+         })
     }
 </script>
 

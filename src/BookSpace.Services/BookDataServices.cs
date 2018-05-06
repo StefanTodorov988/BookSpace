@@ -16,19 +16,23 @@ namespace BookSpace.Services
 
 
         private readonly IDbContext dbContext;
+        private readonly IBookRepository bookRepository;
         private readonly IGenreRepository genreRepository;
         private readonly ITagRepository tagRepository;
         private readonly IBookGenreRepository bookGenreRepository;
         private readonly IBookTagRepository bookTagRepository;
+        private readonly ICommentRepository commentRepository;
 
-        public BookDataServices(IDbContext dbCtx, IGenreRepository genreRepository, ITagRepository tagRepository,
-            IBookGenreRepository bookGenreRepository, IBookTagRepository bookTagRepository)
+        public BookDataServices(IDbContext dbCtx,IBookRepository bookRepository, IGenreRepository genreRepository, ITagRepository tagRepository,
+            IBookGenreRepository bookGenreRepository, IBookTagRepository bookTagRepository,ICommentRepository commentRepository)
         {
             this.dbContext = dbCtx ?? throw new ArgumentNullException(nameof(dbContext));
+            this.bookRepository = bookRepository;
             this.genreRepository = genreRepository;
             this.tagRepository = tagRepository;
             this.bookGenreRepository = bookGenreRepository;
             this.bookTagRepository = bookTagRepository;
+            this.commentRepository = commentRepository;
         }
 
         //splitting tags genres response to seperate entities
@@ -71,6 +75,17 @@ namespace BookSpace.Services
                 //await this.dbContext.DbSet<BookTag>().AddAsync(bookTagRecord);
             }
             //await this.dbContext.SaveAsync();
+        }
+
+        public async Task MatchCommentToBook(string commentId, string  bookId)
+        {
+            var comment = this.commentRepository.GetByIdAsync(commentId).Result;
+
+            var book = this.bookRepository.GetByIdAsync(bookId).Result;
+
+            book.Comments.Add(comment);
+
+            
         }
     }
 }
