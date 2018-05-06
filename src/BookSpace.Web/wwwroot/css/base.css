@@ -320,3 +320,39 @@ textarea {
 .full-width {
     width: 100%;
 }
+
+.searchForm {
+    bottom: 50px;
+    left: 900px;
+    position: relative;
+    max-width: 300px;
+    height: 0px;
+}
+
+form.searchForm input[type=text] {
+    padding: 10px;
+    font-size: 17px;
+    border: 1px solid grey;
+    float: left;
+    width: 80%;
+    background: #f1f1f1;
+}
+
+form.searchForm button {
+    font-size: 17px;
+    border: 1px solid grey;
+    border-left: none;
+    cursor: pointer;
+    height: 30px;
+    line-height: 0;
+}
+
+    form.searchForm button:hover {
+        background: #0b7dda;
+    }
+
+form.searchForm::after {
+    content: "";
+    clear: both;
+    display: table;
+}

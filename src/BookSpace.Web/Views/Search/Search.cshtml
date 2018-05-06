@@ -2,13 +2,9 @@
     ViewData["Title"] = "Search";
 }
 
-<div>
-    <form asp-controller="Search" asp-action="SearchResult">
-        <label>
-            <input name="SearchedString" placeholder="Search" />
-        </label>
-        <div class="header-search-btn">
-            <button type="submit">Search</button>
-        </div>
-    </form>
-</div>
+<form class="searchForm" asp-controller="Search" asp-action="Index">
+    <label>
+        <input name="SearchedString" placeholder="Search by Title or Author" style="height:30px" />
+        <button type="submit"><i class="fa fa-search"></i></button>
+    </label>
+</form>
