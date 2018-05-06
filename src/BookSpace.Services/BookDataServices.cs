@@ -55,9 +55,7 @@ namespace BookSpace.Services
                 };
 
                 await this.bookGenreRepository.AddAsync(bookGenreRecord);
-                //await this.dbContext.DbSet<BookGenre>().AddAsync(bookGenreRecord);
             }
-            //await this.dbContext.SaveAsync();
         }
 
         public async Task MatchTagToBookAsync(IEnumerable<string> tags, string bookId)
@@ -72,20 +70,13 @@ namespace BookSpace.Services
                     TagId = tagId
                 };
                 await this.bookTagRepository.AddAsync(bookTagRecord);
-                //await this.dbContext.DbSet<BookTag>().AddAsync(bookTagRecord);
             }
-            //await this.dbContext.SaveAsync();
         }
 
-        public async Task MatchCommentToBook(string commentId, string  bookId)
+        public async Task MatchCommentToUser(string commentId, string userId)
         {
-            var comment = this.commentRepository.GetByIdAsync(commentId).Result;
-
-            var book = this.bookRepository.GetByIdAsync(bookId).Result;
-
-            book.Comments.Add(comment);
-
             
+           
         }
     }
 }

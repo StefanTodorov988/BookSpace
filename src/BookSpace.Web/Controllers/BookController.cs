@@ -3,6 +3,7 @@ using BookSpace.Factories;
 using BookSpace.Models;
 using BookSpace.Repositories;
 using BookSpace.Repositories.Contracts;
+using BookSpace.Services;
 using BookSpace.Web.Models.BookViewModels;
 using BookSpace.Web.Models.CommentsViewModel;
 using BookSpace.Web.Models.GenreViewModels;
@@ -25,6 +26,7 @@ namespace BookSpace.Web.Controllers
         private readonly ICommentRepository commentRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IFactory<Comment, CommentResponseModel> commentFactory;
+        private readonly BookDataServices dataService;
         private const int recordsOnPageIndex = 30;
         private const int recordsOnPageCategory = 10;
 
@@ -34,6 +36,7 @@ namespace BookSpace.Web.Controllers
                               ICommentRepository commentRepository,
                               UserManager<ApplicationUser> userManager,
                               IFactory<Comment, CommentResponseModel> commentFactory,
+                              BookDataServices dataService,
                               IMapper objectMapper)
         {
             this.bookRepository = bookRepository;
@@ -42,6 +45,7 @@ namespace BookSpace.Web.Controllers
             this.commentRepository = commentRepository;
             this._userManager = userManager;
             this.commentFactory = commentFactory;
+            this.dataService = dataService;
             this.objectMapper = objectMapper;
         }
 
@@ -135,21 +139,21 @@ namespace BookSpace.Web.Controllers
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> AddComment(string id, string comment, string userId)
         {
             //creating response object from input
             var commentResponse = this.commentFactory.Create(new CommentResponseModel()
             {
-                //UserId = userId,
+                //TODO: NOT WORKING WITH USERID
+                UserId = userId,
                 BookId = id,
                 Content = comment,
                 Date = DateTime.Now
             });
 
+            //await this.dataService.MatchCommentToUser(commentResponse.CommentId, userId);
+
             await this.commentRepository.AddAsync(commentResponse);
-
-
 
             return RedirectToAction("BookDetails", new{id});
         }
