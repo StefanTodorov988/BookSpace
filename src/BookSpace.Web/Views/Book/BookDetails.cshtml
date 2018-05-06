@@ -1,4 +1,5 @@
 ﻿@model SingleBookViewModel
+@inject ApplicationUser User
 
 <section class="content content--narrow content--no-padding-bottom">
 
@@ -108,17 +109,14 @@
                 </ol>
                 <div class="respond">
                     <h3 class="h2">Add Comment</h3>
+                    <fieldset>
+                        <div class="message form-field">
+                            <textarea name="comment-message" id="comment-message" class="full-width" placeholder="Your Comment"></textarea>
+                        </div>
 
-                    <form name="contactForm" id="contactForm" method="post" action="">
-                        <fieldset>
-                            <div class="message form-field">
-                                <textarea name="comment-message" id="comment-message" class="full-width" placeholder="Your Comment"></textarea>
-                            </div>
+                        <button id="addComment" onclick="addComment()"  class="submit btn--primary btn--large full-width">Comment</button>
 
-                            <button type="submit" class="submit btn--primary btn--large full-width">Comment</button>
-
-                        </fieldset>
-                    </form>
+                    </fieldset>
 
                 </div>
             </div>
@@ -126,4 +124,3 @@
         </div>
     </div>
 </section>
-
