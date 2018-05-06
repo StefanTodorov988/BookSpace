@@ -5,6 +5,26 @@
 
 <script>
     $('.search-form').hide();
+     $().ready(function () {
+         $('.search-form-page').on('click', '.search-btn.page', function (event) {
+
+             var selectedFilter = $('[name=filerRadio]:checked').val();
+             var searchString = $('.search-input.page').val();
+
+             $.ajax({
+                 type: 'GET',
+                 url: '/Search/Index',
+                    data: { filter: searchString, filerRadio: selectedFilter }
+                });
+         });
+
+         $('.search-input.page').keypress(function (e) {
+             if (e.which == 13) {
+                 $('.search-btn.page').click();
+             }
+         });
+        });
+
 </script>
 <section class="content">
 
@@ -18,14 +38,13 @@
 
         <form class="search-form-page" asp-controller="Search" asp-action="Index">
             <input name="filter" class="search-input page" placeholder="Search Books" />
-            <button type="submit" class="search-btn page"><i class="fa fa-search"></i></button>
+            <button type="button" class="search-btn page"><i class="fa fa-search"></i></button>
             <div class="serach-from-radio-buttons">
-                <input type="radio" name="filter" /> <label>Title</label>
-                <input type="radio" name="filter" /><label>Author</label>
-                <input type="radio" name="filter" /><label>Genre</label>
-                <input type="radio" name="filter" /><label>Tag</label>
-            </div>
-           
+                <label> <input type="radio" name="filerRadio" value="title" checked />Title</label>
+                <label> <input type="radio" name="filerRadio" value="author"/>Author</label>
+                <label> <input type="radio" name="filerRadio" value="genre"/>Genre</label>
+                <label> <input type="radio" name="filerRadio" value="tag"/>Tag</label>
+            </div>       
         </form>
 
 
