@@ -20,6 +20,7 @@ using BookSpace.Factories;
 using BookSpace.Factories.ResponseModels;
 using BookSpace.Services;
 using BookSpace.Web.Services.SmtpService;
+using BookSpace.Web.Services.SmtpService.Contract;
 
 namespace BookSpace.Web
 {
@@ -77,6 +78,10 @@ namespace BookSpace.Web
                 Configuration.GetSection(nameof(FaceServiceStorageInfo))
                     .Get<FaceServiceStorageInfo>());
 
+            //Smtp service
+            services.AddSingleton<ISmtpSender,SmtpSender>();
+
+            
             services.AddAutoMapper();
             services.AddMvc();
 
