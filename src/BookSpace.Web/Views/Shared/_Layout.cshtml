@@ -19,10 +19,13 @@
     <script src="~/js/helpers/rating.js"></script>
     <script src="~/js/helpers/messages.js"></script>
     <script src="~/js/helpers/paging.js"></script>
+    <script src="~/js/helpers/genres-nav.js"></script>
+    <script src="~/js/helpers/user-collections.js"></script>
+    <script src="~/js/helpers/user-rating.js"></script>
     <script src="~/js/drop-down.js"></script>
-    <script src="js/plugins/imagesLoaded.js"></script>
-    <script src="js/plugins/masonry.js"></script>
-    <script src="js/main.js"></script>
+    <script src="~/js/plugins/imagesLoaded.js"></script>
+    <script src="~/js/plugins/masonry.js"></script>
+    <script src="~/js/main.js"></script>
 
     <environment exclude="Development">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -32,6 +35,11 @@
     </environment>
 </head>
 <body>
+    <div class="messages">
+        <div class="alert-box success"></div>
+        <div class="alert-box failure"></div>
+        <div class="alert-box warning"></div>
+    </div>
     <div>
         @if (User.IsInRole("Admin"))
         {

@@ -7,7 +7,6 @@ using BookSpace.Web.Models.CommentsViewModel;
 using BookSpace.Web.Models.GenreViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -97,11 +96,22 @@ namespace BookSpace.Web.Controllers
             return View(singleBookViewModel);
         }
 
-        public async Task<IActionResult> UpdateBookRating(string id, string rate)
+        public async Task<IActionResult> UpdateBookRating(string id, string rate, bool isNewUser)
         {
             var book = await this.bookRepository.GetByIdAsync(id);
-            book.RatesCount++;
-            book.Rating = (book.Rating) + (int.Parse(rate) / book.RatesCount);
+
+            int ratesCount = book.RatesCount;
+
+            if(isNewUser)
+            {
+                book.RatesCount++;
+                book.Rating = ((book.Rating * (ratesCount)) + int.Parse(rate)) / (ratesCount + 1);
+            }
+            else
+            {
+                book.Rating = ((book.Rating * (ratesCount - 1)) + int.Parse(rate)) / ratesCount;
+            }
+           
             await this.bookRepository.UpdateAsync(book);
             return RedirectToAction("BookDetails","Book", new { id });
         }
