@@ -12,9 +12,10 @@ using System;
 namespace BookSpace.Data.Migrations
 {
     [DbContext(typeof(BookSpaceContext))]
-    partial class BookSpaceContextModelSnapshot : ModelSnapshot
+    [Migration("20180506071449_Added-RatesCount")]
+    partial class AddedRatesCount
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
