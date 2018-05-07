@@ -20,7 +20,7 @@ namespace BookSpace.Web.Controllers
         private readonly IGenreRepository genreRepository;
         private readonly ITagRepository tagRepository;
         private readonly IMapper objectMapper;
-
+        
         public HomeController(IBookRepository bookRepository,
                               IGenreRepository genreRepository,
                               ITagRepository tagRepository,
@@ -94,6 +94,14 @@ namespace BookSpace.Web.Controllers
             var genresViewModels = this.objectMapper.Map<IEnumerable<Genre>, IEnumerable<GenreViewModel>>(genres);
 
             return PartialView("_BookGenresNavPartial", genresViewModels);
+        }
+
+        public async Task<IActionResult> TagsNav()
+        {
+            var tags = await this.tagRepository.GetAllAsync();
+            var tagsViewModels = this.objectMapper.Map<IEnumerable<Tag>, IEnumerable<TagViewModel>>(tags);
+
+            return PartialView("_BookGenresNavPartial", tagsViewModels);
         }
 
         #endregion

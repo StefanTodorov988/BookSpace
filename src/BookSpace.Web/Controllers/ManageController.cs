@@ -124,7 +124,13 @@ namespace BookSpace.Web.Controllers
                 currentUserEmail = user.Email;
                 userId = user.Id;
                 await this.blobStorageService.UploadAsync(user.Id, blobContainer, stream.ToArray());
+
+                //sets profile pictureurl
+                var pictureUri = await this.blobStorageService.GetAsync(userId, blobContainer);
+                user.ProfilePictureUrl = pictureUri.ToString();
+
             }
+
             var faceAtributes = faceService.DetectFaceAtribytesAsync(blobStorageService.GetAsync(userId, blobContainer).Result.Url);
 
             try
@@ -140,7 +146,7 @@ namespace BookSpace.Web.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
-       
+
         [HttpGet]
         public async Task<IActionResult> ChangePassword()
         {
