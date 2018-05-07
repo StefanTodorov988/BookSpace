@@ -12,29 +12,37 @@ namespace BookSpace.Web.Controllers
     {
         private readonly IBookRepository bookRepository;
         private readonly IMapper objectMapper;
+
         public SearchController(IBookRepository bookRepository, IMapper mapper)
         {
             this.bookRepository = bookRepository;
             this.objectMapper = mapper;
         }
 
-        [HttpGet]
+        //public async Task<IActionResult> SearchResult(string searchedString)
+        //{
+        //    var searchedBooks = await bookRepository.Search(x => x.Title.Contains(searchedString) || x.Author.Contains(searchedString));
+        //    var searchedBookViewModels = this.objectMapper.Map<IEnumerable<Book>, IEnumerable<SearchedBookViewModel>>(searchedBooks);
+
+        //    return View(searchedBookViewModels);
+        //}
+
         public async Task<IActionResult> Index([FromQuery] string filter, [FromQuery] string filerRadio = "default")
         {
             List<Book> foundBooks = new List<Book>();
-            if(filerRadio == "default")
+            if (filerRadio == "default")
             {
                 foundBooks = new List<Book>(await bookRepository.Search(x => x.Title.Contains(filter) || x.Author.Contains(filter)));
             }
-            else if(filerRadio == "title")
+            else if (filerRadio == "title")
             {
                 foundBooks = new List<Book>(await bookRepository.Search(x => x.Title.Contains(filter)));
             }
-            else if(filerRadio == "author")
+            else if (filerRadio == "author")
             {
                 foundBooks = new List<Book>(await bookRepository.Search(x => x.Author.Contains(filter)));
             }
-            else if(filerRadio == "genre")
+            else if (filerRadio == "genre")
             {
                 foundBooks = new List<Book>(await this.SerachByGenre(filter));
             }
@@ -62,7 +70,7 @@ namespace BookSpace.Web.Controllers
 
             var foundBooks = await bookRepository.SearchByNavigationProperty
                                    ("BookTag", "Tag", b => CheckBookTags(b, filter));
-         
+
             return foundBooks;
         }
 
