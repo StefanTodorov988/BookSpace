@@ -12,22 +12,20 @@ namespace BookSpace.Web.Controllers
     {
         private readonly IBookRepository bookRepository;
         private readonly IMapper objectMapper;
-
         public SearchController(IBookRepository bookRepository, IMapper mapper)
         {
             this.bookRepository = bookRepository;
             this.objectMapper = mapper;
         }
 
-        //public async Task<IActionResult> SearchResult(string searchedString)
-        //{
-        //    var searchedBooks = await bookRepository.Search(x => x.Title.Contains(searchedString) || x.Author.Contains(searchedString));
-        //    var searchedBookViewModels = this.objectMapper.Map<IEnumerable<Book>, IEnumerable<SearchedBookViewModel>>(searchedBooks);
+        [HttpGet]
+        public IActionResult Index()
+        {
+            return View();
+        }
 
-        //    return View(searchedBookViewModels);
-        //}
-
-        public async Task<IActionResult> Index([FromQuery] string filter, [FromQuery] string filerRadio = "default")
+        [HttpPost]
+        public async Task<IActionResult> SearchBook(string filter,string filerRadio = "default")
         {
             List<Book> foundBooks = new List<Book>();
             if (filerRadio == "default")
@@ -53,7 +51,7 @@ namespace BookSpace.Web.Controllers
 
             var foundBooksViewModel = this.objectMapper.Map<IEnumerable<Book>, IEnumerable<SearchedBookViewModel>>(foundBooks);
 
-            return View(foundBooksViewModel);
+            return View("/Views/Shared/Book/_BookSearchResultPagePartial.cshtml", foundBooksViewModel);
         }
 
         public async Task<IEnumerable<Book>> SerachByGenre(string filter)

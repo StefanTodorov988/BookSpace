@@ -9,24 +9,15 @@
     <header class="header">
         <div class="header-content row">
             <div class="header-logo">
-                <a asp-controller="Home" asp-action="Index" class="logo">
+                <a asp-controller="Home" asp-action="Index" class="logo" >
                     <img src="~/images/logo.png" alt="Homepage">
                 </a>
             </div>
 
-            <form class="search-form" asp-controller="Search" asp-action="Index">
-            <label><input name="filter" class="search-input" placeholder="Search Books" /></label>
-            <button type="submit" class="search-btn"><i class="fa fa-search"></i></button>
-        </form>
-
-            @*<form asp-controller="Search" asp-action="SearchResult">
-                <label>
-                    <input name="SearchedString" placeholder="Search by Title or Author" />
-                </label>
-                <div class="header-search-btn">
-                    <button type="submit">Search</button>
-                </div>
-            </form>*@
+            <form class="search-form" asp-controller="Search" asp-action="SearchBook">
+                <input name="filter" class="search-input" placeholder="Search Books" />
+                <button type="submit" class="search-btn"><i class="fa fa-search"></i></button>
+            </form>
 
             <a class="header-toggle-menu" href="#0" title="Menu"><span>Menu</span></a>
             <nav class="header-nav-wrappper">
@@ -39,22 +30,22 @@
                 </ul>
 
                 @if (SignInManager.IsSignedIn(User))
-        {
-            <ul class="header-nav nav-user">
-                <li><a asp-area="" asp-controller="UserBooks" asp-action="Index" class="nav-user">My Books</a></li>
-                <li>
-                    <a asp-area="" asp-controller="Home" asp-action="Index" class="nav-user has-children">Hello, @User.Identity.Name!</a>
-                    <ul class="sub-menu">
-                        <li><a asp-area="" asp-controller="Manage" asp-action="Index">Profile</a></li>
+                {
+                    <ul class="header-nav nav-user">
+                        <li><a asp-area="" asp-controller="UserBooks" asp-action="Index" class="nav-user">My Books</a></li>
                         <li>
-                            <form asp-controller="Account" asp-action="Logout" method="post">
-                                <button class="logout-btn" type="submit">Log out</button>
-                            </form>
+                            <a asp-area="" asp-controller="Home" asp-action="Index" class="nav-user has-children">Hello, @User.Identity.Name!</a>
+                            <ul class="sub-menu">
+                                <li><a asp-area="" asp-controller="Manage" asp-action="Index">Profile</a></li>
+                                <li>
+                                    <form asp-controller="Account" asp-action="Logout" method="post">
+                                        <button class="logout-btn" type="submit">Log out</button>
+                                    </form>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
-                </li>
-            </ul>
-}
+                }
 
             </nav>
         </div>

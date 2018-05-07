@@ -3,17 +3,20 @@ using System;
 
 namespace BookSpace.Factories
 {
-    public class CommentFactory : IFactory<Comment, CommentResponseObject>
+    public class CommentFactory : IFactory<Comment, CommentResponseModel>
     {
-        //TODO:NOTFINISHED
-        public Comment Create(CommentResponseObject model)
+        public Comment Create(CommentResponseModel model)
         {
-            return new Comment()
+            var comment =  new Comment()
             {
                 CommentId = Guid.NewGuid().ToString(),
+                UserId = model.UserId,
+                BookId = model.BookId,
                 Content = model.Content,
                 Date = model.Date
             };
+
+            return comment;
         }
     }
 }

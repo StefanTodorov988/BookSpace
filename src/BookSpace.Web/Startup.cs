@@ -48,6 +48,7 @@ namespace BookSpace.Web
 
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IDatabaseSeedService, DatabaseSeedService>();
+            services.AddTransient<ApplicationUser>();
 
             //Repositories
 
@@ -59,6 +60,7 @@ namespace BookSpace.Web
             services.AddScoped<IBookUserRepository, BookUserRepository>();
             services.AddScoped<IBookTagRepository, BookTagRepository>();
             services.AddScoped<IBookGenreRepository, BookGenreRepository>();
+            services.AddScoped<ICommentRepository, CommentRepository>();
 
             //bookservices
             services.AddScoped<BookDataServices>();
@@ -67,6 +69,7 @@ namespace BookSpace.Web
             services.AddScoped<IFactory<Book, BookResponseModel>, BookFactory>();
             services.AddScoped<IFactory<Genre, GenreResponseModel>, GenreFactory>();
             services.AddScoped<IFactory<Tag, TagResponseModel>, TagFactory>();
+            services.AddScoped<IFactory<Comment, CommentResponseModel>, CommentFactory>();
 
 
             //Blob Storage
