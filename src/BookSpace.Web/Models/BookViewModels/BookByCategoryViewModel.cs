@@ -2,7 +2,7 @@
 
 namespace BookSpace.Web.Models.BookViewModels
 {
-    public class CategoryBookViewModel
+    public class BookByCategoryViewModel
     {
         public string BookId { get; set; }
         public string Title { get; set; }

@@ -54,7 +54,13 @@ namespace BookSpace.Web.Controllers
 
         public async Task<IActionResult> Index(int page = 1)
         {
-            return View(await this.GetBooksPage(page));
+            var indexViewModel = new AllBooksViewModel()
+            {
+                Books = await this.GetBooksPage(page),
+                BooksCount = await this.bookRepository.GetCount()
+            };
+
+            return View(indexViewModel);
         }
 
         public async Task<IActionResult> Category([FromRoute] string id, int page = 1)
@@ -223,10 +229,10 @@ namespace BookSpace.Web.Controllers
             return booksViewModels;
         }
 
-        private async Task<IEnumerable<CategoryBookViewModel>> GetBooksByCategoryPage(string genreId, int page)
+        private async Task<IEnumerable<BookByCategoryViewModel>> GetBooksByCategoryPage(string genreId, int page)
         {
             var books = await this.genreRepository.GetBooksByGenrePageAsync(genreId, page, recordsOnPageCategory);
-            var booksViewModel = this.objectMapper.Map<IEnumerable<Book>, IEnumerable<CategoryBookViewModel>>(books.Results);
+            var booksViewModel = this.objectMapper.Map<IEnumerable<Book>, IEnumerable<BookByCategoryViewModel>>(books.Results);
             return booksViewModel;
         }
 
