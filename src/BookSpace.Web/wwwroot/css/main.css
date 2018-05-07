@@ -3105,3 +3105,15 @@ button.search-btn {
     padding-right: 15px;
     font-size: 2.0rem;
 }
+
+
+/*User profile*/
+
+.logout-btn:focus{
+    color: white;
+    background-color: #000;
+}
+
+.sub-menu.log-out{
+    margin-left: 6.0rem;
+}

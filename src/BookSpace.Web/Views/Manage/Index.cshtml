@@ -10,11 +10,12 @@
         output.src = URL.createObjectURL(event.target.files[0]);
     };
 </script>
-<h4>@ViewData["Title"]</h4>
-@Html.Partial("_StatusMessage", Model.StatusMessage)
+
+<div class="books-heading">
+    <p>Manage your account</p>
+</div>
 <div class="row">
     <div class="col-md-6">
-
         <form method="post" enctype="multipart/form-data" asp-controller="Manage" asp-action="UploadPicture">
             <div class="form-group">
                 <div class="col-md-10">
@@ -22,8 +23,7 @@
                     <input type="file" name="file" accept="image/*" onchange="loadFile(event)" />
                     <div  class="user-profile-picture">
                         <img id="image-preview" />
-                    </div>
-                   
+                    </div>   
                 </div>
             </div>
             <div class="form-group">
@@ -40,18 +40,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Email"></label>
-                @if (Model.IsEmailConfirmed)
-                {
-                    <div class="input-group">
-                        <input asp-for="Email" class="form-control" />
-                        <span class="input-group-addon" aria-hidden="true"><span class="glyphicon glyphicon-ok text-success"></span></span>
-                    </div>
-                }
-                else
-                {
-                    <input asp-for="Email" class="form-control" />
-                    <button asp-action="SendVerificationEmail" class="btn btn-link">Send verification email</button>
-                }
+                <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -59,13 +48,10 @@
                 <input asp-for="PhoneNumber" class="form-control" />
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             </div>
-
-            <div class="form-group">
-                <label asp-for="PictureUrl"></label>
-                
-            </div>
             <button type="submit" class="btn btn-default">Save</button>
         </form>
+
+        <p>Change Password</p>
     </div>
 </div>
 
