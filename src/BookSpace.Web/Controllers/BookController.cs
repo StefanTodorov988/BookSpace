@@ -86,6 +86,14 @@ namespace BookSpace.Web.Controllers
         {
             var book = await this.bookRepository.GetByIdAsync(id);
             var comments = await this.bookRepository.GetBookCommentsAsync(id);
+
+            foreach (var comment in comments)
+            {
+                var user = await this._userManager.FindByIdAsync(comment.UserId);
+
+                comment.User = user;
+            }
+
             var genres = await this.bookRepository.GetBookGenresAsync(id);
             var tags = await this.bookRepository.GetBookTagsAsync(id);
             var bookUser = await this.bookUserRepository.GetAsync(bu => bu.BookId == id);
