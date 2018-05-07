@@ -18,6 +18,10 @@ namespace BookSpace.Models.Configurations
             builder.HasOne(b => b.Book)
                 .WithMany(c => c.Comments)
                 .HasForeignKey(fk => fk.BookId);
+
+            builder.HasOne(b => b.User)
+                .WithMany(c => c.Comments)
+                .HasForeignKey(fk => fk.UserId);
         }
     }
 }

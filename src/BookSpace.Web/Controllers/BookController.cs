@@ -1,12 +1,16 @@
 ﻿using AutoMapper;
+using BookSpace.Factories;
 using BookSpace.Models;
 using BookSpace.Repositories;
 using BookSpace.Repositories.Contracts;
+using BookSpace.Services;
 using BookSpace.Web.Models.BookViewModels;
 using BookSpace.Web.Models.CommentsViewModel;
 using BookSpace.Web.Models.GenreViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,20 +23,29 @@ namespace BookSpace.Web.Controllers
         private readonly IMapper objectMapper;
         private readonly IGenreRepository genreRepository;
         private readonly IBookUserRepository bookUserRepository;
+        private readonly ICommentRepository commentRepository;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IFactory<Comment, CommentResponseModel> commentFactory;
+        private readonly BookDataServices dataService;
         private const int recordsOnPageIndex = 30;
         private const int recordsOnPageCategory = 10;
 
         public BookController(IBookRepository bookRepository,
                               IGenreRepository genreRepository,
                               IBookUserRepository bookUserRepository,
+                              ICommentRepository commentRepository,
                               UserManager<ApplicationUser> userManager,
+                              IFactory<Comment, CommentResponseModel> commentFactory,
+                              BookDataServices dataService,
                               IMapper objectMapper)
         {
             this.bookRepository = bookRepository;
             this.genreRepository = genreRepository;
             this.bookUserRepository = bookUserRepository;
+            this.commentRepository = commentRepository;
             this._userManager = userManager;
+            this.commentFactory = commentFactory;
+            this.dataService = dataService;
             this.objectMapper = objectMapper;
         }
 
@@ -58,7 +71,7 @@ namespace BookSpace.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> BooksByCategoryList([FromRoute] string id,[FromQuery] int page)
+        public async Task<IActionResult> BooksByCategoryList([FromRoute] string id, [FromQuery] int page)
         {
             var genre = await this.genreRepository.GetByIdAsync(id);
             var genreViewModel = this.objectMapper.Map<Genre, GenreViewModel>(genre);
@@ -73,6 +86,14 @@ namespace BookSpace.Web.Controllers
         {
             var book = await this.bookRepository.GetByIdAsync(id);
             var comments = await this.bookRepository.GetBookCommentsAsync(id);
+
+            foreach (var comment in comments)
+            {
+                var user = await this._userManager.FindByIdAsync(comment.UserId);
+
+                comment.User = user;
+            }
+
             var genres = await this.bookRepository.GetBookGenresAsync(id);
             var tags = await this.bookRepository.GetBookTagsAsync(id);
             var bookUser = await this.bookUserRepository.GetAsync(bu => bu.BookId == id);
@@ -80,10 +101,10 @@ namespace BookSpace.Web.Controllers
             var bookViewModel = this.objectMapper.Map<Book, BookViewModel>(book);
             var commentsViewModel = this.objectMapper.Map<IEnumerable<Comment>, IEnumerable<CommentViewModel>>(comments);
             var propertiesViewModel = new BookPropertiesViewModel();
-            propertiesViewModel.Comments = commentsViewModel ;
+            propertiesViewModel.Comments = commentsViewModel;
             propertiesViewModel.Tags = tags.ToList().Select(t => t.Value);
             propertiesViewModel.Genres = genres.ToList().Select(g => g.Name);
-            bool isRated = bookUser == null || bookUser.HasRatedBook == false ? false : true; 
+            bool isRated = bookUser == null || bookUser.HasRatedBook == false ? false : true;
             int userRating = bookUser == null || bookUser.HasRatedBook == false ? 0 : bookUser.Rate;
 
             var singleBookViewModel = new SingleBookViewModel
@@ -102,7 +123,7 @@ namespace BookSpace.Web.Controllers
 
             int ratesCount = book.RatesCount;
 
-            if(isNewUser)
+            if (isNewUser)
             {
                 book.RatesCount++;
                 book.Rating = ((book.Rating * (ratesCount)) + int.Parse(rate)) / (ratesCount + 1);
@@ -111,9 +132,9 @@ namespace BookSpace.Web.Controllers
             {
                 book.Rating = ((book.Rating * (ratesCount - 1)) + int.Parse(rate)) / ratesCount;
             }
-           
+
             await this.bookRepository.UpdateAsync(book);
-            return RedirectToAction("BookDetails","Book", new { id });
+            return RedirectToAction("BookDetails", "Book", new { id });
         }
 
         public IActionResult GetBookGenres(string bookId)
@@ -125,9 +146,27 @@ namespace BookSpace.Web.Controllers
             return View();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AddComment(string id, string comment, string userId)
+        {
+            //creating response object from input
+            var commentResponse = this.commentFactory.Create(new CommentResponseModel()
+            {
+                //TODO: NOT WORKING WITH USERID
+                UserId = userId,
+                BookId = id,
+                Content = comment,
+                Date = DateTime.Now
+            });
+
+            await this.commentRepository.AddAsync(commentResponse);
+
+            return RedirectToAction("BookDetails", new { id });
+        }
+
         public IActionResult BooksByAuthor(string bookId)
         {
-            
+
             return View();
         }
 

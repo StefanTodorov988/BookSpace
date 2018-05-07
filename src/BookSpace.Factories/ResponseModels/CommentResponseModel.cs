@@ -2,10 +2,13 @@
 
 namespace BookSpace.Factories
 {
-    public class CommentResponseObject
+    public class CommentResponseModel
     {
-        //TODO:NOTFINISHED
+        public string UserId { get; set; }
+
         public string CommentId { get; set; }
+
+        public string BookId { get; set; }
 
         public string Content { get; set; }
 

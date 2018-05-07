@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using BookSpace.Factories;
 using BookSpace.Models;
 using Microsoft.AspNetCore.Mvc;
 using BookSpace.Web.Models;
 using BookSpace.Repositories.Contracts;
 using BookSpace.Web.Models.BookViewModels;
 using AutoMapper;
-using BookSpace.Data.Contracts;
 using BookSpace.Repositories;
 using BookSpace.Web.Models.GenreViewModels;
 

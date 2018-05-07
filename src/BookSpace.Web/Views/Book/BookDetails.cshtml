@@ -1,4 +1,5 @@
 ﻿@model SingleBookViewModel
+@inject ApplicationUser User
 
 <section class="content content--narrow content--no-padding-bottom">
 
@@ -66,64 +67,12 @@
             </p>
         </div>
         <div class="book-details-btn">
-            <button id="addToRead" onclick="addToRead('@Model.Book.BookId', '@Model.Book.Title')" >Want To Read</button>
+            <button id="addToRead" onclick="addToRead('@Model.Book.BookId', '@Model.Book.Title')">Want To Read</button>
             <button id="addCurrentlyReading" onclick="addCurrentyReading('@Model.Book.BookId', '@Model.Book.Title')">Currently Reading</button>
             <button id="addRead" onclick="addRead('@Model.Book.BookId', '@Model.Book.Title')">Read</button>
             <br />
             <span>Add to yor collections</span>
         </div>
-
     </article>
-
-    <div class="comments-wrapper">
-
-        <div id="comments" class="row">
-            <div class="col-full">
-                <h3 class="h2">2 Comments</h3>
-
-                <ol class="commentlist">
-
-                    @foreach (var comment in Model.Properties.Comments)
-                    {
-                        <li class=" comment">
-                            <div class="comment-author">
-                                <img width="50" height="50" class="avatar" src="~/images/avatars/user-male.png" alt="">
-                            </div>
-
-                            <div class="comment-content">
-
-                                <div class="comment-info">
-                                    <cite>@comment.Author</cite>
-                                    <div class="comment-meta">
-                                        <time class="comment-time">@comment.Date</time>
-                                    </div>
-                                </div>
-
-                                <div class="comment-text">
-                                    <p>@comment.Content</p>
-                                </div>
-                            </div>
-                        </li>
-                    }
-                </ol>
-                <div class="respond">
-                    <h3 class="h2">Add Comment</h3>
-
-                    <form name="contactForm" id="contactForm" method="post" action="">
-                        <fieldset>
-                            <div class="message form-field">
-                                <textarea name="comment-message" id="comment-message" class="full-width" placeholder="Your Comment"></textarea>
-                            </div>
-
-                            <button type="submit" class="submit btn--primary btn--large full-width">Comment</button>
-
-                        </fieldset>
-                    </form>
-
-                </div>
-            </div>
-
-        </div>
-    </div>
+            @await Html.PartialAsync("Book/_BookCommentsPartial")
 </section>
-
