@@ -1,28 +1,27 @@
-﻿@model IEnumerable<SearchedBookViewModel>
-@{
-    ViewData["Title"] = "SearchResult";
+﻿@{
+    ViewData["Title"] = "Index";
 }
 
 <script>
     $('.search-form').hide();
-     $().ready(function () {
-         $('.search-form-page').on('click', '.search-btn.page', function (event) {
-             var selectedFilter = $('[name=filerRadio]:checked').val();
-             var searchString = $('.search-input.page').val();
-             console.log("AAAA")
-             $.ajax({
-                 type:"GET"
-                 url: @Url.Action("SearchBook", "Search"),
-                    data: { filter: searchString, filerRadio: selectedFilter }
-                });
-         });
-
-         $('.search-input.page').keypress(function (e) {
-             if (e.which == 13) {
-                 $('.search-btn.page').click();
-             }
-         });
+    $().ready(function () {
+        $('.search-form-page').on('click', '.search-btn.page', function (event) {
+            var selectedFilter = $('[name=filerRadio]:checked').val();
+            var searchString = $('.search-input.page').val();
+            console.log("AAAA")
+            $.ajax({
+                type: "GET",
+                url: "/Search/SearchBook",
+                data: { filter: searchString, filerRadio: selectedFilter }
+            });
         });
+
+        $('.search-input.page').keypress(function (e) {
+            if (e.which == 13) {
+                $('.search-btn.page').click();
+            }
+        });
+    });
 
 </script>
 <section class="content">
@@ -35,9 +34,10 @@
 
     <div class="row top">
 
-        <form class="search-form-page" asp-controller="Search" asp-action="SearchResult">
+        <form class="search-form-page" asp-controller="Search" asp-action="SearchBook" method="post">
             <input name="filter" class="search-input page" placeholder="Search Books" />
             <button type="button" class="search-btn page"><i class="fa fa-search"></i></button>
+
             <div class="serach-from-radio-buttons">
                 <label> <input type="radio" name="filerRadio" value="title" checked />Title</label>
                 <label> <input type="radio" name="filerRadio" value="author" />Author</label>
@@ -45,11 +45,9 @@
                 <label> <input type="radio" name="filerRadio" value="tag" />Tag</label>
             </div>
         </form>
-
-
         <div class="col-full">
             <div class="block-m-full" id="paged-by-category">
-                @Html.Partial("Book/_BookSearchResultPagePartial")
+                @*  @await Html.PartialAsync("Book/_BookSearchResultPagePartial")*@
             </div>
         </div>
     </div>
