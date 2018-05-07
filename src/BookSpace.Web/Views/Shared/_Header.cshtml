@@ -19,7 +19,6 @@
                 <button type="submit" class="search-btn"><i class="fa fa-search"></i></button>
             </form>
 
-            <a class="header-toggle-menu" href="#0" title="Menu"><span>Menu</span></a>
             <nav class="header-nav-wrappper">
                 <ul class="header-nav nav-guest">
                     <li class="current"><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
@@ -35,7 +34,7 @@
                         <li><a asp-area="" asp-controller="UserBooks" asp-action="Index" class="nav-user">My Books</a></li>
                         <li>
                             <a asp-area="" asp-controller="Home" asp-action="Index" class="nav-user has-children">Hello, @User.Identity.Name!</a>
-                            <ul class="sub-menu">
+                            <ul class="sub-menu log-out">
                                 <li><a asp-area="" asp-controller="Manage" asp-action="Index">Profile</a></li>
                                 <li>
                                     <form asp-controller="Account" asp-action="Logout" method="post">

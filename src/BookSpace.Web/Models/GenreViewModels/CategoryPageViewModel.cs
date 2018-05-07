@@ -9,6 +9,6 @@ namespace BookSpace.Web.Models.GenreViewModels
     public class CategoryPageViewModel
     {
         public GenreViewModel Genre { get; set; }
-        public IEnumerable<CategoryBookViewModel> Books { get; set; }
+        public IEnumerable<BookByCategoryViewModel> Books { get; set; }
     }
 }

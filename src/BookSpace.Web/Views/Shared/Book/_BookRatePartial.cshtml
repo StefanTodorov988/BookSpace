@@ -1,0 +1,19 @@
+﻿@model SingleBookViewModel
+
+<div class="dropdown-rating">
+
+    @if (Model.IsRated)
+    {
+        <span>You have alredy rated this book! <br /> Your rating is : @Model.UserRating <br /></span>
+    }
+
+    <button class="dropbtn">Rate Book</button>
+    <div class="dropdown-content">
+        <a href="#" onclick="rate('@Model.Book.BookId', '@Model.Book.Title', 1)">1 - Bad</a>
+        <a href="#" onclick="rate('@Model.Book.BookId', '@Model.Book.Title', 2)">2 - Ok</a>
+        <a href="#" onclick="rate('@Model.Book.BookId', '@Model.Book.Title', 3)">3 - Liked it</a>
+        <a href="#" onclick="rate('@Model.Book.BookId', '@Model.Book.Title', 4)">4 - Good</a>
+        <a href="#" onclick="rate('@Model.Book.BookId', '@Model.Book.Title', 5)">5 - Great!</a>
+    </div>
+
+</div>

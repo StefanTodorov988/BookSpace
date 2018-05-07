@@ -20,8 +20,11 @@ namespace BookSpace.Web.Controllers
         private readonly IGenreRepository genreRepository;
         private readonly ITagRepository tagRepository;
         private readonly IMapper objectMapper;
-
-        public HomeController(IBookRepository bookRepository,IGenreRepository genreRepository,ITagRepository tagRepository, IMapper mapper)
+        
+        public HomeController(IBookRepository bookRepository,
+                              IGenreRepository genreRepository,
+                              ITagRepository tagRepository,
+                              IMapper mapper)
         {
             this.bookRepository = bookRepository;
             this.genreRepository = genreRepository;
@@ -39,11 +42,15 @@ namespace BookSpace.Web.Controllers
             var bookOfTheDay = await this.bookRepository.FindByExpressionOrdered(x => new Guid(), 1);
             var bookOfTheDayViewModel = this.objectMapper.Map<Book, BookOfTheDayViewModel>(bookOfTheDay.FirstOrDefault());
 
+            var tags = await this.tagRepository.GetAllAsync();
+            var tagsViewModel = this.objectMapper.Map<IEnumerable<Tag>, IEnumerable<TagViewModel>>(tags);
+
             var homePageViewModel = new HomePageViewModel()
             {
                 BookOfTheDay = bookOfTheDayViewModel,
                 PopularBooks = popularBooksViewModels,
-                NewBooks = newBooksViewModels
+                NewBooks = newBooksViewModels,
+                Tags = tagsViewModel
             };
 
             return View(homePageViewModel);
