@@ -66,8 +66,7 @@ namespace BookSpace.Web.Controllers
                 Username = user.UserName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
-                IsEmailConfirmed = user.EmailConfirmed,
-                StatusMessage = StatusMessage
+                PictureUrl = user.ProfilePictureUrl
             };
 
             return View(model);
@@ -125,6 +124,13 @@ namespace BookSpace.Web.Controllers
                 userId = user.Id;
                 await this.blobStorageService.UploadAsync(user.Id, blobContainer, stream.ToArray());
             }
+
+
+            var userUpdate = await this._userManager.GetUserAsync(HttpContext.User);
+            var pictureUri = await this.blobStorageService.GetAsync(userId, blobContainer);
+            userUpdate.ProfilePictureUrl = pictureUri.Url.ToString();
+            var updated = await this._userManager.UpdateAsync(userUpdate);
+
             var faceAtributes = faceService.DetectFaceAtribytesAsync(blobStorageService.GetAsync(userId, blobContainer).Result.Url);
 
             try

@@ -3118,3 +3118,61 @@ button.search-btn {
 .sub-menu.log-out{
     margin-left: 6.0rem;
 }
+
+.user-form{
+    width: 60%;
+    margin: 0 auto;
+}
+
+.user-form2{
+
+    margin: auto;
+}
+.picture-form {
+    margin: 0 auto;
+    width: 50%;
+    height: 100%;
+    display: -webkit-inline-box;
+}
+
+.user-profile-picture {
+    width: 250px;
+    height: 250px;
+}
+.user-profile-picture img {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    padding: 30px;
+}
+
+.user-picture-input{
+    margin-top: 10.0rem;
+    margin-left: 3.0rem; 
+}
+
+.user-picture-heading {
+    text-align: center;
+    font-size: 3.0rem;
+}
+
+.user-form-input{
+    margin-bottom: 2.0rem;
+    margin: 0 auto;
+}
+.user-form-input label{
+    font-size: 1.6rem;
+    padding-top: 20px;
+}
+.user-input-field{
+    width : 50%;
+}
+.user-btn,
+.user-btn-pass{
+    margin-top: 2.5rem;
+    width: 50%; 
+}
+
+.user-btn-pass {
+    margin-bottom: 12.0rem;
+}
