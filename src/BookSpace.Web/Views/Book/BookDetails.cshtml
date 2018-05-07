@@ -45,7 +45,7 @@
 
         <div class="book-details-after">
 
-            @if (SignInManager.IsSignedIn(User))
+            @if (SignInManager.IsSignedIn(User) && !User.IsInRole("Admin"))
             {
                 @await Html.PartialAsync("Book/_BookRatePartial")
             }
@@ -63,7 +63,7 @@
         </div>
 
 
-        @if (SignInManager.IsSignedIn(User))
+        @if (SignInManager.IsSignedIn(User) && !User.IsInRole("Admin"))
         {
             <div class="book-details-btn">
                 <button id="addToRead" onclick="addToRead('@Model.Book.BookId', '@Model.Book.Title')">Want To Read</button>
