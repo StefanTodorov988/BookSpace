@@ -282,7 +282,8 @@ textarea:-webkit-autofill:hover textarea:-webkit-autofill:focus {
 }
 
 .btn,
-button {
+button,
+.profile-button {
     display: inline-block;
     font-family: "metropolis-bold", sans-serif;
     font-size: 1.2rem;
@@ -2397,6 +2398,7 @@ footer {
     font-family: "metropolis-regular", sans-serif;
     width: 50%;
     float: right;
+    padding-bottom: 5.0rem;
 }
 
     .content-tags span {
@@ -3103,4 +3105,16 @@ button.search-btn {
     padding-left: 10px;
     padding-right: 15px;
     font-size: 2.0rem;
+}
+
+
+/*User profile*/
+
+.logout-btn:focus{
+    color: white;
+    background-color: #000;
+}
+
+.sub-menu.log-out{
+    margin-left: 6.0rem;
 }

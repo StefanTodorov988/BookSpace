@@ -1,7 +1,5 @@
-﻿@model IEnumerable<BooksIndexViewModel>
-@{
-    ViewData["Title"] = "All Books";
-}
+﻿@model AllBooksViewModel
+ 
 
 <section class="content">
 
@@ -10,7 +8,7 @@
     </div>
     <div class="row top">
         <div class="books-list">
-            @Html.Partial("Book/_BooksPagePartial")
+            @Html.Partial("Book/_BooksPagePartial", Model.Books)
         </div>
     </div>
 
@@ -18,18 +16,15 @@
         <div class="col-full">
             <nav class="pagination">
                 <ul>
-                    <li><a class="page-prev">Prev</a></li>
-                    <li><a class="page-num">1</a></li>
-                    <li><a class="page-num">2</a></li>
-                    <li><a class="page-num">3</a></li>
-                    <li><a class="page-num">4</a></li>
-                    <li><a class="page-num">5</a></li>
-                    <li><span class="page-num dots">…</span></li>
-                    <li><a class="page-num">8</a></li>
-                    <li><a class="page-next">Next</a></li>
+                    @{
+                        int pages = (int)Math.Ceiling(Model.BooksCount / 30.0);
+                        for (int i = 1; i <= pages; i++)
+                        {
+                            <li><a class="page-num">@i</a></li>
+                        }
+                    }
                 </ul>
             </nav>
         </div>
     </div>
-
 </section>
