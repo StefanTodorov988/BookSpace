@@ -3,8 +3,10 @@ using BookSpace.Data.Contracts;
 using BookSpace.Models;
 using BookSpace.Repositories;
 using BookSpace.Repositories.Contracts;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -15,7 +17,7 @@ namespace BookSpace.Services
         private const string regexPatern = @"[^\w-]+";
 
 
-        private readonly IDbContext dbContext;
+        private readonly BookSpaceContext dbCtx;
         private readonly IBookRepository bookRepository;
         private readonly IGenreRepository genreRepository;
         private readonly ITagRepository tagRepository;
@@ -23,10 +25,10 @@ namespace BookSpace.Services
         private readonly IBookTagRepository bookTagRepository;
         private readonly ICommentRepository commentRepository;
 
-        public BookDataServices(IDbContext dbCtx,IBookRepository bookRepository, IGenreRepository genreRepository, ITagRepository tagRepository,
-            IBookGenreRepository bookGenreRepository, IBookTagRepository bookTagRepository,ICommentRepository commentRepository)
+        public BookDataServices(BookSpaceContext dbCtx, IBookRepository bookRepository, IGenreRepository genreRepository, ITagRepository tagRepository,
+            IBookGenreRepository bookGenreRepository, IBookTagRepository bookTagRepository, ICommentRepository commentRepository,UserManager<ApplicationUser> user)
         {
-            this.dbContext = dbCtx ?? throw new ArgumentNullException(nameof(dbContext));
+            this.dbCtx = dbCtx ?? throw new ArgumentNullException(nameof(dbCtx));
             this.bookRepository = bookRepository;
             this.genreRepository = genreRepository;
             this.tagRepository = tagRepository;
@@ -55,9 +57,7 @@ namespace BookSpace.Services
                 };
 
                 await this.bookGenreRepository.AddAsync(bookGenreRecord);
-                //await this.dbContext.DbSet<BookGenre>().AddAsync(bookGenreRecord);
             }
-            //await this.dbContext.SaveAsync();
         }
 
         public async Task MatchTagToBookAsync(IEnumerable<string> tags, string bookId)
@@ -72,20 +72,20 @@ namespace BookSpace.Services
                     TagId = tagId
                 };
                 await this.bookTagRepository.AddAsync(bookTagRecord);
-                //await this.dbContext.DbSet<BookTag>().AddAsync(bookTagRecord);
             }
-            //await this.dbContext.SaveAsync();
         }
 
-        public async Task MatchCommentToBook(string commentId, string  bookId)
+        public void  MatchCommentToUser(string commentId, string userId)
         {
-            var comment = this.commentRepository.GetByIdAsync(commentId).Result;
 
-            var book = this.bookRepository.GetByIdAsync(bookId).Result;
+            var user = dbCtx.Users.Where(u => u.Id == userId).SingleOrDefault();
 
-            book.Comments.Add(comment);
+            var comment = dbCtx.Comments.Where(cm => cm.CommentId == commentId).SingleOrDefault();
 
-            
+            user.Comments.Add(comment);
+
+            comment.User = user;
+
         }
     }
 }

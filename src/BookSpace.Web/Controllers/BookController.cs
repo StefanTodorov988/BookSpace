@@ -3,6 +3,7 @@ using BookSpace.Factories;
 using BookSpace.Models;
 using BookSpace.Repositories;
 using BookSpace.Repositories.Contracts;
+using BookSpace.Services;
 using BookSpace.Web.Models.BookViewModels;
 using BookSpace.Web.Models.CommentsViewModel;
 using BookSpace.Web.Models.GenreViewModels;
@@ -25,6 +26,7 @@ namespace BookSpace.Web.Controllers
         private readonly ICommentRepository commentRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IFactory<Comment, CommentResponseModel> commentFactory;
+        private readonly BookDataServices dataService;
         private const int recordsOnPageIndex = 30;
         private const int recordsOnPageCategory = 10;
 
@@ -34,6 +36,7 @@ namespace BookSpace.Web.Controllers
                               ICommentRepository commentRepository,
                               UserManager<ApplicationUser> userManager,
                               IFactory<Comment, CommentResponseModel> commentFactory,
+                              BookDataServices dataService,
                               IMapper objectMapper)
         {
             this.bookRepository = bookRepository;
@@ -42,6 +45,7 @@ namespace BookSpace.Web.Controllers
             this.commentRepository = commentRepository;
             this._userManager = userManager;
             this.commentFactory = commentFactory;
+            this.dataService = dataService;
             this.objectMapper = objectMapper;
         }
 
@@ -82,6 +86,14 @@ namespace BookSpace.Web.Controllers
         {
             var book = await this.bookRepository.GetByIdAsync(id);
             var comments = await this.bookRepository.GetBookCommentsAsync(id);
+
+            foreach (var comment in comments)
+            {
+                var user = await this._userManager.FindByIdAsync(comment.UserId);
+
+                comment.User = user;
+            }
+
             var genres = await this.bookRepository.GetBookGenresAsync(id);
             var tags = await this.bookRepository.GetBookTagsAsync(id);
             var bookUser = await this.bookUserRepository.GetAsync(bu => bu.BookId == id);
@@ -111,7 +123,7 @@ namespace BookSpace.Web.Controllers
 
             int ratesCount = book.RatesCount;
 
-            if(isNewUser)
+            if (isNewUser)
             {
                 book.RatesCount++;
                 book.Rating = ((book.Rating * (ratesCount)) + int.Parse(rate)) / (ratesCount + 1);
@@ -120,7 +132,7 @@ namespace BookSpace.Web.Controllers
             {
                 book.Rating = ((book.Rating * (ratesCount - 1)) + int.Parse(rate)) / ratesCount;
             }
-           
+
             await this.bookRepository.UpdateAsync(book);
             return RedirectToAction("BookDetails", "Book", new { id });
         }
@@ -140,6 +152,7 @@ namespace BookSpace.Web.Controllers
             //creating response object from input
             var commentResponse = this.commentFactory.Create(new CommentResponseModel()
             {
+                //TODO: NOT WORKING WITH USERID
                 UserId = userId,
                 BookId = id,
                 Content = comment,
@@ -148,9 +161,7 @@ namespace BookSpace.Web.Controllers
 
             await this.commentRepository.AddAsync(commentResponse);
 
-
-
-            return RedirectToAction("Index");
+            return RedirectToAction("BookDetails", new { id });
         }
 
         public IActionResult BooksByAuthor(string bookId)
