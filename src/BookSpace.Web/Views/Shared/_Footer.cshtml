@@ -8,12 +8,9 @@
             <h4>Quick Links</h4>
 
             <ul class="footer-links-list">
-                <li><a href="#0">Home</a></li>
-                <li><a href="#0">Books</a></li>
-                <li><a href="#0">Magazines</a></li>
-                <li><a href="#0">Articles</a></li>
-                <li><a href="#0">Art</a></li>
-                <li><a href="#0">Contacts</a></li>
+                <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                <li><a asp-controller="Book" asp-action="Index">Books</a></li>
+                <li><a asp-controller="Home" asp-action="Contact">Contacts</a></li>
             </ul>
 
         </div>
@@ -21,13 +18,13 @@
 
     <div class="row">
         <div class="footer-copyright">
-            <span>© Copyright Stefani Nikolova 2018</span>
+            <span>© Copyright The Magnificent 2018</span>
         </div>
     </div>
 
 </footer>
 
-@*<div id="preloader">
+<div id="preloader">
     <div id="loader">
         <div class="line-scale">
             <div></div>
@@ -37,4 +34,4 @@
             <div></div>
         </div>
     </div>
-</div>*@
+</div>

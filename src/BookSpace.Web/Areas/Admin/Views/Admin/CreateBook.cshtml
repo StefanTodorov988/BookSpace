@@ -27,33 +27,22 @@
                 <input asp-for="Author" class="form-control" />
                 <span asp-validation-for="Author" class="text-danger"></span>
             </div>
+            @*<div>
+                    <ul class="header-nav nav-guest">
+                        <li class="has-children" id="genres-nav">Genres</li>
+                    </ul>
+                </div>
+                <div>
+                    <ul class="header-nav nav-guest">
+                        <li class="has-children" id="tags-nav">Tags</li>
+                    </ul>
+                </div>*@
+
             <div class="form-group">
                 <label asp-for="Genres" class="control-label"></label>
                 <input asp-for="Genres" class="form-control" />
                 <span asp-validation-for="Genres" class="text-danger"></span>
             </div>
-            @*<div class="form-group">
-        <dl class="dropdown">
-            <dt>
-                <a href="#">
-                    <span class="hida" onclick="dropDownMenu()">Select Genre</span>
-                    <p class="multiSel"></p>
-                </a>
-            </dt>
-            <dd>
-                <div class="mutliSelect">
-                    <ul>
-                        @foreach (var genre in genreRepository.GetAllAsync().Result)
-                        {
-                            <li>
-                                <input type="checkbox" value="@genre.Name" />@genre.Name
-                            </li>
-                        }
-                    </ul>
-                </div>
-            </dd>
-        </dl>
-        <label asp-for="Genres" class="control-label"></label>*@
             <div class="form-group">
                 <label asp-for="Tags" class="control-label"></label>
                 <input asp-for="Tags" class="form-control" />
