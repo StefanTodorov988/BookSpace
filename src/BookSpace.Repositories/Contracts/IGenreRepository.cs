@@ -10,5 +10,6 @@ namespace BookSpace.Repositories
     {
         Task<Genre> GetGenreByNameAsync(string name);
         Task<PagedResult<Book>> GetBooksByGenrePageAsync(string genreId, int page, int pageSize);
+        Task<IEnumerable<Book>> GetBooksByGenreNameAsync(string name);
     }
 }

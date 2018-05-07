@@ -30,6 +30,13 @@ namespace BookSpace.Repositories
             return books;
         }
 
+        public async Task<IEnumerable<Book>> GetBooksByGenreNameAsync(string name)
+        {
+            return await this.GetManyToManyAsync(g => g.Name.Contains(name),
+                                                 bu => bu.GenreBooks,
+                                                 b => b.Book);
+        }
+
         public async Task<Genre> GetGenreByNameAsync(string name)
         {
             return await this.GetAsync(b => b.Name == name);

@@ -1,0 +1,28 @@
+﻿<section class="content">
+
+    <div class="row narrow">
+        <div class="col-full content-header">
+            <h1>Search</h1>
+        </div>
+    </div>
+
+    <div class="row top">
+
+        <form class="search-form-page" asp-controller="Book" asp-action="Search" method="post">
+            <input name="filter" class="search-input page" placeholder="Search Books" />
+            <button type="button" class="search-btn page"><i class="fa fa-search"></i></button>
+
+            <div class="serach-from-radio-buttons">
+                <label> <input type="radio" name="filterRadio" value="title" checked />Title</label>
+                <label> <input type="radio" name="filterRadio" value="author" />Author</label>
+                <label> <input type="radio" name="filterRadio" value="genre" />Genre</label>
+                <label> <input type="radio" name="filterRadio" value="tag" />Tag</label>
+            </div>
+        </form>
+        <div class="col-full">
+            <div class="block-m-full" id="paged-by-category">
+               @await Html.PartialAsync("Book/_BookSearchResultPartial")
+            </div>
+        </div>
+    </div>
+</section>
