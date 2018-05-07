@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using BookSpace.Data;
 using BookSpace.Data.Contracts;
 using BookSpace.Models;
-using BookSpace.Repositories.Contracts;
-using Microsoft.EntityFrameworkCore;
 
 namespace BookSpace.Repositories
 {
@@ -14,9 +11,9 @@ namespace BookSpace.Repositories
     {
         public TagRepository(IDbContext dbContext) : base(dbContext) { }
 
-        public async Task<IEnumerable<Book>> GetBooksWithTagAsync(string tagId)
+        public async Task<IEnumerable<Book>> GetBooksByTagAsync(string tag)
         {
-            var books = await this.GetManyToManyAsync(g => g.TagId == tagId,
+            var books = await this.GetManyToManyAsync(g => g.Value.Contains(tag),
                                                       b => b.TagBooks,
                                                       x => x.Book
             );

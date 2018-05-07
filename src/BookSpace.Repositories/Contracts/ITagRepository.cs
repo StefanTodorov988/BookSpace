@@ -8,6 +8,6 @@ namespace BookSpace.Repositories
     public  interface ITagRepository : IRepository<Tag>
     {
         Task<Tag> GetTagByNameAsync(string name);
-        Task<IEnumerable<Book>> GetBooksWithTagAsync(string tagId);
+        Task<IEnumerable<Book>> GetBooksByTagAsync(string tagId);
     }
 }
