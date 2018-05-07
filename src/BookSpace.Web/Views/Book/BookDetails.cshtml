@@ -1,5 +1,6 @@
 ﻿@model SingleBookViewModel
-@inject ApplicationUser User
+@inject SignInManager<ApplicationUser> SignInManager
+
 
 <section class="content content--narrow content--no-padding-bottom">
 
@@ -23,6 +24,7 @@
 
                 </li>
             </ul>
+
             <div class="book-details-rating">
                 <span>Rating : </span>
                 @await Html.PartialAsync("_RatingPartial", new KeyValuePair<string, decimal>(Model.Book.Title, Model.Book.Rating))
@@ -42,23 +44,12 @@
         </div>
 
         <div class="book-details-after">
-            <div class="dropdown-rating">
 
-                @if (Model.IsRated)
-                {
-                    <span>You have alredy rated this book! <br /> Your rating is : @Model.UserRating <br /></span>
-                }
+            @if (SignInManager.IsSignedIn(User))
+            {
+                @await Html.PartialAsync("Book/_BookRatePartial")
+            }
 
-                <button class="dropbtn">Rate Book</button>
-                <div class="dropdown-content">
-                    <a href="#" onclick="rate('@Model.Book.BookId', '@Model.Book.Title', 1)">1 - Bad</a>
-                    <a href="#" onclick="rate('@Model.Book.BookId', '@Model.Book.Title', 2)">2 - Ok</a>
-                    <a href="#" onclick="rate('@Model.Book.BookId', '@Model.Book.Title', 3)">3 - Liked it</a>
-                    <a href="#" onclick="rate('@Model.Book.BookId', '@Model.Book.Title', 4)">4 - Good</a>
-                    <a href="#" onclick="rate('@Model.Book.BookId', '@Model.Book.Title', 5)">5 - Great!</a>
-                </div>
-
-            </div>
             <p class="content-tags">
                 <span>Post Tags</span>
                 <span class="content-tag-list">
@@ -70,13 +61,22 @@
                 </span>
             </p>
         </div>
-        <div class="book-details-btn">
-            <button id="addToRead" onclick="addToRead('@Model.Book.BookId', '@Model.Book.Title')">Want To Read</button>
-            <button id="addCurrentlyReading" onclick="addCurrentyReading('@Model.Book.BookId', '@Model.Book.Title')">Currently Reading</button>
-            <button id="addRead" onclick="addRead('@Model.Book.BookId', '@Model.Book.Title')">Read</button>
-            <br />
-            <span>Add to yor collections</span>
-        </div>
+
+
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <div class="book-details-btn">
+                <button id="addToRead" onclick="addToRead('@Model.Book.BookId', '@Model.Book.Title')">Want To Read</button>
+                <button id="addCurrentlyReading" onclick="addCurrentyReading('@Model.Book.BookId', '@Model.Book.Title')">Currently Reading</button>
+                <button id="addRead" onclick="addRead('@Model.Book.BookId', '@Model.Book.Title')">Read</button>
+                <br />
+                <span>Add to yor collections</span>
+            </div>
+        }
     </article>
-    @await Html.PartialAsync("Book/_BookCommentsPartial")
+    @if (SignInManager.IsSignedIn(User))
+    {
+        @await Html.PartialAsync("Book/_BookCommentsPartial")
+    }
+
 </section>
