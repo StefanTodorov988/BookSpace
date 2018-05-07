@@ -12,9 +12,10 @@ using System;
 namespace BookSpace.Data.Migrations
 {
     [DbContext(typeof(BookSpaceContext))]
-    partial class BookSpaceContextModelSnapshot : ModelSnapshot
+    [Migration("20180507173856_cascade-delete-fix")]
+    partial class cascadedeletefix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

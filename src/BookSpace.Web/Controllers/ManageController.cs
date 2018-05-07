@@ -14,8 +14,11 @@ using BookSpace.Web.Extensions;
 using BookSpace.BlobStorage.Contracts;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using System.Threading;
 using BookSpace.CognitiveServices.Contract;
 using BookSpace.Web.Services.SmtpService.Contract;
+using Microsoft.ProjectOxford.Face;
+using Microsoft.ProjectOxford.Face.Contract;
 
 namespace BookSpace.Web.Controllers
 {
@@ -114,39 +117,34 @@ namespace BookSpace.Web.Controllers
         [HttpPost("UploadPicture")]
         public async Task<IActionResult> UploadPicture(IFormFile file)
         {
-            string currentUserEmail;
-            string userId;
+
+            var user = await this._userManager.GetUserAsync(HttpContext.User);
+            string currentUserEmail = user.Email;
+            string userId = user.Id;
+          
             using (var stream = new MemoryStream())
             {
                 await file.CopyToAsync(stream);
-                var user = await this._userManager.GetUserAsync(HttpContext.User);
-                currentUserEmail = user.Email;
-                userId = user.Id;
                 await this.blobStorageService.UploadAsync(user.Id, blobContainer, stream.ToArray());
             }
 
 
-            var userUpdate = await this._userManager.GetUserAsync(HttpContext.User);
             var pictureUri = await this.blobStorageService.GetAsync(userId, blobContainer);
-            userUpdate.ProfilePictureUrl = pictureUri.Url.ToString();
-            var updated = await this._userManager.UpdateAsync(userUpdate);
-
-            var faceAtributes = faceService.DetectFaceAtribytesAsync(blobStorageService.GetAsync(userId, blobContainer).Result.Url);
+            user.ProfilePictureUrl = pictureUri.Url.ToString();
+            var updated = await this._userManager.UpdateAsync(user);
+            var faceAtributes = faceService.DetectFaceAtribytesAsync(blobStorageService.GetAsync(user.Id, blobContainer).Result.Url);
 
             try
             {
-                smtpSender.SendMail(currentUserEmail, GenerateMessageByEmotion(
-                        faceAtributes.Result[0].Emotion.Happiness,
-                        faceAtributes.Result[0].Emotion.Sadness,
-                        faceAtributes.Result[0].Emotion.Anger));
+                smtpSender.SendMail(user.Email, GenerateMessageByEmotion(faceAtributes.Result[0], user.UserName));
             }
             catch (IndexOutOfRangeException e)
             {
-                smtpSender.SendMail(currentUserEmail, "No face on picture");
+               // In case of image without face
             }
             return RedirectToAction(nameof(Index));
         }
-       
+
         [HttpGet]
         public async Task<IActionResult> ChangePassword()
         {
@@ -199,21 +197,47 @@ namespace BookSpace.Web.Controllers
             }
         }
 
-        private string GenerateMessageByEmotion(float happiness, float sadness, float anger)
+        private string GenerateMessageByEmotion(FaceAttributes faceAttributes, string userName)
         {
-            if (happiness > 0.5f && sadness < 0.1f)
+            string emotion;
+
+            if (faceAttributes.Emotion.Happiness > 0.5f && faceAttributes.Emotion.Sadness < 0.2f)
             {
-                return "Happy email Message.";
+                emotion = "happy";
             }
-            else if (happiness < 0.2 && sadness > 0.4)
+            else if (faceAttributes.Emotion.Happiness < 0.2f && faceAttributes.Emotion.Sadness > 0.4f)
             {
-                return "Sad email message.";
+                emotion = "sad";
             }
-            else if (anger > 0.34)
+            else if (faceAttributes.Emotion.Anger > 0.34f)
             {
-                return "Angry email message.";
+                emotion = "angry";
             }
-            return "Default email message";
+            else if (faceAttributes.Emotion.Surprise > 0.40f)
+            {
+                emotion = "suprised";
+            }
+            else
+            {
+                emotion = "not detected";
+            }
+
+            if (emotion != "not detected")
+            {
+                return $"Greetings {userName}, \n" + Environment.NewLine + Environment.NewLine +
+                        "We see that you have uploaded a profile picture!\n" +
+                       $"Our face recognition service recognized you as being {emotion}. \n" + Environment.NewLine + Environment.NewLine +
+                        "Best regards, \n" +
+                        "Bookster Team";
+            }
+            else
+            {
+                return $"Greetings {userName}, \n" + Environment.NewLine + Environment.NewLine +
+                       "We see that you have uploaded a profile picture!\n" +
+                       $"Unfortunately our face recognition service didn't recognize your emotions \n" + Environment.NewLine + Environment.NewLine +
+                       "Best regards, \n" +
+                       "Bookster Team";
+            }
         }
         #endregion
     }
