@@ -19,22 +19,28 @@ namespace BookSpace.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index([FromQuery] string filter, [FromQuery] string filerRadio = "default")
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SearchBook(string filter,string filerRadio = "default")
         {
             List<Book> foundBooks = new List<Book>();
-            if(filerRadio == "default")
+            if (filerRadio == "default")
             {
                 foundBooks = new List<Book>(await bookRepository.Search(x => x.Title.Contains(filter) || x.Author.Contains(filter)));
             }
-            else if(filerRadio == "title")
+            else if (filerRadio == "title")
             {
                 foundBooks = new List<Book>(await bookRepository.Search(x => x.Title.Contains(filter)));
             }
-            else if(filerRadio == "author")
+            else if (filerRadio == "author")
             {
                 foundBooks = new List<Book>(await bookRepository.Search(x => x.Author.Contains(filter)));
             }
-            else if(filerRadio == "genre")
+            else if (filerRadio == "genre")
             {
                 foundBooks = new List<Book>(await this.SerachByGenre(filter));
             }
@@ -45,7 +51,7 @@ namespace BookSpace.Web.Controllers
 
             var foundBooksViewModel = this.objectMapper.Map<IEnumerable<Book>, IEnumerable<SearchedBookViewModel>>(foundBooks);
 
-            return View(foundBooksViewModel);
+            return View("/Views/Shared/Book/_BookSearchResultPagePartial.cshtml", foundBooksViewModel);
         }
 
         public async Task<IEnumerable<Book>> SerachByGenre(string filter)
@@ -62,7 +68,7 @@ namespace BookSpace.Web.Controllers
 
             var foundBooks = await bookRepository.SearchByNavigationProperty
                                    ("BookTag", "Tag", b => CheckBookTags(b, filter));
-         
+
             return foundBooks;
         }
 
