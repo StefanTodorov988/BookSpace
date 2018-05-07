@@ -282,7 +282,8 @@ textarea:-webkit-autofill:hover textarea:-webkit-autofill:focus {
 }
 
 .btn,
-button {
+button,
+.profile-button {
     display: inline-block;
     font-family: "metropolis-bold", sans-serif;
     font-size: 1.2rem;
