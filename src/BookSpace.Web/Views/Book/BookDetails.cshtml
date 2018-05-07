@@ -15,7 +15,12 @@
             <ul class="book-details-meta">
                 <li class="date">Published on @Model.Book.PublicationYear.ToString("MMMM dd, yyyy")</li>
                 <li class="genres">
-                    Genre: <a href="#0">@String.Join(", ", Model.Properties.Genres)</a>
+                    Genre:
+                    @foreach (var genre in Model.Properties.Genres)
+                    {
+                        <a asp-controller="Book" asp-action="Search" asp-route-filter="@genre" asp-route-filterRadio="genre">@genre</a>
+                    }
+
                 </li>
             </ul>
             <div class="book-details-rating">
@@ -32,7 +37,6 @@
 
             <p class="book-details-description">
                 @Model.Book.Description
-                <a class="description-see-more">more</a>
             </p>
 
         </div>
@@ -61,7 +65,7 @@
 
                     @foreach (var tag in Model.Properties.Tags)
                     {
-                        <a href="#0">@tag</a>
+                        <a asp-controller="Book" asp-action="Search" asp-route-filter="@tag" asp-route-filterRadio="tag">@tag</a>
                     }
                 </span>
             </p>
@@ -74,5 +78,5 @@
             <span>Add to yor collections</span>
         </div>
     </article>
-            @await Html.PartialAsync("Book/_BookCommentsPartial")
+    @await Html.PartialAsync("Book/_BookCommentsPartial")
 </section>
