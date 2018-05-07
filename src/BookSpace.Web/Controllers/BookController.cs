@@ -22,6 +22,7 @@ namespace BookSpace.Web.Controllers
         private readonly IBookRepository bookRepository;
         private readonly IMapper objectMapper;
         private readonly IGenreRepository genreRepository;
+        private readonly ITagRepository tagRepository;
         private readonly IBookUserRepository bookUserRepository;
         private readonly ICommentRepository commentRepository;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -32,6 +33,7 @@ namespace BookSpace.Web.Controllers
 
         public BookController(IBookRepository bookRepository,
                               IGenreRepository genreRepository,
+                              ITagRepository tagRepository,
                               IBookUserRepository bookUserRepository,
                               ICommentRepository commentRepository,
                               UserManager<ApplicationUser> userManager,
@@ -41,6 +43,7 @@ namespace BookSpace.Web.Controllers
         {
             this.bookRepository = bookRepository;
             this.genreRepository = genreRepository;
+            this.tagRepository = tagRepository;
             this.bookUserRepository = bookUserRepository;
             this.commentRepository = commentRepository;
             this._userManager = userManager;
@@ -164,25 +167,51 @@ namespace BookSpace.Web.Controllers
             return RedirectToAction("BookDetails", new { id });
         }
 
-        public IActionResult BooksByAuthor(string bookId)
+        public async Task<IActionResult> Search(string filter, string filterRadio = "default")
         {
+            List<Book> foundBooks = new List<Book>();
+            if (filterRadio == "default")
+            {
+                foundBooks = new List<Book>(await bookRepository.Search(x => x.Title.Contains(filter) || x.Author.Contains(filter)));
+            }
+            else if (filterRadio == "title")
+            {
+                foundBooks = new List<Book>(await bookRepository.Search(x => x.Title.Contains(filter)));
+            }
+            else if (filterRadio == "author")
+            {
+                foundBooks = new List<Book>(await bookRepository.Search(x => x.Author.Contains(filter)));
+            }
+            else if (filterRadio == "genre")
+            {
+                foundBooks = new List<Book>(await this.genreRepository.GetBooksByGenreNameAsync(filter));
+            }
+            else if(filterRadio == "tag")
+            {
+                foundBooks = new List<Book>(await this.tagRepository.GetBooksByTagAsync(filter));
+            }
 
-            return View();
+            var foundBooksViewModel = this.objectMapper.Map<IEnumerable<Book>, IEnumerable<SearchedBookViewModel>>(foundBooks);
+
+            return View("Search" , foundBooksViewModel);
         }
 
-        public IActionResult BooksByGenre()
+        public async Task<IEnumerable<Book>> SerachByGenre(string filter)
         {
-            return View();
+
+            var foundBooks = await bookRepository.SearchByNavigationProperty
+                                    ("BookGenres", "Genre", b => CheckBookGenres(b, filter));
+            return foundBooks;
         }
 
-        public IActionResult BooksByTag()
+        [HttpGet]
+        public async Task<IEnumerable<Book>> SerachByTag(string filter)
         {
-            return View();
-        }
 
-        public IActionResult BooksByTitle()
-        {
-            return View();
+            var foundBooks = await bookRepository.SearchByNavigationProperty
+                                   ("BookTags", "Tag", b => CheckBookTags(b, filter));
+
+            return foundBooks;
         }
 
         #region Helpers
@@ -199,6 +228,30 @@ namespace BookSpace.Web.Controllers
             var books = await this.genreRepository.GetBooksByGenrePageAsync(genreId, page, recordsOnPageCategory);
             var booksViewModel = this.objectMapper.Map<IEnumerable<Book>, IEnumerable<CategoryBookViewModel>>(books.Results);
             return booksViewModel;
+        }
+
+        private bool CheckBookGenres(Book book, string filter)
+        {
+            var enumerator = book.BookGenres.GetEnumerator();
+            while (enumerator.Current != null)
+            {
+                if (enumerator.Current.Genre.Name.Contains(filter))
+                    return true;
+            };
+
+            return false;
+        }
+
+        private bool CheckBookTags(Book book, string filter)
+        {
+            var enumerator = book.BookGenres.GetEnumerator();
+            while (enumerator.Current != null)
+            {
+                if (enumerator.Current.Genre.Name.Contains(filter))
+                    return true;
+            };
+
+            return false;
         }
         #endregion
     }
