@@ -11,7 +11,7 @@ namespace BookSpace.Factories
             {
                 CommentId = Guid.NewGuid().ToString(),
                 UserId = model.UserId,
-                BookId= model.BookId,
+                BookId = model.BookId,
                 Content = model.Content,
                 Date = model.Date
             };

@@ -115,7 +115,7 @@ namespace BookSpace.Web.Controllers
 
             int ratesCount = book.RatesCount;
 
-            if(isNewUser)
+            if (isNewUser)
             {
                 book.RatesCount++;
                 book.Rating = ((book.Rating * (ratesCount)) + int.Parse(rate)) / (ratesCount + 1);
@@ -124,7 +124,7 @@ namespace BookSpace.Web.Controllers
             {
                 book.Rating = ((book.Rating * (ratesCount - 1)) + int.Parse(rate)) / ratesCount;
             }
-           
+
             await this.bookRepository.UpdateAsync(book);
             return RedirectToAction("BookDetails", "Book", new { id });
         }
@@ -151,11 +151,9 @@ namespace BookSpace.Web.Controllers
                 Date = DateTime.Now
             });
 
-            //await this.dataService.MatchCommentToUser(commentResponse.CommentId, userId);
-
             await this.commentRepository.AddAsync(commentResponse);
 
-            return RedirectToAction("BookDetails", new{id});
+            return RedirectToAction("BookDetails", new { id });
         }
 
         public IActionResult BooksByAuthor(string bookId)
