@@ -4,26 +4,22 @@
 }
 
 <div class="container-register">
-    <p> New here? Create a free account!</p>
+    <div class="books-heading">
+        <p>New here? Create free account!</p>
+    </div>
     <form asp-controller="Account" asp-action="Register" method="post" class="register-form">
         <div asp-validation-summary="All" class="text-danger"></div>
         <label>
             <input asp-for="Username" class="form-control" placeholder="Username">
-            <span asp-validation-for="Username" class="text-danger"></span>
         </label>
         <label>
-
             <input asp-for="Email" class="form-control" type="text" placeholder="Email">
-            <span asp-validation-for="Email" class="text-danger"></span>
         </label>
         <label>
-
             <input asp-for="Password" class="form-control" placeholder="Password">
-            <span asp-validation-for="Password" class="text-danger"></span>
         </label>
         <label>
             <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password">
-            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
         </label>
         <div class="form-submit-btn">
             <button type="submit" class="submit btn--primary btn--medium full-width">
@@ -31,6 +27,11 @@
             </button>
         </div>
     </form>
+    <div style="width: 40%; margin: 0 auto">
+        <a asp-controller="Account" asp-action="Login" class="btn btn--primary btn--medium full-width">
+            Login
+        </a>
+    </div>
 </div>
 
 @section Scripts {

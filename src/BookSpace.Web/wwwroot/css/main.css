@@ -306,13 +306,16 @@ button,
 }
 
     .btn:hover,
-    button:hover,
-    .btn:focus,
-    button:focus {
-        background-color: #b8b8b8;
-        border-color: #b8b8b8;
-        color: #000000;
+    button:hover {
+        background-color: #000;
+        border-color: #000;
+        color: white;
         outline: 0;
+    }
+
+    .btn:focus,
+    button:focus{
+        outline: none;
     }
 
 
@@ -993,9 +996,9 @@ button,
 
 .header-book-title{
     max-width: 80%;
-    float: right;
+    margin: 0 auto;
     padding-top: 2.0rem;
-    padding-bottom: 1.5rem;
+    padding-bottom: 4.0rem;
     text-align: center;
 }
 
@@ -1067,6 +1070,8 @@ button,
     display: inline-block;
     float: right;
     padding-right: 26px;
+    margin-top: 3.0rem;
+
 }
 
 .container-login,
@@ -1935,6 +1940,10 @@ body.login-is-visible {
 .masonry-brick {
     float: left;
     padding: 0 20px;
+}
+
+.brick {
+    height: 500px;
 }
 
 @media only screen and (max-width:1480px) {
@@ -3175,4 +3184,20 @@ button.search-btn {
 
 .user-btn-pass {
     margin-bottom: 12.0rem;
+}
+
+#map {
+    height: 400px;
+    width: 100%;
+}
+
+.text-danger{
+    color: red;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 2.5rem;
+    margin-top: 2.5rem;
+}
+.text-danger ul{
+    list-style: none;
 }
