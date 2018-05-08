@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using BookSpace.Data;
 using BookSpace.Data.Contracts;
 using BookSpace.Models;
+using BookSpace.Repositories.Contracts;
 
 namespace BookSpace.Repositories
 {

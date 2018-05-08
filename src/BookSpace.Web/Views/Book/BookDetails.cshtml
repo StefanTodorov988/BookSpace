@@ -78,5 +78,7 @@
             <span>Add to yor collections</span>
         </div>
     </article>
-    @await Html.PartialAsync("Book/_BookCommentsPartial")
+    <div id="commentsDiv">
+            @await Html.PartialAsync("Book/_BookCommentsPartial", new KeyValuePair<string, IEnumerable<CommentViewModel>>(Model.Book.BookId, Model.Properties.Comments));
+    </div>
 </section>

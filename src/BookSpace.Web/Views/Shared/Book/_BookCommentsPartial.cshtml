@@ -1,16 +1,16 @@
-﻿@model SingleBookViewModel
+﻿@model KeyValuePair<string, IEnumerable<CommentViewModel>>
 @inject UserManager<ApplicationUser> appUser
 <div class="comments-wrapper">
     <div id="comments" class="row">
         <div class="col-full">
-            <h4 class="h2">@Model.Properties.Comments.Count() Comments</h4>
+            <h4 class="h2">@Model.Value.Count() Comments</h4>
             <ol class="commentlist">
-                @foreach (var comment in Model.Properties.Comments.OrderByDescending(c => c.Date))
+                @foreach (var comment in Model.Value.OrderByDescending(c => c.Date))
                 {
-                    <li class=" comment">
+                    <li class="comment">
                         <div class="comment-author">
                             <img width="50" height="50" class="avatar" src="~/images/avatars/user-male.png" alt="">
-                            
+
                         </div>
                         <div class="comment-content">
                             <div class="comment-info">
@@ -23,6 +23,13 @@
                                 <p>@comment.Content</p>
                             </div>
                         </div>
+                        @if(comment.CanEdit)
+                        {
+                            <div class="comment" commentId="@comment.CommentId" bookId="@comment.BookId" userId="@comment.UserId">
+                                <a  id="deleteComment"><i class="fa fa-trash" aria-hidden="true" title="Delete comment"></i></a>
+                                <a  asp-action="GetEditModal" asp-controller="Comment" id="editComment"><i class="fa fa-eraser" aria-hidden="true" title="Edit comment"></i></a>
+                            </div>
+                        }
                     </li>
                 }
             </ol>
@@ -32,9 +39,45 @@
                     <div class="message form-field">
                         <textarea name="comment-message" id="comment-message" class="full-width" placeholder="Your Comment"></textarea>
                     </div>
-                    <button id="addComment" onclick="addComment('@Model.Book.BookId','@appUser.GetUserId(User)')" class="submit btn--primary btn--large full-width">Comment</button>
+                    <button id="addComment" onclick="addComment('@Model.Key','@appUser.GetUserId(User)')" class="submit btn--primary btn--large full-width">Comment</button>
                 </fieldset>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    $('#deleteComment').on('click', deleteComment);
+    //$('#editComment').on('click', editComment);
+
+    function deleteComment(e) {
+        $.ajax({
+            type: "POST",
+            url: "/Comment/DeleteCommentAsync",
+            data: { commentId: $(e.target).parent().parent().attr('commentId'), bookId: $(e.target).parent().parent().attr('bookId'), userId: $(e.target).parent().parent().attr('userId')},
+            success: (htmlData) => {
+                $('#commentsDiv').html(htmlData);
+            },
+            error: (response) => {
+                displayError('Error deleting comment');
+            }
+        })
+    }
+
+    //function editComment(e) {
+    //    let commentData = {};
+    //    commentData.Value = $(e).target().parent().find('.comment-text').text();
+    //    console.log();
+    //    $.ajax({
+    //        type: "POST",
+    //        url: "/Comment/GetEditModal",
+    //        data: { commentId:  },
+    //        success: (htmlData) => {
+    //            //commentsDiv.html(htmlData).fadeIn();
+    //        },
+    //        error: (response) => {
+    //            displayError('Error deleting comment');
+    //        }
+    //    })
+    //}
+</script>

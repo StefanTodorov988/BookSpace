@@ -4,7 +4,7 @@ using BookSpace.Repositories.Contracts;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace BookSpace.Repositories
+namespace BookSpace.Repositories.Contracts
 {
     public  interface IGenreRepository : IRepository<Genre>
     {

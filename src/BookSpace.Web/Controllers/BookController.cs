@@ -1,15 +1,14 @@
 ﻿using AutoMapper;
 using BookSpace.Factories;
+using BookSpace.Factories.ResponseModels;
 using BookSpace.Models;
-using BookSpace.Repositories;
 using BookSpace.Repositories.Contracts;
 using BookSpace.Services;
 using BookSpace.Web.Models.BookViewModels;
-using BookSpace.Web.Models.CommentsViewModel;
+using BookSpace.Web.Models.CommentViewModels;
 using BookSpace.Web.Models.GenreViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +20,7 @@ namespace BookSpace.Web.Controllers
     {
         private readonly IBookRepository bookRepository;
         private readonly IMapper objectMapper;
+        private readonly IApplicationUserRepository applicationUserRepository;
         private readonly IGenreRepository genreRepository;
         private readonly ITagRepository tagRepository;
         private readonly IBookUserRepository bookUserRepository;
@@ -39,7 +39,8 @@ namespace BookSpace.Web.Controllers
                               UserManager<ApplicationUser> userManager,
                               IFactory<Comment, CommentResponseModel> commentFactory,
                               BookDataServices dataService,
-                              IMapper objectMapper)
+                              IMapper objectMapper,
+                              IApplicationUserRepository applicationUserRepository)
         {
             this.bookRepository = bookRepository;
             this.genreRepository = genreRepository;
@@ -50,6 +51,7 @@ namespace BookSpace.Web.Controllers
             this.commentFactory = commentFactory;
             this.dataService = dataService;
             this.objectMapper = objectMapper;
+            this.applicationUserRepository = applicationUserRepository;
         }
 
         public async Task<IActionResult> Index(int page = 1)
@@ -103,10 +105,28 @@ namespace BookSpace.Web.Controllers
 
             var bookViewModel = this.objectMapper.Map<Book, BookViewModel>(book);
             var commentsViewModel = this.objectMapper.Map<IEnumerable<Comment>, IEnumerable<CommentViewModel>>(comments);
-            var propertiesViewModel = new BookPropertiesViewModel();
-            propertiesViewModel.Comments = commentsViewModel;
-            propertiesViewModel.Tags = tags.ToList().Select(t => t.Value);
-            propertiesViewModel.Genres = genres.ToList().Select(g => g.Name);
+
+            if (this.User.Identity.IsAuthenticated)
+            {
+                foreach (var comment in commentsViewModel)
+                {
+                    var isAdmin = this.User.IsInRole("Admin");
+
+                    var commentCreatorId = comment.UserId;
+                    var currentUser = await this.applicationUserRepository.GetUserByUsernameAsync(this.User.Identity.Name);
+                    var isCreator = commentCreatorId == currentUser.Id;
+
+                    comment.CanEdit = isAdmin || isCreator;
+                }
+            }
+
+            var propertiesViewModel = new BookPropertiesViewModel
+            {
+                Comments = commentsViewModel,
+                Tags = tags.ToList().Select(t => t.Value),
+                Genres = genres.ToList().Select(g => g.Name)
+            };
+
             bool isRated = bookUser == null || bookUser.HasRatedBook == false ? false : true;
             int userRating = bookUser == null || bookUser.HasRatedBook == false ? 0 : bookUser.Rate;
 
