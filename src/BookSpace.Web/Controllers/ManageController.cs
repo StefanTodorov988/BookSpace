@@ -127,7 +127,7 @@ namespace BookSpace.Web.Controllers
 
                 //sets profile pictureurl
                 var pictureUri = await this.blobStorageService.GetAsync(userId, blobContainer);
-                user.ProfilePictureUrl = pictureUri.ToString();
+                user.ProfilePictureUrl = pictureUri.Url.ToString();
 
             }
 

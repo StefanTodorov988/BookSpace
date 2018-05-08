@@ -41,15 +41,15 @@ namespace BookSpace.Web.Controllers
                               BookDataServices dataService,
                               IMapper objectMapper)
         {
-            this.bookRepository = bookRepository;
-            this.genreRepository = genreRepository;
-            this.tagRepository = tagRepository;
-            this.bookUserRepository = bookUserRepository;
-            this.commentRepository = commentRepository;
-            this._userManager = userManager;
-            this.commentFactory = commentFactory;
-            this.dataService = dataService;
-            this.objectMapper = objectMapper;
+            this.bookRepository = bookRepository ?? throw new ArgumentNullException(nameof(bookRepository)); 
+            this.genreRepository = genreRepository ?? throw new ArgumentNullException(nameof(genreRepository));
+            this.tagRepository = tagRepository ?? throw new ArgumentNullException(nameof(tagRepository));
+            this.bookUserRepository = bookUserRepository ?? throw new ArgumentNullException(nameof(bookUserRepository));
+            this.commentRepository = commentRepository ?? throw new ArgumentNullException(nameof(commentRepository));
+            this._userManager = userManager ?? throw new ArgumentNullException(nameof(commentRepository));
+            this.commentFactory = commentFactory ?? throw new ArgumentNullException(nameof(commentFactory));
+            this.dataService = dataService ?? throw new ArgumentNullException(nameof(dataService));
+            this.objectMapper = objectMapper ?? throw new ArgumentNullException(nameof(objectMapper));
         }
 
         public async Task<IActionResult> Index(int page = 1)
