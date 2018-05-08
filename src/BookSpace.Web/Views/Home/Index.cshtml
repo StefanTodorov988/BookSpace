@@ -18,14 +18,14 @@
 
             @if (!SignInManager.IsSignedIn(User))
             {
-            <div class="header-forms">
-                @await Html.PartialAsync("../Account/Login", new LoginViewModel())
-                @await Html.PartialAsync("../Account/Register", new RegisterViewModel())
-            </div>
+                <div class="header-forms">
+                    @await Html.PartialAsync("../Account/Login", new LoginViewModel())
+                    @await Html.PartialAsync("../Account/Register", new RegisterViewModel())
+                </div>
             }
             else
             {
-                 @await Html.PartialAsync("Book/_BookOfTheDayPartial", Model.BookOfTheDay)
+                @await Html.PartialAsync("Book/_BookOfTheDayPartial", Model.BookOfTheDay)
             }
         </div>
 
@@ -38,10 +38,10 @@
     </div>
     <div class="row masonry-wrap">
         <div class="masonry">
-           @foreach (var book in Model.PopularBooks)
-           {
-               @await Html.PartialAsync("Book/_PopularBookPartial", book)
-           }
+            @foreach (var book in Model.PopularBooks)
+            {
+                @await Html.PartialAsync("Book/_PopularBookPartial", book)
+            }
         </div>
     </div>
 </section>
@@ -92,14 +92,14 @@
             <h3>Tags</h3>
 
             <div class="tagcloud">
-                <a href="#0">Book</a>
-                <a href="#0">Fashion</a>
-                <a href="#0">Modern</a>
-                <a href="#0">Travel</a>
-                <a href="#0">Magazine</a>
-                <a href="#0">Article</a>
-                <a href="#0">Trending</a>
-                <a href="#0">Classic</a>
+
+                @{
+                    Random rnd = new Random();
+                    foreach (var tag in Model.Tags.OrderBy(x => rnd.Next()).Take(15))
+                    {
+                        <a asp-controller="Book" asp-action="Search" asp-route-filter="@tag.Value" asp-route-filterRadio="tag">@tag.Value</a>
+                    }
+                }
             </div>
         </div>
     </div>

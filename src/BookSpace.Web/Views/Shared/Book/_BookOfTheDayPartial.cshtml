@@ -34,10 +34,26 @@
             <span>Rating : @Model.Rating</span>
         </div>
 
-        <div class="header-book-btn">
-            <button id="addToRead" onclick="addToRead('@Model.BookId', '@Model.Title')">Want To Read</button>
-            <button id="addCurrentlyReading" onclick="addCurrentyReading('@Model.BookId', '@Model.Title')">Currently Reading</button>
-            <button id="addRead" onclick="addRead('@Model.BookId', '@Model.Title')">Read</button>
-        </div>
+        @if (!User.IsInRole("Admin"))
+        {
+            <div class="header-book-btn">
+                <button id="addToRead" onclick="addToRead('@Model.BookId', '@Model.Title')">Want To Read</button>
+                <button id="addCurrentlyReading" onclick="addCurrentyReading('@Model.BookId', '@Model.Title')">Currently Reading</button>
+                <button id="addRead" onclick="addRead('@Model.BookId', '@Model.Title')">Read</button>
+            </div>
+        }
+        else
+        {
+            <div class="header-book-btn">
+                <button><a asp-area="" asp-controller="Book" asp-action="BookDetails" asp-route-id="@Model.BookId" style="color:#000">
+                    See Details</a></button>
+                <button><a asp-area="Admin" asp-controller="Admin" asp-action="EditBook" asp-route-bookid="@Model.BookId" style="color:#000">
+                    Edit</a></button>
+                <button><a asp-area="Admin" asp-controller="Admin" asp-action="DeleteBook" asp-route-bookid="@Model.BookId" style="color:#000">
+                    Delete </a></button>
+            </div>
+
+        }
+
     </div>
 </div>

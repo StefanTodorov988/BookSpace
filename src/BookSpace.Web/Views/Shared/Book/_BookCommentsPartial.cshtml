@@ -1,5 +1,6 @@
 ﻿@model KeyValuePair<string, IEnumerable<CommentViewModel>>
-@inject UserManager<ApplicationUser> appUser
+@inject UserManager<ApplicationUser> UserManager
+
 <div class="comments-wrapper">
     <div id="comments" class="row">
         <div class="col-full">
@@ -39,7 +40,7 @@
                     <div class="message form-field">
                         <textarea name="comment-message" id="comment-message" class="full-width" placeholder="Your Comment"></textarea>
                     </div>
-                    <button id="addComment" onclick="addComment('@Model.Key','@appUser.GetUserId(User)')" class="submit btn--primary btn--large full-width">Comment</button>
+                    <button id="addComment" onclick="addComment('@Model.Key','@UserManager.GetUserId(User)')" class="submit btn--primary btn--large full-width">Comment</button>
                 </fieldset>
             </div>
         </div>

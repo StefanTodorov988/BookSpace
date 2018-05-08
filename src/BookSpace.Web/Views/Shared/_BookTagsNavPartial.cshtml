@@ -2,7 +2,7 @@
 
 <a asp-area="" asp-controller="Book" asp-action="Index">Books</a>
 <ul class="sub-menu">
-    @foreach (var genre in Model.Take(15))
+    @foreach (var genre in Model)
     {
         <li><a asp-area="" asp-controller="Book" asp-action="Category" asp-route-id="@genre.GenreId">@genre.Name</a></li>
     }

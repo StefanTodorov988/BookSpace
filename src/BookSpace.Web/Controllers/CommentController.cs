@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BookSpace.Repositories.Contracts;
@@ -20,11 +21,6 @@ namespace BookSpace.Web.Controllers
             this.bookRepository = bookRepository;
             this.objectMapper = objectMapper;
             this.applicationUserRepository = applicationUserRepository;
-        }
-
-        public IActionResult GetEditModal(string commentId)
-        {
-            return PartialView("_CommentEditPartial");
         }
 
         [HttpPost]
@@ -57,9 +53,16 @@ namespace BookSpace.Web.Controllers
             var comments = await this.bookRepository.GetBookCommentsAsync(bookId);
             var commentsViewModel = this.objectMapper.Map<IEnumerable<CommentViewModel>>(comments);
 
-            foreach (var c in commentsViewModel)
+            foreach (var comment in commentsViewModel)
             {
-                c.CanEdit = isOwner || isAdmin;
+                var commentCreatorId = comment.UserId;
+                var currentUser = await this.applicationUserRepository.GetUserByUsernameAsync(this.User.Identity.Name);
+                var isCreator = commentCreatorId == currentUser.Id;
+
+                comment.CanEdit = isAdmin || isCreator;
+
+                var user = await this.applicationUserRepository.GetByIdAsync(comment.UserId);
+                comment.Author = user.UserName;
             }
 
             return PartialView("Book/_BookCommentsPartial", new KeyValuePair<string, IEnumerable<CommentViewModel>>(bookId, commentsViewModel));

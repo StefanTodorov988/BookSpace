@@ -11,5 +11,6 @@ namespace BookSpace.Web.Models
         public BookOfTheDayViewModel BookOfTheDay { get; set; }
         public IEnumerable<PopularBookViewModel> PopularBooks { get; set; }
         public IEnumerable<NewBookViewModel> NewBooks { get; set; }
+        public IEnumerable<TagViewModel> Tags { get; set; }
     }
 }
