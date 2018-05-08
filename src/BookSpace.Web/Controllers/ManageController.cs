@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using BookSpace.CognitiveServices.Contract;
 using BookSpace.Web.Services.SmtpService.Contract;
+using Microsoft.ProjectOxford.Face.Contract;
 
 namespace BookSpace.Web.Controllers
 {
@@ -128,14 +129,11 @@ namespace BookSpace.Web.Controllers
             user.ProfilePictureUrl = pictureUri.Url.ToString();
             var updated = await this._userManager.UpdateAsync(user);
 
-            var faceAtributes = faceService.DetectFaceAtribytesAsync(blobStorageService.GetAsync(userId, blobContainer).Result.Url);
+            var faceAtributes = await faceService.DetectFaceAtribytesAsync(blobStorageService.GetAsync(userId, blobContainer).Result.Url);
 
             try
             {
-                smtpSender.SendMail(currentUserEmail, GenerateMessageByEmotion(
-                        faceAtributes.Result[0].Emotion.Happiness,
-                        faceAtributes.Result[0].Emotion.Sadness,
-                        faceAtributes.Result[0].Emotion.Anger));
+                smtpSender.SendMail(user.Email, GenerateMessageByEmotion(faceAtributes[0], user.UserName));
             }
             catch (IndexOutOfRangeException e)
             {
@@ -199,21 +197,47 @@ namespace BookSpace.Web.Controllers
             }
         }
 
-        private string GenerateMessageByEmotion(float happiness, float sadness, float anger)
+        private string GenerateMessageByEmotion(FaceAttributes faceAttributes, string userName)
         {
-            if (happiness > 0.5f && sadness < 0.1f)
+            string emotion;
+
+            if (faceAttributes.Emotion.Happiness > 0.5f && faceAttributes.Emotion.Sadness < 0.2f)
             {
-                return "Happy email Message.";
+                emotion = "happy";
             }
-            else if (happiness < 0.2 && sadness > 0.4)
+            else if (faceAttributes.Emotion.Happiness < 0.2f && faceAttributes.Emotion.Sadness > 0.4f)
             {
-                return "Sad email message.";
+                emotion = "sad";
             }
-            else if (anger > 0.34)
+            else if (faceAttributes.Emotion.Anger > 0.34f)
             {
-                return "Angry email message.";
+                emotion = "angry";
             }
-            return "Default email message";
+            else if (faceAttributes.Emotion.Surprise > 0.40f)
+            {
+                emotion = "suprised";
+            }
+            else
+            {
+                emotion = "not detected";
+            }
+
+            if (emotion != "not detected")
+            {
+                return $"Greetings {userName}, \n" + Environment.NewLine + Environment.NewLine +
+                        "We see that you have uploaded a profile picture!\n" +
+                       $"Our face recognition service recognized you as being {emotion}. \n" + Environment.NewLine + Environment.NewLine +
+                        "Best regards, \n" +
+                        "Bookster Team";
+            }
+            else
+            {
+                return $"Greetings {userName}, \n" + Environment.NewLine + Environment.NewLine +
+                       "We see that you have uploaded a profile picture!\n" +
+                       $"Unfortunately our face recognition service didn't recognize your emotions \n" + Environment.NewLine + Environment.NewLine +
+                       "Best regards, \n" +
+                       "Bookster Team";
+            }
         }
         #endregion
     }

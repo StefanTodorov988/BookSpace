@@ -5,40 +5,28 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit User</h2>
-
-<h4>@Model.Username</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="EditUser">
+<div class="books-heading">
+    <p>Edit User <br /> @Model.Username</p>
+</div>
+<div class="user-form">
+        <form asp-action="EditUser" class="user-form2">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            <div class="form-group user-form-input">
                 <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
+                <input asp-for="Email" class="form-control user-input-field" type="text" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group user-form-input">
                 <label asp-for="Username" class="control-label"></label>
-                <input asp-for="Username" class="form-control" />
+                <input asp-for="Username" class="form-control  user-input-field" type="text" />
                 <span asp-validation-for="Username" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group user-form-input">
                 <label asp-for="ProfilePictureUrl" class="control-label"></label>
-                <input asp-for="ProfilePictureUrl" class="form-control" />
+                <input asp-for="ProfilePictureUrl" class="form-control user-input-field" type="text" />
                 <span asp-validation-for="ProfilePictureUrl" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    @*<label>
-                        <input asp-for="isAllowed" /> @Html.DisplayNameFor(model => model.isAllowed)
-                    </label>*@
-                </div>
-                @*<div>
-                    <a asp-area="Admin" asp-controller="Admin" asp-action="AllComments">Comments</a>
-                </div>*@
-            </div>
-            <div class="form-group">
+            <div class="form-group user-form-input">
                 <div class="checkbox">
                     <label>
                         <input asp-for="isAdmin" /> @Html.DisplayNameFor(model => model.isAdmin)
@@ -46,8 +34,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-default user-btn-pass" />
             </div>
         </form>
     </div>
-</div>

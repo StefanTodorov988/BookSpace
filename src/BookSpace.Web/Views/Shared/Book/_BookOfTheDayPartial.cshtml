@@ -45,11 +45,11 @@
         else
         {
             <div class="header-book-btn">
-                <button><a asp-area="" asp-controller="Book" asp-action="BookDetails" asp-route-id="@Model.BookId" style="color:#000">
+                <button><a asp-area="" asp-controller="Book" asp-action="BookDetails" asp-route-id="@Model.BookId" class="book-btn-link">
                     See Details</a></button>
-                <button><a asp-area="Admin" asp-controller="Admin" asp-action="EditBook" asp-route-bookid="@Model.BookId" style="color:#000">
+                <button><a asp-area="Admin" asp-controller="Admin" asp-action="EditBook" asp-route-bookid="@Model.BookId"  class="book-btn-link">
                     Edit</a></button>
-                <button><a asp-area="Admin" asp-controller="Admin" asp-action="DeleteBook" asp-route-bookid="@Model.BookId" style="color:#000">
+                <button><a asp-area="Admin" asp-controller="Admin" asp-action="DeleteBook" asp-route-bookid="@Model.BookId"  class="book-btn-link">
                     Delete </a></button>
             </div>
 

@@ -1,4 +1,6 @@
 ﻿@model KeyValuePair<string, IEnumerable<CommentViewModel>>
+
+@inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
 <div class="comments-wrapper">
@@ -24,7 +26,7 @@
                                 <p>@comment.Content</p>
                             </div>
                         </div>
-                        @if(comment.CanEdit)
+                        @if (comment.CanEdit)
                         {
                             <div class="comment" commentId="@comment.CommentId" bookId="@comment.BookId" userId="@comment.UserId">
                                 <a  id="deleteComment"><i class="fa fa-trash" aria-hidden="true" title="Delete comment"></i></a>
@@ -34,8 +36,9 @@
                     </li>
                 }
             </ol>
-
-            <dialog>
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <dialog>
                 <text>Text</text>
             </dialog>
             <div class="respond">
@@ -47,6 +50,8 @@
                     <button id="addComment" onclick="addComment('@Model.Key','@UserManager.GetUserId(User)')" class="submit btn--primary btn--large full-width">Comment</button>
                 </fieldset>
             </div>
+            }
+
         </div>
     </div>
 </div>
@@ -59,7 +64,7 @@
         $.ajax({
             type: "POST",
             url: "/Comment/DeleteCommentAsync",
-            data: { commentId: $(e.target).parent().parent().attr('commentId'), bookId: $(e.target).parent().parent().attr('bookId'), userId: $(e.target).parent().parent().attr('userId')},
+            data: { commentId: $(e.target).parent().parent().attr('commentId'), bookId: $(e.target).parent().parent().attr('bookId'), userId: $(e.target).parent().parent().attr('userId') },
             success: (htmlData) => {
                 $('#commentsDiv').html(htmlData);
             },
