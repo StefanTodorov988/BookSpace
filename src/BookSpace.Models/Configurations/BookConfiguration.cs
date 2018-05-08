@@ -30,8 +30,6 @@ namespace BookSpace.Models.Configurations
                 .WithOne(b => b.Book)
                 .HasForeignKey(fk => fk.BookId)
                 .OnDelete(DeleteBehavior.Cascade);
-            
-                            
 
             builder.HasMany(gb => gb.BookGenres)
                 .WithOne(b => b.Book)
