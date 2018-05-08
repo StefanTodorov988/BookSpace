@@ -15,6 +15,8 @@ namespace BookSpace.Web.Models.CommentViewModels
 
         public string Author { get; set; }
 
+        public string AuthorPicUrl { get; set; }
+
         public string UserId { get; set; }
 
         public bool CanEdit { get; set; }

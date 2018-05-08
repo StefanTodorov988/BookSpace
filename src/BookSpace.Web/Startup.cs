@@ -88,6 +88,7 @@ namespace BookSpace.Web
             services.AddSingleton<ISmtpSender,SmtpSender>();
 
             
+
             services.AddAutoMapper();
             services.AddMvc();
 

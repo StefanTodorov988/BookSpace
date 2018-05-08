@@ -150,11 +150,13 @@ namespace BookSpace.Web.Areas.Admin.Controllers
             return View();
         }
 
-        //TODO:MAJOR FEATURES MISSING
         [HttpPost("/CreateBook")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateBookAsync(CreateBookViewModel bookViewModel)
         {
+            if (ModelState.IsValid)
+            {
+
             var bookResponse = this.objectMapper.Map<BookResponseModel>(bookViewModel);
             var book = this.bookFactory.Create(bookResponse);
 
@@ -165,8 +167,10 @@ namespace BookSpace.Web.Areas.Admin.Controllers
 
             await this.bookServices.MatchGenresToBookAsync(genres, book.BookId);
             await this.bookServices.MatchTagToBookAsync(tags, book.BookId);
+            }
 
             return RedirectToAction("CreateBook");
+
         }
 
         [HttpGet("/CreateTag")]

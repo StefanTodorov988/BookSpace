@@ -1,5 +1,6 @@
 ﻿using BookSpace.Data;
 using BookSpace.Data.Contracts;
+using BookSpace.Factories;
 using BookSpace.Models;
 using BookSpace.Repositories;
 using BookSpace.Repositories.Contracts;
@@ -26,7 +27,7 @@ namespace BookSpace.Services
         private readonly ICommentRepository commentRepository;
 
         public BookDataServices(BookSpaceContext dbCtx, IBookRepository bookRepository, IGenreRepository genreRepository, ITagRepository tagRepository,
-            IBookGenreRepository bookGenreRepository, IBookTagRepository bookTagRepository, ICommentRepository commentRepository,UserManager<ApplicationUser> user)
+            IBookGenreRepository bookGenreRepository, IBookTagRepository bookTagRepository, ICommentRepository commentRepository, UserManager<ApplicationUser> user)
         {
             this.dbCtx = dbCtx ?? throw new ArgumentNullException(nameof(dbCtx));
             this.bookRepository = bookRepository;
@@ -40,15 +41,36 @@ namespace BookSpace.Services
         //splitting tags genres response to seperate entities
         public IEnumerable<string> FormatStringResponse(string response)
         {
-            var handledString = Regex.Split(response, regexPatern, RegexOptions.None);
-            return handledString;
+            try
+            {
+                var handledString = Regex.Split(response, regexPatern, RegexOptions.None);
+                return handledString;
+            }
+            catch (ArgumentNullException)
+            {
+
+                return null;
+            }
         }
 
         public async Task MatchGenresToBookAsync(IEnumerable<string> genres, string bookId)
         {
             foreach (var genreName in genres)
             {
-                var genreId = this.genreRepository.GetGenreByNameAsync(genreName).Result.GenreId;
+                var genre = await this.genreRepository.GetGenreByNameAsync(genreName);
+
+                if (genre == null)
+                {
+                    var genreNew = new Genre()
+                    {
+                        GenreId = Guid.NewGuid().ToString(),
+                        Name = genreName
+                    };
+                    genre = genreNew;
+
+                    await this.genreRepository.AddAsync(genre);
+                }
+                var genreId = genre.GenreId;
 
                 var bookGenreRecord = new BookGenre()
                 {
@@ -64,7 +86,20 @@ namespace BookSpace.Services
         {
             foreach (var tagName in tags)
             {
-                var tagId = this.tagRepository.GetTagByNameAsync(tagName).Result.TagId;
+                var tag = await this.tagRepository.GetTagByNameAsync(tagName);
+
+                if (tag == null)
+                {
+                    var tagNew = new Tag()
+                    {
+                        TagId = Guid.NewGuid().ToString(),
+                        Value = tagName
+                    };
+
+                    tag = tagNew;
+                    await this.tagRepository.AddAsync(tag);
+                }
+                var tagId = tag.TagId;
 
                 var bookTagRecord = new BookTag()
                 {
@@ -75,7 +110,7 @@ namespace BookSpace.Services
             }
         }
 
-        public void  MatchCommentToUser(string commentId, string userId)
+        public void MatchCommentToUser(string commentId, string userId)
         {
 
             var user = dbCtx.Users.Where(u => u.Id == userId).SingleOrDefault();
