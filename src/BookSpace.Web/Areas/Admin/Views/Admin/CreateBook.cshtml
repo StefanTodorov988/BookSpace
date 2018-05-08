@@ -1,6 +1,6 @@
 ﻿@model BookSpace.Web.Models.BookViewModels.CreateBookViewModel
-@inject BookSpace.Repositories.IGenreRepository genreRepository
-@inject BookSpace.Repositories.ITagRepository tagRepository
+@inject BookSpace.Repositories.Contracts.IGenreRepository genreRepository
+@inject BookSpace.Repositories.Contracts.ITagRepository tagRepository
 
 @{
     ViewData["Title"] = "Create Book";

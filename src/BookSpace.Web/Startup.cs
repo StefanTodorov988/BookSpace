@@ -98,16 +98,16 @@ namespace BookSpace.Web
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
 
-            //if (env.IsDevelopment())
-            //{
-            //    app.UseBrowserLink();
-            //    app.UseDeveloperExceptionPage();
-            //    app.UseDatabaseErrorPage();
-            //}
-            //else
-            //{
+            if (env.IsDevelopment())
+            {
+                app.UseBrowserLink();
+                app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
+            }
+            else
+            {
                 app.UseExceptionHandler("/Home/Error");
-            //}
+            }
 
             app.UseStaticFiles();
 
