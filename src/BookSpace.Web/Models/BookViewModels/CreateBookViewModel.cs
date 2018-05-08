@@ -22,7 +22,7 @@ namespace BookSpace.Web.Models.BookViewModels
         public string Author { get; set; }
         [Required]
         [Display(Name = "Description")]
-        [StringLength(20, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
+        [StringLength(150, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
         public string Description { get; set; }
         [Required]
         [Display(Name = "Genres")]
