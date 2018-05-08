@@ -1937,6 +1937,10 @@ body.login-is-visible {
     padding: 0 20px;
 }
 
+.brick {
+    height: 500px;
+}
+
 @media only screen and (max-width:1480px) {
     .masonry-wrap {
         width: 1080px;

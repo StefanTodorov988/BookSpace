@@ -9,10 +9,12 @@
         data: { id: id, comment: content, userId: userId } ,
         success: (response) => {
             showSuccessMessage('Comment added')
+            setTimeout(function () {
+                location.reload();
+            }, 2000);
         },
         error: (response) => {
             showFailureMessage('Cannot add comment.');
         }
     })
-    location.reload();
 }

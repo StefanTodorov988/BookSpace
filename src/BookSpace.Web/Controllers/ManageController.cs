@@ -114,22 +114,20 @@ namespace BookSpace.Web.Controllers
         [HttpPost("UploadPicture")]
         public async Task<IActionResult> UploadPicture(IFormFile file)
         {
-            string currentUserEmail;
-            string userId;
+            var user = await this._userManager.GetUserAsync(HttpContext.User);
+            string currentUserEmail = user.Email;
+            string userId = user.Id;
+          
             using (var stream = new MemoryStream())
             {
                 await file.CopyToAsync(stream);
-                var user = await this._userManager.GetUserAsync(HttpContext.User);
-                currentUserEmail = user.Email;
-                userId = user.Id;
                 await this.blobStorageService.UploadAsync(user.Id, blobContainer, stream.ToArray());
             }
 
 
-            var userUpdate = await this._userManager.GetUserAsync(HttpContext.User);
             var pictureUri = await this.blobStorageService.GetAsync(userId, blobContainer);
-            userUpdate.ProfilePictureUrl = pictureUri.Url.ToString();
-            var updated = await this._userManager.UpdateAsync(userUpdate);
+            user.ProfilePictureUrl = pictureUri.Url.ToString();
+            var updated = await this._userManager.UpdateAsync(user);
 
             var faceAtributes = faceService.DetectFaceAtribytesAsync(blobStorageService.GetAsync(userId, blobContainer).Result.Url);
 

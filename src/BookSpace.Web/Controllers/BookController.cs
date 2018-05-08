@@ -170,7 +170,7 @@ namespace BookSpace.Web.Controllers
 
             await this.commentRepository.AddAsync(commentResponse);
 
-            return RedirectToAction("BookDetails", new { id });
+            return Ok();
         }
 
         public async Task<IActionResult> Search(string filter, string filterRadio = "default")
