@@ -30,9 +30,9 @@
                         {
                             <div class="comment">
                                 <a onclick="deleteComment('@comment.CommentId', '@comment.BookId', '@comment.UserId')">
-                                <i class="fa fa-trash" aria-hidden="true" title="Delete comment"></i>
+                                    <i class="fa fa-trash" aria-hidden="true" title="Delete comment"></i>
                                 </a>
-                                <a  asp-action="EditCommentAsync" asp-controller="Comment" asp-route-commentId="@comment.CommentId"><i class="fa fa-eraser" aria-hidden="true" title="Edit comment"></i></a>
+                                <a asp-action="EditCommentAsync" asp-controller="Comment" asp-route-commentId="@comment.CommentId"><i class="fa fa-eraser" aria-hidden="true" title="Edit comment"></i></a>
                             </div>
                         }
                     </li>
@@ -41,17 +41,17 @@
             @if (SignInManager.IsSignedIn(User))
             {
                 <dialog>
-                <text>Text</text>
-            </dialog>
-            <div class="respond">
-                <h3 class="h2">Add Comment</h3>
-                <fieldset>
-                    <div class="message form-field">
-                        <textarea name="comment-message" id="comment-message" class="full-width" placeholder="Your Comment"></textarea>
-                    </div>
-                    <button id="addComment" onclick="addComment('@Model.Key','@UserManager.GetUserId(User)')" class="submit btn--primary btn--large full-width">Comment</button>
-                </fieldset>
-            </div>
+                    <text>Text</text>
+                </dialog>
+                <div class="respond">
+                    <h3 class="h2">Add Comment</h3>
+                    <fieldset>
+                        <div class="message form-field">
+                            <textarea name="comment-message" id="comment-message" class="full-width" placeholder="Your Comment"></textarea>
+                        </div>
+                        <button id="addComment" onclick="addComment('@Model.Key','@UserManager.GetUserId(User)')" class="submit btn--primary btn--large full-width">Comment</button>
+                    </fieldset>
+                </div>
             }
 
         </div>
@@ -59,12 +59,12 @@
 </div>
 
 <script>
- 
+
     function deleteComment(commentId, bookId, userId) {
         $.ajax({
             type: "POST",
             url: "/Comment/DeleteCommentAsync",
-            data: { commentId: commentId, bookId : bookId, userId : userId },
+            data: { commentId: commentId, bookId: bookId, userId: userId },
             success: (htmlData) => {
                 $('#commentsDiv').html(htmlData);
             },

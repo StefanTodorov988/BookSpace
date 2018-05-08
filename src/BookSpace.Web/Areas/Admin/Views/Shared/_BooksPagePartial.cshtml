@@ -1,0 +1,37 @@
+﻿@model AllBooksAdminViewModel
+
+@foreach (var book in @Model.Books)
+{
+    <tr>
+        <td><img src="@book.CoverUrl" height="100" width="100"></td>
+        <td style="width: 25%">@book.Title</td>
+        <td>@book.Author</td>
+        <td>@book.Isbn</td>
+        <td>@book.PublicationYear</td>
+        <td>@book.Rating</td>
+        <td>
+            <a asp-area="Admin" asp-controller="Admin" asp-action="EditBook" asp-route-bookid="@book.BookId" class="btn">Edit</a>
+            <a asp-area="" asp-controller="Book" asp-action="BookDetails" asp-route-id="@book.BookId" class="btn">Details</a>
+            <a asp-area="Admin" asp-controller="Admin" asp-action="DeleteBook" asp-route-bookid="@book.BookId" class="btn">Delete</a>
+        </td>
+    </tr>
+}
+
+<script>
+    $().ready(function () {
+        $(".page-num-admin").on("click", function () {
+            $(".page-num-admin.current").removeClass("current");
+            $(this).addClass("current");
+            var page = parseInt($(this).html());
+
+            $.ajax({
+                url: "@Url.Action("BooksPage", "Admin")",
+                data: { "page": page },
+                success: function (data) {
+                    $(".admin-books").html(data);
+                }
+            });
+            $('html, body').animate({ scrollTop: 0 }, 'slow');
+        });
+    });
+</script>
