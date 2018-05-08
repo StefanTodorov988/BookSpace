@@ -4,7 +4,7 @@
 }
 
 <div class="container-register">
-    <div class="books-heading">
+    <div>
         <p>New here? Create free account!</p>
     </div>
     <form asp-controller="Account" asp-action="Register" method="post" class="register-form">
@@ -27,11 +27,6 @@
             </button>
         </div>
     </form>
-    <div style="width: 40%; margin: 0 auto">
-        <a asp-controller="Account" asp-action="Login" class="btn btn--primary btn--medium full-width">
-            Login
-        </a>
-    </div>
 </div>
 
 @section Scripts {

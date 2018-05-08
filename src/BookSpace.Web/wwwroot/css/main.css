@@ -1082,7 +1082,8 @@ button,
     margin: 0 auto;
 }
 
-    .container-register p {
+    .container-register p,
+    .container-login p{
         text-align: center;
         font-weight: bold;
     }
