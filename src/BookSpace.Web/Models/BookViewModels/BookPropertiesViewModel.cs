@@ -1,8 +1,5 @@
-﻿using BookSpace.Web.Models.CommentsViewModel;
-using System;
+﻿using BookSpace.Web.Models.CommentViewModels;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BookSpace.Web.Models.BookViewModels
 {

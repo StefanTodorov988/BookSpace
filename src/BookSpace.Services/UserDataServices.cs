@@ -1,6 +1,7 @@
 ﻿using BookSpace.Data.Contracts;
 using BookSpace.Models;
 using BookSpace.Repositories;
+using BookSpace.Repositories.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Text;

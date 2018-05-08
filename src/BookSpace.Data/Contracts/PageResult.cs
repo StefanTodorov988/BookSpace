@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
 
-namespace BookSpace.Repositories.Contracts
+namespace BookSpace.Data.Contracts
 { 
 
     public class PagedResult<T>  where T : class

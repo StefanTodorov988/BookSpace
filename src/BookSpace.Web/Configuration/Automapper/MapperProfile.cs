@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
-using BookSpace.Factories;
 using BookSpace.Factories.ResponseModels;
 using BookSpace.Models;
 using BookSpace.Web.Areas.Admin.Models.ApplicationUserViewModels;
 using BookSpace.Web.Models.BookViewModels;
-using BookSpace.Web.Models.CommentsViewModel;
+using BookSpace.Web.Models.CommentViewModels;
 
 namespace BookSpace.Web.Configuration.Automapper
 {
