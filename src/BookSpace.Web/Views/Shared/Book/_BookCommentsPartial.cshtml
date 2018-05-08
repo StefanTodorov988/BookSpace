@@ -29,8 +29,8 @@
                         @if (comment.CanEdit)
                         {
                             <div class="comment" commentId="@comment.CommentId" bookId="@comment.BookId" userId="@comment.UserId">
-                                <a id="deleteComment"><i class="fa fa-trash" aria-hidden="true" title="Delete comment"></i></a>
-                                <a asp-action="GetEditModal" asp-controller="Comment" id="editComment"><i class="fa fa-eraser" aria-hidden="true" title="Edit comment"></i></a>
+                                <a  id="deleteComment"><i class="fa fa-trash" aria-hidden="true" title="Delete comment"></i></a>
+                                <a  asp-action="EditCommentAsync" asp-controller="Comment" asp-route-commentId="@comment.CommentId"><i class="fa fa-eraser" aria-hidden="true" title="Edit comment"></i></a>
                             </div>
                         }
                     </li>
@@ -38,16 +38,20 @@
             </ol>
             @if (SignInManager.IsSignedIn(User))
             {
-                <div class="respond">
-                    <h3 class="h2">Add Comment</h3>
-                    <fieldset>
-                        <div class="message form-field">
-                            <textarea name="comment-message" id="comment-message" class="full-width" placeholder="Your Comment"></textarea>
-                        </div>
-                        <button id="addComment" onclick="addComment('@Model.Key','@UserManager.GetUserId(User)')" class="submit btn--primary btn--large full-width">Comment</button>
-                    </fieldset>
-                </div>
+                <dialog>
+                <text>Text</text>
+            </dialog>
+            <div class="respond">
+                <h3 class="h2">Add Comment</h3>
+                <fieldset>
+                    <div class="message form-field">
+                        <textarea name="comment-message" id="comment-message" class="full-width" placeholder="Your Comment"></textarea>
+                    </div>
+                    <button id="addComment" onclick="addComment('@Model.Key','@UserManager.GetUserId(User)')" class="submit btn--primary btn--large full-width">Comment</button>
+                </fieldset>
+            </div>
             }
+
         </div>
     </div>
 </div>

@@ -24,9 +24,48 @@ namespace BookSpace.Web.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> EditCommentAsync(CommentEditViewModel commentEditViewModel)
+        {
+            if (commentEditViewModel == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+           
+            if(commentEditViewModel.Content != null)
+            {
+                var comment = await this.commentRepository.GetByIdAsync(commentEditViewModel.CommentId);
+                comment.Content = commentEditViewModel.Content;
+
+                await this.commentRepository.UpdateAsync(comment);
+            }
+
+            return RedirectToAction("BookDetails", "Book", new { id = commentEditViewModel.BookId });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditCommentAsync(string commentId)
+        {
+            if (commentId == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var comment = await this.commentRepository.GetByIdAsync(commentId);
+
+            var commentEditModel = new CommentEditViewModel
+            {
+                BookId = comment.BookId,
+                CommentId = comment.CommentId,
+                Content = comment.Content
+            };
+
+            return View("CommentEditView", commentEditModel);
+        }
+
+        [HttpPost]
         public async Task<IActionResult> DeleteCommentAsync(string commentId, string bookId, string userId)
         {
-            if(commentId == null || bookId == null || userId == null)
+            if (commentId == null || bookId == null || userId == null)
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -42,7 +81,7 @@ namespace BookSpace.Web.Controllers
 
             var isOwner = currentLoggedUser.Id == userId;
 
-            if(!isAdmin && !isOwner)
+            if (!isAdmin && !isOwner)
             {
                 return RedirectToAction("Index", "Home");
             }
