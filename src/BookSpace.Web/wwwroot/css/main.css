@@ -3180,3 +3180,8 @@ button.search-btn {
 .user-btn-pass {
     margin-bottom: 12.0rem;
 }
+
+#map {
+    height: 400px;
+    width: 100%;
+}
