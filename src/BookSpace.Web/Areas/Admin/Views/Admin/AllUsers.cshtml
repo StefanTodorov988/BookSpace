@@ -1,11 +1,13 @@
-﻿@{
+﻿
+@{
     ViewData["Title"] = "AllUsers";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>All Users</h2>
-<table style="width:100%">
-    <thead>
+<div class="books-heading">
+    <p>All Users</p>
+</div>
+<table class="user-books-table">
         <tr>
             <th>Picture</th>
             <th>Username</th>
@@ -14,17 +16,16 @@
             <th>Admin rights</th>
             <th>Actions</th>
         </tr>
-    </thead>
     <tbody>
         @foreach (var user in @Model)
         {
                 <tr>
-                    <td><img src="@user.ProfilePictureUrl" height="100" width="100"></td>
+                    <td><img src="@user.ProfilePictureUrl" style="object-fit:contain; border-radius: 10px;" src="http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640-300x300.png"></td>
                     <td>@user.Username</td>
                     <td>@user.Email</td>
                     <td>@user.isAllowed</td>
                     <td>@user.isAdmin</td>
-                    <td><a asp-area="Admin" asp-controller="Admin" asp-action="EditUser" asp-route-id="@user.Id">[Edit]</a></td>
+                    <td><a asp-area="Admin" asp-controller="Admin" asp-action="EditUser" asp-route-id="@user.Id" class="btn">Edit</a></td>
                 </tr>
         }
     </tbody>

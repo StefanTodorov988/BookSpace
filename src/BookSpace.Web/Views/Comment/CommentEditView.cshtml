@@ -3,32 +3,26 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>Edit Comment</h2>
-
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="EditCommentAsync" asp-controller="Comment" method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="BookId" class="control-label" style="display:none"></label>
-                <input asp-for="BookId" class="form-control" style="display:none" />
-            </div>
-            <div class="form-group">
-                <label asp-for="CommentId" class="control-label" style="display:none"></label>
-                <input asp-for="CommentId" class="form-control" style="display:none" />
-            </div>
-            <div class="form-group">
-                <label asp-for="Content" class="control-label"></label>
-                <input asp-for="Content" class="form-control" />
-                <span asp-validation-for="Content" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
-                <a asp-action="BookDetails" asp-controller="Book" asp-route-id="@Model.BookId"><i class="fa fa-backward" aria-hidden="true" title="Back to book details"></i></a>
-            </div>
-        </form>
-    </div>
+<div class="books-heading">
+    <p>Edit Comment</p>
 </div>
-
+<div class="user-form">
+    <form asp-action="EditCommentAsync" asp-controller="Comment" method="post" class="user-form2">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="BookId" class="control-label" style="display:none"></label>
+            <input asp-for="BookId" class="form-control" style="display:none" />
+        </div>
+        <div class="form-group">
+            <label asp-for="CommentId" class="control-label" style="display:none"></label>
+            <input asp-for="CommentId" class="form-control" style="display:none" />
+        </div>
+        <div class="form-group  user-form-input">
+            <label asp-for="Content" class="control-label"></label>
+            <input asp-for="Content" class="form-control user-input-field" type="text" />
+            <span asp-validation-for="Content" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-default user-btn-pass" />
+        </div>
+    </form>

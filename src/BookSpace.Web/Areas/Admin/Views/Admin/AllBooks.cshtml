@@ -1,36 +1,38 @@
-﻿
+﻿@model AllBooksAdminViewModel
 @{
     ViewData["Title"] = "AllBooks";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>All Books</h2>
-<table style="width:100%">
-    <thead>
-        <tr>
-            <th>Cover</th>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Isbn</th>
-            <th>Publication Year</th>
-            <th>Rating</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var book in @Model)
-        {
-        <tr>
-            <td><img src="@book.CoverUrl" height="100" width="100"></td>
-            <td>@book.Title</td>
-            <td>@book.Author</td>
-            <td>@book.Isbn</td>
-            <td>@book.PublicationYear</td>
-            <td>@book.Rating</td>
-            <td><a asp-area="Admin" asp-controller="Admin" asp-action="EditBook" asp-route-bookid="@book.BookId">[Edit]</a>
-            <a asp-area="" asp-controller="Book" asp-action="BookDetails"asp-route-id="@book.BookId" >[Details]</a>
-            <a asp-area="Admin" asp-controller="Admin" asp-action="DeleteBook" asp-route-bookid="@book.BookId">[Delete]</a></td>
-        </tr>
-        }
-    </tbody>
+<div class="books-heading">
+    <p>All Books</p>
+</div>
+<table class="user-books-table admin-books" style="width: 80%">
+    <tr>
+        <th>Cover</th>
+        <th style="width: 25%">Title</th>
+        <th>Author</th>
+        <th>Isbn</th>
+        <th>Publication Year</th>
+        <th>Rating</th>
+        <th>Actions</th>
+    </tr>
+    @await Html.PartialAsync("_BooksPagePartial");
 </table>
+
+<div class="row">
+    <div class="col-full">
+        <nav class="pagination">
+            <ul>
+                @{
+                    int pages = (int)Math.Ceiling(Model.BooksCount / 30.0);
+                    for (int i = 1; i <= pages; i++)
+                    {
+                        <li><a class="page-num-admin">@i</a></li>
+                    }
+                }
+            </ul>
+        </nav>
+    </div>
+</div>
+
