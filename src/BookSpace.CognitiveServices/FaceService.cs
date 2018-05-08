@@ -14,14 +14,14 @@ namespace BookSpace.CognitiveServices
     {
         private readonly IFaceServiceClient faceServiceClient;
 
-        public FaceService(FaceServiceStorageInfo info )
+        public FaceService(FaceServiceStorageInfo info)
         {
             faceServiceClient = new FaceServiceClient(info.SubscriptionKey, info.ApiRoot);
         }
 
         public async Task<FaceAttributes[]> DetectFaceAtribytesAsync(string url)
         {
-            
+
             var faces = await faceServiceClient.DetectAsync(url, true,
                 true,
                 new FaceAttributeType[] {
