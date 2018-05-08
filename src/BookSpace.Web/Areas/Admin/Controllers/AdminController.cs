@@ -11,6 +11,7 @@ using BookSpace.Models;
 using BookSpace.Repositories;
 using BookSpace.Repositories.Contracts;
 using BookSpace.Services;
+using BookSpace.Web.Areas.Admin.Models;
 using BookSpace.Web.Areas.Admin.Models.ApplicationUserViewModels;
 using BookSpace.Web.Models.BookViewModels;
 using BookSpace.Web.Models.GenreViewModels;
@@ -36,6 +37,7 @@ namespace BookSpace.Web.Areas.Admin.Controllers
         private readonly IFactory<Book, BookResponseModel> bookFactory;
         private readonly IFactory<Genre, GenreResponseModel> genreFactory;
         private readonly IFactory<Tag, TagResponseModel> tagFactory;
+        const int recordsOnPageIndex = 30;
 
         public AdminController(IApplicationUserRepository userRepository, IBookRepository bookRepository, ITagRepository tagRepository, IGenreRepository genreRepository,
             IFactory<Book, BookResponseModel> bookFactory, IFactory<Genre, GenreResponseModel> genreFactory, IFactory<Tag, TagResponseModel> tagFactory,
@@ -68,14 +70,28 @@ namespace BookSpace.Web.Areas.Admin.Controllers
             return View(userViewModels);
         }
 
-        public IActionResult AllBooks()
+        public async Task<IActionResult> AllBooks(int page = 1)
         {
-            var allBooks = this.bookRepository.GetAllAsync().Result.ToList();
+            var allBooksViewModel = new AllBooksAdminViewModel()
+            {
+                Books = await this.GetBooksPage(page),
+                BooksCount = await this.bookRepository.GetCount()
+            };
 
-            var mappedBooks = this.objectMapper.Map<IEnumerable<ListBookViewModel>>(allBooks);
-
-            return View(mappedBooks);
+            return View(allBooksViewModel);
         }
+
+        public async Task<IActionResult> BooksPage(int page)
+        {
+            var allBooksViewModel = new AllBooksAdminViewModel()
+            {
+                Books = await this.GetBooksPage(page),
+                BooksCount = await this.bookRepository.GetCount()
+            };
+
+            return PartialView("_BooksPagePartial", allBooksViewModel);
+        }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -211,14 +227,11 @@ namespace BookSpace.Web.Areas.Admin.Controllers
             return RedirectToAction("CreateGenre");
         }
 
-        public IActionResult Index()
+        private async Task<IEnumerable<ListBookViewModel>> GetBooksPage(int page)
         {
-            //using (FileStream str = new FileStream(@"C:\Users\snikoltc\Documents\Visual Studio 2017\Projects\BookSpace\src\BookSpace.Web\wwwroot\images\art\basquiat-selft-portret.jpg", FileMode.Open))
-            //{
-            //    await blobStorageService.UploadAsync("testName", "testcontainer", str);
-            //    var result = await blobStorageService.GetAsync("testName", "testcontainer");
-            //}          
-            return View();
+            var books = await this.bookRepository.GetPaged(page, recordsOnPageIndex);
+            var booksViewModels = this.objectMapper.Map<IEnumerable<Book>, IEnumerable<ListBookViewModel>>(books.Results);
+            return booksViewModels;
         }
     }
 }
