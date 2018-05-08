@@ -1,4 +1,4 @@
-﻿namespace BookSpace.Factories
+﻿namespace BookSpace.Factories.ResponseModels
 {
     public class GenreResponseModel
     {
