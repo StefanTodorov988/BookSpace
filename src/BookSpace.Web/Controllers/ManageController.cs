@@ -3,14 +3,12 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using BookSpace.Web.Models.ManageViewModels;
 using BookSpace.Web.Services;
 using BookSpace.Models;
-using BookSpace.Web.Extensions;
 using BookSpace.BlobStorage.Contracts;
 using Microsoft.AspNetCore.Http;
 using System.IO;
@@ -66,7 +64,8 @@ namespace BookSpace.Web.Controllers
                 Username = user.UserName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
-                PictureUrl = user.ProfilePictureUrl
+                PictureUrl = user.ProfilePictureUrl,
+                StatusMessage = StatusMessage
             };
 
             return View(model);
@@ -108,7 +107,7 @@ namespace BookSpace.Web.Controllers
             }
 
             StatusMessage = "Your profile has been updated";
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index),model);
         }
 
         [HttpPost("UploadPicture")]
@@ -142,6 +141,9 @@ namespace BookSpace.Web.Controllers
             {
                 smtpSender.SendMail(currentUserEmail, "No face on picture");
             }
+
+            StatusMessage = "Your profile picture has been updated. Check your email!";
+            var model = new IndexViewModel { StatusMessage = StatusMessage };
             return RedirectToAction(nameof(Index));
         }
        
