@@ -112,6 +112,14 @@ namespace BookSpace.Web.Controllers
             var bookViewModel = this.objectMapper.Map<Book, BookViewModel>(book);
             var commentsViewModel = this.objectMapper.Map<IEnumerable<Comment>, IEnumerable<CommentViewModel>>(comments);
 
+            foreach (var comment in commentsViewModel)
+            {
+                var user = await this._userManager.FindByNameAsync(comment.Author);
+
+                comment.AuthorPicUrl = user.ProfilePictureUrl;
+            }
+            
+
             if (this.User.Identity.IsAuthenticated)
             {
                 foreach (var comment in commentsViewModel)
@@ -212,14 +220,14 @@ namespace BookSpace.Web.Controllers
             {
                 foundBooks = new List<Book>(await this.genreRepository.GetBooksByGenreNameAsync(filter));
             }
-            else if(filterRadio == "tag")
+            else if (filterRadio == "tag")
             {
                 foundBooks = new List<Book>(await this.tagRepository.GetBooksByTagAsync(filter));
             }
 
             var foundBooksViewModel = this.objectMapper.Map<IEnumerable<Book>, IEnumerable<SearchedBookViewModel>>(foundBooks);
 
-            return View("Search" , foundBooksViewModel);
+            return View("Search", foundBooksViewModel);
         }
 
         public async Task<IEnumerable<Book>> SerachByGenre(string filter)

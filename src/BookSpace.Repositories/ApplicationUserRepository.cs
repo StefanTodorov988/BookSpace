@@ -16,7 +16,7 @@ namespace BookSpace.Repositories
 
         public async Task<ApplicationUser> GetUserByUsernameAsync(string username)
         {
-            return await this.GetAsync(u => u.UserName == username);
+                return await this.GetAsync(u => u.UserName == username);
         }
 
         public async Task<IEnumerable<ApplicationUser>> GetPageOfUsersAscync(int take, int skip)
