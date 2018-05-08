@@ -40,7 +40,7 @@
                 <ul class="header-nav nav-user">
                     <li>
                         <a asp-area="" asp-controller="Home" asp-action="Index" class="nav-user has-children">Hello, @User.Identity.Name!</a>
-                        <ul class="sub-menu">
+                        <ul class="sub-menu log-out">
                             <li><a asp-area="" asp-controller="Manage" asp-action="Index">Profile</a></li>
                             <li>
                                 <form asp-controller="Account" asp-action="Logout" method="post">

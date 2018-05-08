@@ -1074,6 +1074,18 @@ button,
 
 }
 
+.header-book-btn button:hover{
+    color: white;
+}
+
+.book-btn-link{
+    color: #000;
+}
+
+button:hover .book-btn-link{
+    color: white;
+}
+
 .container-login,
 .container-register {
     width: 50%;
@@ -1082,7 +1094,8 @@ button,
     margin: 0 auto;
 }
 
-    .container-register p {
+    .container-register p,
+    .container-login p{
         text-align: center;
         font-weight: bold;
     }
@@ -3134,9 +3147,17 @@ button.search-btn {
 }
 
 .user-form2{
-
+    text-align: center;
     margin: auto;
 }
+
+.user-form2 input[type="text"]{
+    margin: 0 auto;
+}
+    .user-form2 label {
+        padding-top: 2.0rem;
+        font-size: 1.7rem;
+    }
 .picture-form {
     margin: 0 auto;
     width: 50%;

@@ -4,9 +4,10 @@
     ViewData["Title"] = "Login";
 }
 
+
 <div class="container-login">
-    <div class="books-heading">
-        <p>Login to manage your collections!</p>
+    <div>
+        <p>Login in your account!</p>
     </div>
     <form asp-controller="Account" asp-action="Login" method="post" class="login-form">
         <div asp-validation-summary="All" class="text-danger"></div>
@@ -22,12 +23,6 @@
             </button>
         </div>
     </form>
-
-    <div style="width: 40%; margin: 0 auto">
-        <a asp-controller="Account" asp-action="Register" class="btn btn--primary btn--medium full-width">
-            Register
-        </a>
-    </div>
     <p>
         <h4>Deciding what to read next? </h4>
         You’re in the right place. Tell us what titles or genres you’ve enjoyed in the past, and we’ll give you surprisingly insightful recommendations.

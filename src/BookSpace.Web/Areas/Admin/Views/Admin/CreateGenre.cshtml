@@ -5,19 +5,19 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create Genre</h2>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="CreateGenre">
+<div class="books-heading">
+    <p>Create Genre</p>
+</div>
+    <div class="user-form">
+        <form asp-action="CreateGenre" class="user-form2">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            <div class="form-group user-form-input">
                 <label asp-for="Name" class="control-label">Genre Name</label>
-                <input asp-for="Name" class="form-control" />
+                <input asp-for="Name" class="form-control user-input-field" type="text" placeholder="Book Genre"/>
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+            <div class="form-group user-form-input">
+                <input type="submit" value="Create" class="btn btn-default  user-btn-pass" />
             </div>
         </form>
     </div>
