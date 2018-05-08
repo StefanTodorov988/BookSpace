@@ -13,6 +13,7 @@ namespace BookSpace.Web.Services.SmtpService
         private readonly SmtpClient smtpClient;
         private const string appEmail = "bookspaceteam@gmail.com";
         private const string appEmailPassword = "bookspace123";
+        private const string newProfilePictureSubject = "New profile picture";
         public SmtpSender()
         {
             var AuthenticationDetails = new NetworkCredential(appEmail, appEmailPassword);
@@ -32,7 +33,7 @@ namespace BookSpace.Web.Services.SmtpService
             MailMessage msg = new MailMessage();
             msg.To.Add(mail);
             msg.From = new MailAddress(appEmail);
-            msg.Subject = "Message";
+            msg.Subject = newProfilePictureSubject;
             msg.Body = message;
             smtpClient.Send(msg);
         }

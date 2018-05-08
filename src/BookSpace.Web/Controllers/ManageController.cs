@@ -1,16 +1,14 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using BookSpace.Web.Models.ManageViewModels;
 using BookSpace.Web.Services;
 using BookSpace.Models;
-using BookSpace.Web.Extensions;
 using BookSpace.BlobStorage.Contracts;
 using Microsoft.AspNetCore.Http;
 using System.IO;
@@ -66,7 +64,7 @@ namespace BookSpace.Web.Controllers
                 Username = user.UserName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
-                IsEmailConfirmed = user.EmailConfirmed,
+                PictureUrl = user.ProfilePictureUrl,
                 StatusMessage = StatusMessage
             };
 
@@ -109,27 +107,26 @@ namespace BookSpace.Web.Controllers
             }
 
             StatusMessage = "Your profile has been updated";
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index),model);
         }
 
         [HttpPost("UploadPicture")]
         public async Task<IActionResult> UploadPicture(IFormFile file)
         {
-            string currentUserEmail;
-            string userId;
+            var user = await this._userManager.GetUserAsync(HttpContext.User);
+            string currentUserEmail = user.Email;
+            string userId = user.Id;
+          
             using (var stream = new MemoryStream())
             {
                 await file.CopyToAsync(stream);
-                var user = await this._userManager.GetUserAsync(HttpContext.User);
-                currentUserEmail = user.Email;
-                userId = user.Id;
                 await this.blobStorageService.UploadAsync(user.Id, blobContainer, stream.ToArray());
-
-                //sets profile pictureurl
-                var pictureUri = await this.blobStorageService.GetAsync(userId, blobContainer);
-                user.ProfilePictureUrl = pictureUri.ToString();
-
             }
+
+
+            var pictureUri = await this.blobStorageService.GetAsync(userId, blobContainer);
+            user.ProfilePictureUrl = pictureUri.Url.ToString();
+            var updated = await this._userManager.UpdateAsync(user);
 
             var faceAtributes = faceService.DetectFaceAtribytesAsync(blobStorageService.GetAsync(userId, blobContainer).Result.Url);
 
@@ -144,9 +141,12 @@ namespace BookSpace.Web.Controllers
             {
                 smtpSender.SendMail(currentUserEmail, "No face on picture");
             }
+
+            StatusMessage = "Your profile picture has been updated. Check your email!";
+            var model = new IndexViewModel { StatusMessage = StatusMessage };
             return RedirectToAction(nameof(Index));
         }
-
+       
         [HttpGet]
         public async Task<IActionResult> ChangePassword()
         {

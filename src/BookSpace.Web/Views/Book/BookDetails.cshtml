@@ -73,9 +73,7 @@
             </div>
         }
     </article>
-    @if (SignInManager.IsSignedIn(User))
-    {
-        @await Html.PartialAsync("Book/_BookCommentsPartial")
-    }
-
+    <div id="commentsDiv">
+            @await Html.PartialAsync("Book/_BookCommentsPartial", new KeyValuePair<string, IEnumerable<CommentViewModel>>(Model.Book.BookId, Model.Properties.Comments));
+    </div>
 </section>
