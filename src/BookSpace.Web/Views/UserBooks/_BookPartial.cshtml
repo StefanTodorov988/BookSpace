@@ -9,5 +9,6 @@
     <td>@Model.Author</td>
     <td>@Model.Rating</td>
     <td>@Model.PublicationYear.ToString("MMMM dd yyyy")</td>
-    <td><a asp-controller="UserBooks" asp-action="RemoveBook" asp-route-id="@Model.BookId"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+    <td><a asp-controller="UserBooks" asp-action="RemoveBook" asp-route-id="@Model.BookId" 
+           onfocus="showSuccessMessage('Removed book @Model.Title')"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
 </tr>
