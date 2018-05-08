@@ -1,24 +1,19 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using BookSpace.Web.Models.ManageViewModels;
 using BookSpace.Web.Services;
 using BookSpace.Models;
-using BookSpace.Web.Extensions;
 using BookSpace.BlobStorage.Contracts;
 using Microsoft.AspNetCore.Http;
 using System.IO;
-using System.Threading;
 using BookSpace.CognitiveServices.Contract;
 using BookSpace.Web.Services.SmtpService.Contract;
-using Microsoft.ProjectOxford.Face;
-using Microsoft.ProjectOxford.Face.Contract;
 
 namespace BookSpace.Web.Controllers
 {
@@ -69,7 +64,8 @@ namespace BookSpace.Web.Controllers
                 Username = user.UserName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
-                PictureUrl = user.ProfilePictureUrl
+                PictureUrl = user.ProfilePictureUrl,
+                StatusMessage = StatusMessage
             };
 
             return View(model);
@@ -111,13 +107,12 @@ namespace BookSpace.Web.Controllers
             }
 
             StatusMessage = "Your profile has been updated";
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index),model);
         }
 
         [HttpPost("UploadPicture")]
         public async Task<IActionResult> UploadPicture(IFormFile file)
         {
-
             var user = await this._userManager.GetUserAsync(HttpContext.User);
             string currentUserEmail = user.Email;
             string userId = user.Id;
@@ -132,19 +127,26 @@ namespace BookSpace.Web.Controllers
             var pictureUri = await this.blobStorageService.GetAsync(userId, blobContainer);
             user.ProfilePictureUrl = pictureUri.Url.ToString();
             var updated = await this._userManager.UpdateAsync(user);
-            var faceAtributes = faceService.DetectFaceAtribytesAsync(blobStorageService.GetAsync(user.Id, blobContainer).Result.Url);
+
+            var faceAtributes = faceService.DetectFaceAtribytesAsync(blobStorageService.GetAsync(userId, blobContainer).Result.Url);
 
             try
             {
-                smtpSender.SendMail(user.Email, GenerateMessageByEmotion(faceAtributes.Result[0], user.UserName));
+                smtpSender.SendMail(currentUserEmail, GenerateMessageByEmotion(
+                        faceAtributes.Result[0].Emotion.Happiness,
+                        faceAtributes.Result[0].Emotion.Sadness,
+                        faceAtributes.Result[0].Emotion.Anger));
             }
             catch (IndexOutOfRangeException e)
             {
-               // In case of image without face
+                smtpSender.SendMail(currentUserEmail, "No face on picture");
             }
+
+            StatusMessage = "Your profile picture has been updated. Check your email!";
+            var model = new IndexViewModel { StatusMessage = StatusMessage };
             return RedirectToAction(nameof(Index));
         }
-
+       
         [HttpGet]
         public async Task<IActionResult> ChangePassword()
         {
@@ -197,47 +199,21 @@ namespace BookSpace.Web.Controllers
             }
         }
 
-        private string GenerateMessageByEmotion(FaceAttributes faceAttributes, string userName)
+        private string GenerateMessageByEmotion(float happiness, float sadness, float anger)
         {
-            string emotion;
-
-            if (faceAttributes.Emotion.Happiness > 0.5f && faceAttributes.Emotion.Sadness < 0.2f)
+            if (happiness > 0.5f && sadness < 0.1f)
             {
-                emotion = "happy";
+                return "Happy email Message.";
             }
-            else if (faceAttributes.Emotion.Happiness < 0.2f && faceAttributes.Emotion.Sadness > 0.4f)
+            else if (happiness < 0.2 && sadness > 0.4)
             {
-                emotion = "sad";
+                return "Sad email message.";
             }
-            else if (faceAttributes.Emotion.Anger > 0.34f)
+            else if (anger > 0.34)
             {
-                emotion = "angry";
+                return "Angry email message.";
             }
-            else if (faceAttributes.Emotion.Surprise > 0.40f)
-            {
-                emotion = "suprised";
-            }
-            else
-            {
-                emotion = "not detected";
-            }
-
-            if (emotion != "not detected")
-            {
-                return $"Greetings {userName}, \n" + Environment.NewLine + Environment.NewLine +
-                        "We see that you have uploaded a profile picture!\n" +
-                       $"Our face recognition service recognized you as being {emotion}. \n" + Environment.NewLine + Environment.NewLine +
-                        "Best regards, \n" +
-                        "Bookster Team";
-            }
-            else
-            {
-                return $"Greetings {userName}, \n" + Environment.NewLine + Environment.NewLine +
-                       "We see that you have uploaded a profile picture!\n" +
-                       $"Unfortunately our face recognition service didn't recognize your emotions \n" + Environment.NewLine + Environment.NewLine +
-                       "Best regards, \n" +
-                       "Bookster Team";
-            }
+            return "Default email message";
         }
         #endregion
     }
