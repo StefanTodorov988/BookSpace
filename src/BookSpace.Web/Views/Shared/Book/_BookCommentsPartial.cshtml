@@ -28,8 +28,10 @@
                         </div>
                         @if (comment.CanEdit)
                         {
-                            <div class="comment" commentId="@comment.CommentId" bookId="@comment.BookId" userId="@comment.UserId">
-                                <a  id="deleteComment"><i class="fa fa-trash" aria-hidden="true" title="Delete comment"></i></a>
+                            <div class="comment">
+                                <a onclick="deleteComment('@comment.CommentId', '@comment.BookId', '@comment.UserId')">
+                                <i class="fa fa-trash" aria-hidden="true" title="Delete comment"></i>
+                                </a>
                                 <a  asp-action="EditCommentAsync" asp-controller="Comment" asp-route-commentId="@comment.CommentId"><i class="fa fa-eraser" aria-hidden="true" title="Edit comment"></i></a>
                             </div>
                         }
@@ -57,14 +59,12 @@
 </div>
 
 <script>
-    $('#deleteComment').on('click', deleteComment);
-    //$('#editComment').on('click', editComment);
-
-    function deleteComment(e) {
+ 
+    function deleteComment(commentId, bookId, userId) {
         $.ajax({
             type: "POST",
             url: "/Comment/DeleteCommentAsync",
-            data: { commentId: $(e.target).parent().parent().attr('commentId'), bookId: $(e.target).parent().parent().attr('bookId'), userId: $(e.target).parent().parent().attr('userId') },
+            data: { commentId: commentId, bookId : bookId, userId : userId },
             success: (htmlData) => {
                 $('#commentsDiv').html(htmlData);
             },
@@ -73,21 +73,4 @@
             }
         })
     }
-
-    //function editComment(e) {
-    //    let commentData = {};
-    //    commentData.Value = $(e).target().parent().find('.comment-text').text();
-    //    console.log();
-    //    $.ajax({
-    //        type: "POST",
-    //        url: "/Comment/GetEditModal",
-    //        data: { commentId:  },
-    //        success: (htmlData) => {
-    //            //commentsDiv.html(htmlData).fadeIn();
-    //        },
-    //        error: (response) => {
-    //            displayError('Error deleting comment');
-    //        }
-    //    })
-    //}
 </script>

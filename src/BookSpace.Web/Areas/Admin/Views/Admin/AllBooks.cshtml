@@ -4,19 +4,19 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>All Books</h2>
-<table style="width:100%">
-    <thead>
+<div class="books-heading">
+    <p>All Books</p>
+</div>
+<table class="user-books-table">
         <tr>
             <th>Cover</th>
-            <th>Title</th>
+            <th style="width: 25%">Title</th>
             <th>Author</th>
             <th>Isbn</th>
             <th>Publication Year</th>
             <th>Rating</th>
             <th>Actions</th>
         </tr>
-    </thead>
     <tbody>
         @foreach (var book in @Model)
         {
@@ -27,9 +27,9 @@
             <td>@book.Isbn</td>
             <td>@book.PublicationYear</td>
             <td>@book.Rating</td>
-            <td><a asp-area="Admin" asp-controller="Admin" asp-action="EditBook" asp-route-bookid="@book.BookId">[Edit]</a>
-            <a asp-area="" asp-controller="Book" asp-action="BookDetails"asp-route-id="@book.BookId" >[Details]</a>
-            <a asp-area="Admin" asp-controller="Admin" asp-action="DeleteBook" asp-route-bookid="@book.BookId">[Delete]</a></td>
+            <td><a asp-area="Admin" asp-controller="Admin" asp-action="EditBook" asp-route-bookid="@book.BookId" class="btn">Edit</a>
+            <a asp-area="" asp-controller="Book" asp-action="BookDetails"asp-route-id="@book.BookId" class="btn">Details</a>
+            <a asp-area="Admin" asp-controller="Admin" asp-action="DeleteBook" asp-route-bookid="@book.BookId" class="btn">Delete</a></td>
         </tr>
         }
     </tbody>
