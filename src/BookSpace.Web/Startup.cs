@@ -85,9 +85,15 @@ namespace BookSpace.Web
                     .Get<FaceServiceStorageInfo>());
 
             //Smtp service
-            services.AddSingleton<ISmtpSender,SmtpSender>();
+            services.AddSingleton<ISmtpSender, SmtpSender>();
 
-            
+            //Facebook
+            services.AddAuthentication().AddFacebook(facebookOptions =>
+            {
+                facebookOptions.AppId = Configuration["AppId"];
+                facebookOptions.AppSecret = Configuration["AppSecret"];
+            });
+
 
             services.AddAutoMapper();
             services.AddMvc();
