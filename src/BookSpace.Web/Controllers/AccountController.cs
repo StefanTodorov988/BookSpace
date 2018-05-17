@@ -26,14 +26,14 @@ namespace BookSpace.Web.Controllers
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,RoleManager<IdentityRole> roleManager,
-            ILogger logger)
+            ILoggerFactory loggerFactory)
        
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _roleManager = roleManager;
-            _logger = logger;
+            _logger = loggerFactory.CreateLogger("FaceBook");
         }
 
         [TempData]
