@@ -21,6 +21,8 @@ using BookSpace.Factories.ResponseModels;
 using BookSpace.Services;
 using BookSpace.Web.Services.SmtpService;
 using BookSpace.Web.Services.SmtpService.Contract;
+using BookSpace.Factories.DTO;
+using BookSpace.Models.Configurations;
 
 namespace BookSpace.Web
 {
@@ -46,9 +48,13 @@ namespace BookSpace.Web
 
             services.AddScoped<IDbContext>(provider => provider.GetService<BookSpaceContext>());
 
+            services.AddScoped<IModelConfigurationService, ModelConfigurationService>();
+
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IDatabaseSeedService, DatabaseSeedService>();
+            services.AddTransient<IDatabaseMigrateService, DatabaseMigrateService>();
             services.AddTransient<ApplicationUser>();
+
 
             //Repositories
 
@@ -70,7 +76,7 @@ namespace BookSpace.Web
             services.AddScoped<IFactory<Genre, GenreResponseModel>, GenreFactory>();
             services.AddScoped<IFactory<Tag, TagResponseModel>, TagFactory>();
             services.AddScoped<IFactory<Comment, CommentResponseModel>, CommentFactory>();
-
+            services.AddScoped<IFactory<ApplicationUser, UserCreateDto>, ApplicationUserFactory>();
 
             //Blob Storage
             services.AddSingleton<BlobStorageInfo>(
@@ -87,8 +93,9 @@ namespace BookSpace.Web
             //Smtp service
             services.AddSingleton<ISmtpSender,SmtpSender>();
 
+            // HTTP Service
+            services.AddSingleton<IHttpService, HttpService>();
             
-
             services.AddAutoMapper();
             services.AddMvc();
 
