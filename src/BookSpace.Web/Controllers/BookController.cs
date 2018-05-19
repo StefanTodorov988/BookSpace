@@ -205,7 +205,7 @@ namespace BookSpace.Web.Controllers
             return Ok();
         }
 
-        public async Task<IActionResult> Search(string filter, string filterRadio = "default")
+        public async Task<IActionResult> Search(string filter, string filterRadio = "Default")
         {
             var foundBooks = await this.searchFactory.GetSearchedBooks(filter, filterRadio);
 
