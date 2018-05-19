@@ -1,28 +1,24 @@
 ﻿using BookSpace.Web.Logic.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Unity;
+using Neleus.DependencyInjection.Extensions;
 
 namespace BookSpace.Web.Logic.Core.Strategy
 {
     public class SearchStrategyFactory : ISearchStrategyFactory
     {
-        private readonly IUnityContainer _unityContainer;
+        private readonly IServiceByNameFactory<ISearchStrategy> _serviceByNameFactory;
 
-        public SearchStrategyFactory(IUnityContainer unityContainer)
+        public SearchStrategyFactory(IServiceByNameFactory<ISearchStrategy> serviceByNameFactory)
         {
-            _unityContainer = unityContainer;
+            _serviceByNameFactory = serviceByNameFactory;
         }
 
         public ISearchStrategy GetSearchStrategy(string radioFilter)
         {
-            if (_unityContainer.IsRegistered<ISearchStrategy>(radioFilter))
+            if (_serviceByNameFactory != null)
             {
-                return _unityContainer.Resolve<ISearchStrategy>(radioFilter);
+                return _serviceByNameFactory.GetByName(radioFilter);
             }
-
+            
             return null;
         }
     }

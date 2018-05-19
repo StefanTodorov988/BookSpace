@@ -2,7 +2,6 @@
 using BookSpace.Web.Logic.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Unity;
 
 namespace BookSpace.Web.Logic.Core.Strategy
 {
