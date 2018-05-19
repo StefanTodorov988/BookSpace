@@ -132,5 +132,31 @@ namespace BookSpace.Web.Controllers
             }
             return RedirectToAction("UpdateBookRating", "Book", new { id, rate, isNewUser });
         }
+
+        public async Task<IActionResult> Leaderboard()
+        {
+            var allUsers =  this.applicationUserRepository.GetAllAsync().Result.ToList();
+
+            var mappedUsers = new List<LeaderboardViewModel>();
+
+            foreach (var user in allUsers)
+            {
+                var userReadBooks = await this.applicationUserRepository.GetUserBooksAsync(user.Id, BookState.Read);
+                var booksRed = userReadBooks.Count();
+
+                var mappedUser = new LeaderboardViewModel
+                {
+                    Id = user?.Id,
+                    Email = user?.Email,
+                    ProfilePictureUrl = user?.ProfilePictureUrl,
+                    Username = user?.UserName,
+                   BooksRed = booksRed
+                };
+                mappedUsers.Add(mappedUser);
+            }
+            var leaderboardMappedUsers = mappedUsers.OrderByDescending(x => x.BooksRed).ToList();
+
+            return View(leaderboardMappedUsers);
+        }
     }
 }
