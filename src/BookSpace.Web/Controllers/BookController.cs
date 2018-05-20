@@ -4,6 +4,7 @@ using BookSpace.Factories.ResponseModels;
 using BookSpace.Models;
 using BookSpace.Repositories.Contracts;
 using BookSpace.Services;
+using BookSpace.Web.Logic.Interfaces;
 using BookSpace.Web.Models.BookViewModels;
 using BookSpace.Web.Models.CommentViewModels;
 using BookSpace.Web.Models.GenreViewModels;
@@ -28,6 +29,7 @@ namespace BookSpace.Web.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IFactory<Comment, CommentResponseModel> commentFactory;
         private readonly BookDataServices dataService;
+        private readonly ISearchFactory searchFactory;
         private const int recordsOnPageIndex = 30;
         private const int recordsOnPageCategory = 10;
 
@@ -40,7 +42,8 @@ namespace BookSpace.Web.Controllers
                               IFactory<Comment, CommentResponseModel> commentFactory,
                               BookDataServices dataService,
                               IMapper objectMapper,
-                              IApplicationUserRepository applicationUserRepository)
+                              IApplicationUserRepository applicationUserRepository,
+                              ISearchFactory searchFactory)
         {
             this.bookRepository = bookRepository;
             this.genreRepository = genreRepository;
@@ -52,6 +55,7 @@ namespace BookSpace.Web.Controllers
             this.dataService = dataService;
             this.objectMapper = objectMapper;
             this.applicationUserRepository = applicationUserRepository;
+            this.searchFactory = searchFactory;
         }
 
         public async Task<IActionResult> Index(int page = 1)
@@ -201,29 +205,9 @@ namespace BookSpace.Web.Controllers
             return Ok();
         }
 
-        public async Task<IActionResult> Search(string filter, string filterRadio = "default")
+        public async Task<IActionResult> Search(string filter, string filterRadio = "Default")
         {
-            List<Book> foundBooks = new List<Book>();
-            if (filterRadio == "default")
-            {
-                foundBooks = new List<Book>(await bookRepository.Search(x => x.Title.Contains(filter) || x.Author.Contains(filter)));
-            }
-            else if (filterRadio == "title")
-            {
-                foundBooks = new List<Book>(await bookRepository.Search(x => x.Title.Contains(filter)));
-            }
-            else if (filterRadio == "author")
-            {
-                foundBooks = new List<Book>(await bookRepository.Search(x => x.Author.Contains(filter)));
-            }
-            else if (filterRadio == "genre")
-            {
-                foundBooks = new List<Book>(await this.genreRepository.GetBooksByGenreNameAsync(filter));
-            }
-            else if (filterRadio == "tag")
-            {
-                foundBooks = new List<Book>(await this.tagRepository.GetBooksByTagAsync(filter));
-            }
+            var foundBooks = await this.searchFactory.GetSearchedBooks(filter, filterRadio);
 
             var foundBooksViewModel = this.objectMapper.Map<IEnumerable<Book>, IEnumerable<SearchedBookViewModel>>(foundBooks);
 

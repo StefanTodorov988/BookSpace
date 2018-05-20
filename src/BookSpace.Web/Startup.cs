@@ -21,6 +21,9 @@ using BookSpace.Factories.ResponseModels;
 using BookSpace.Services;
 using BookSpace.Web.Services.SmtpService;
 using BookSpace.Web.Services.SmtpService.Contract;
+using BookSpace.Web.Logic.Interfaces;
+using BookSpace.Web.Logic.Core.Strategy;
+using Neleus.DependencyInjection.Extensions;
 
 namespace BookSpace.Web
 {
@@ -85,9 +88,29 @@ namespace BookSpace.Web
                     .Get<FaceServiceStorageInfo>());
 
             //Smtp service
-            services.AddSingleton<ISmtpSender,SmtpSender>();
+            services.AddSingleton<ISmtpSender, SmtpSender>();
 
-            
+            //Facebook
+            services.AddAuthentication().AddFacebook(facebookOptions =>
+            {
+                facebookOptions.AppId = Configuration["AppId"];
+                facebookOptions.AppSecret = Configuration["AppSecret"];
+            });
+
+            //Search
+            services.AddScoped<ISearchFactory, SearchFactory>();
+            services.AddScoped<ISearchStrategyFactory, SearchStrategyFactory>();
+            services.AddTransient<DefaultSearchStrategy>();
+            services.AddTransient<TitleSearchStrategy>();
+            services.AddTransient<AuthorSearchStrategy>();
+            services.AddTransient<GenreSearchStrategy>();
+            services.AddTransient<TagSearchStrategy>();
+            services.AddByName<ISearchStrategy>()
+                .Add<DefaultSearchStrategy>("Default")
+                .Add<TitleSearchStrategy>("Title")
+                .Add<AuthorSearchStrategy>("Author")
+                .Add<GenreSearchStrategy>("Genre")
+                .Add<TagSearchStrategy>("Tag").Build();
 
             services.AddAutoMapper();
             services.AddMvc();
