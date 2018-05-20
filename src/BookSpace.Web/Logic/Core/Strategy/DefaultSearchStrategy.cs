@@ -1,5 +1,5 @@
-﻿using BookSpace.Models;
-using BookSpace.Repositories.Contracts;
+﻿using BookSpace.Data.Contracts;
+using BookSpace.Models;
 using BookSpace.Web.Logic.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,9 +10,9 @@ namespace BookSpace.Web.Logic.Core.Strategy
 {
     public class DefaultSearchStrategy : ISearchStrategy
     {
-        private readonly IBookRepository _bookRepository;
+        private readonly IRepository<Book> _bookRepository;
 
-        public DefaultSearchStrategy(IBookRepository bookRepository)
+        public DefaultSearchStrategy(IRepository<Book> bookRepository)
         {
             _bookRepository = bookRepository;
         }

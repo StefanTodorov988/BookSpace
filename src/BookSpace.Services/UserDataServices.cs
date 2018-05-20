@@ -1,10 +1,7 @@
 ﻿using BookSpace.Data.Contracts;
 using BookSpace.Models;
-using BookSpace.Repositories;
-using BookSpace.Repositories.Contracts;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BookSpace.Services
@@ -12,10 +9,10 @@ namespace BookSpace.Services
     public class UserDataServices
     {
         private readonly IDbContext dbContext;
-        private readonly IGenreRepository genreRepository;
-        private readonly ITagRepository tagRepository;
+        private readonly IRepository<Genre> genreRepository;
+        private readonly IRepository<Tag> tagRepository;
 
-        public UserDataServices(IDbContext dbCtx, IGenreRepository genreRepository, ITagRepository tagRepository)
+        public UserDataServices(IDbContext dbCtx, IRepository<Genre> genreRepository, IRepository<Tag> tagRepository)
         {
             this.dbContext = dbCtx ?? throw new ArgumentNullException(nameof(dbContext));
             this.genreRepository = genreRepository;
@@ -29,7 +26,7 @@ namespace BookSpace.Services
         {
             foreach (var genreName in genres)
             {
-                var genreId = this.genreRepository.GetGenreByNameAsync(genreName).Result.GenreId;
+                var genreId = this.genreRepository.GetAsync(g => g.Name == genreName).Result.GenreId;
 
                 var bookGenreRecord = new BookGenre()
                 {
@@ -47,7 +44,7 @@ namespace BookSpace.Services
         {
             foreach (var tagName in tags)
             {
-                var tagId = this.tagRepository.GetTagByNameAsync(tagName).Result.TagId;
+                var tagId = this.tagRepository.GetAsync(t => t.Value == tagName).Result.TagId;
 
                 var bookTagRecord = new BookTag()
                 {
