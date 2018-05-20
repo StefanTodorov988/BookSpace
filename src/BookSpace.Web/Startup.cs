@@ -21,10 +21,10 @@ using BookSpace.Factories.ResponseModels;
 using BookSpace.Services;
 using BookSpace.Web.Services.SmtpService;
 using BookSpace.Web.Services.SmtpService.Contract;
+using BookSpace.Factories.DTO;
 using BookSpace.Web.Logic.Interfaces;
 using BookSpace.Web.Logic.Core.Strategy;
 using Neleus.DependencyInjection.Extensions;
-
 namespace BookSpace.Web
 {
     public class Startup
@@ -49,9 +49,13 @@ namespace BookSpace.Web
 
             services.AddScoped<IDbContext>(provider => provider.GetService<BookSpaceContext>());
 
+            services.AddScoped<IModelConfigurationService, ModelConfigurationService>();
+
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IDatabaseSeedService, DatabaseSeedService>();
+            services.AddTransient<IDatabaseMigrateService, DatabaseMigrateService>();
             services.AddTransient<ApplicationUser>();
+
 
             //Repositories
 
@@ -73,7 +77,7 @@ namespace BookSpace.Web
             services.AddScoped<IFactory<Genre, GenreResponseModel>, GenreFactory>();
             services.AddScoped<IFactory<Tag, TagResponseModel>, TagFactory>();
             services.AddScoped<IFactory<Comment, CommentResponseModel>, CommentFactory>();
-
+            services.AddScoped<IFactory<ApplicationUser, UserCreateDto>, ApplicationUserFactory>();
 
             //Blob Storage
             services.AddSingleton<BlobStorageInfo>(
@@ -97,6 +101,8 @@ namespace BookSpace.Web
                 facebookOptions.AppSecret = Configuration["AppSecret"];
             });
 
+            // HTTP Service
+            services.AddSingleton<IHttpService, HttpService>();
             //Search
             services.AddScoped<ISearchFactory, SearchFactory>();
             services.AddScoped<ISearchStrategyFactory, SearchStrategyFactory>();
