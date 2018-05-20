@@ -126,6 +126,7 @@ namespace BookSpace.Web.Controllers
             else
             {
                 bookUser.Rate = userRate;
+
                 bookUser.HasRatedBook = true;
 
                 await this.bookUserRepository.UpdateAsync(bookUser);
