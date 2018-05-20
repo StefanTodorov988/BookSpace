@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BookSpace.Data.Contracts;
@@ -14,16 +13,19 @@ namespace BookSpace.Web.Controllers
         private readonly IRepository<ApplicationUser> applicationUserRepository;
         private readonly IRepository<Book> bookRepository;
         private readonly IRepository<Comment> commentRepository;
+        private readonly IUpdateService<Comment> commentUpdateService;
         private readonly IMapper objectMapper;
 
         public CommentController(IRepository<ApplicationUser> applicationUserRepository, 
                                  IRepository<Book> bookRepository, 
-                                 IRepository<Comment> commentRepository, 
+                                 IRepository<Comment> commentRepository,
+                                 IUpdateService<Comment> commentUpdateService,
                                  IMapper objectMapper)
         {
             this.applicationUserRepository = applicationUserRepository;
             this.bookRepository = bookRepository;
             this.commentRepository = commentRepository;
+            this.commentUpdateService = commentUpdateService;
             this.objectMapper = objectMapper;
       
         }
@@ -41,7 +43,7 @@ namespace BookSpace.Web.Controllers
                 var comment = await this.commentRepository.GetByIdAsync(commentEditViewModel.CommentId);
                 comment.Content = commentEditViewModel.Content;
 
-                await this.commentRepository.UpdateAsync(comment);
+                await this.commentUpdateService.UpdateAsync(comment);
             }
 
             return RedirectToAction("BookDetails", "Book", new { id = commentEditViewModel.BookId });
@@ -82,7 +84,7 @@ namespace BookSpace.Web.Controllers
 
             var isAdmin = this.User.IsInRole("Admin");
 
-            var currentLoggedUser = await this.applicationUserRepository.GetAsync(u => u.Id == userId);
+            var currentLoggedUser = await this.applicationUserRepository.GetByExpressionAsync(u => u.Id == userId);
 
             var isOwner = currentLoggedUser.Id == userId;
 
@@ -91,8 +93,8 @@ namespace BookSpace.Web.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            var commentToDelete = await this.commentRepository.GetAsync(c => c.CommentId == commentId);
-            await this.commentRepository.DeleteAsync(commentToDelete);
+            var commentToDelete = await this.commentRepository.GetByExpressionAsync(c => c.CommentId == commentId);
+            await this.commentUpdateService.DeleteAsync(commentToDelete);
 
             var comments = await this.bookRepository.GetOneToManyAsync(b => b.BookId == bookId,
                                                        bg => bg.Comments);
@@ -101,7 +103,7 @@ namespace BookSpace.Web.Controllers
             foreach (var comment in commentsViewModel)
             {
                 var commentCreatorId = comment.UserId;
-                var currentUser = await this.applicationUserRepository.GetAsync(u => u.UserName == this.User.Identity.Name);
+                var currentUser = await this.applicationUserRepository.GetByExpressionAsync(u => u.UserName == this.User.Identity.Name);
                 var isCreator = commentCreatorId == currentUser.Id;
 
                 comment.CanEdit = isAdmin || isCreator;

@@ -19,21 +19,28 @@ namespace BookSpace.Services
         private readonly BookSpaceContext dbCtx;
         private readonly IRepository<Genre> genreRepository;
         private readonly IRepository<Tag> tagRepository;
-        private readonly IRepository<BookGenre> bookGenreRepository;
-        private readonly IRepository<BookTag> bookTagRepository;
+
+        private readonly IUpdateService<Genre> genreUpdateService;
+        private readonly IUpdateService<Tag> tagUpdateService;
+        private readonly IUpdateService<BookGenre> bookGenreUpdateService;
+        private readonly IUpdateService<BookTag> bookTagUpdateService;
 
         public BookDataServices(BookSpaceContext dbCtx,
                                 IRepository<Genre> genreRepository,
                                 IRepository<Tag> tagRepository,
-                                IRepository<BookGenre> bookGenreRepository,
-                                IRepository<BookTag> bookTagRepository, 
+                                IUpdateService<Genre> genreUpdateService,
+                                IUpdateService<Tag> tagUpdateService,
+                                IUpdateService<BookGenre> bookGenreUpdateService,
+                                IUpdateService<BookTag> bookTagUpdateService,
                                 UserManager<ApplicationUser> user)
         {
             this.dbCtx = dbCtx ?? throw new ArgumentNullException(nameof(dbCtx));
             this.genreRepository = genreRepository;
             this.tagRepository = tagRepository;
-            this.bookGenreRepository = bookGenreRepository;
-            this.bookTagRepository = bookTagRepository;
+            this.genreUpdateService = genreUpdateService;
+            this.tagUpdateService = tagUpdateService;
+            this.bookGenreUpdateService = bookGenreUpdateService;
+            this.bookTagUpdateService = bookTagUpdateService;
         }
 
         //splitting tags genres response to seperate entities
@@ -55,7 +62,7 @@ namespace BookSpace.Services
         {
             foreach (var genreName in genres)
             {
-                var genre = await this.genreRepository.GetAsync(g => g.Name == genreName);
+                var genre = await this.genreRepository.GetByExpressionAsync(g => g.Name == genreName);
 
                 if (genre == null)
                 {
@@ -66,7 +73,7 @@ namespace BookSpace.Services
                     };
                     genre = genreNew;
 
-                    await this.genreRepository.AddAsync(genre);
+                    await this.genreUpdateService.AddAsync(genre);
                 }
                 var genreId = genre.GenreId;
 
@@ -76,7 +83,7 @@ namespace BookSpace.Services
                     GenreId = genreId
                 };
 
-                await this.bookGenreRepository.AddAsync(bookGenreRecord);
+                await this.bookGenreUpdateService.AddAsync(bookGenreRecord);
             }
         }
 
@@ -84,7 +91,7 @@ namespace BookSpace.Services
         {
             foreach (var tagName in tags)
             {
-                var tag = await this.tagRepository.GetAsync(t => t.Value == tagName);
+                var tag = await this.tagRepository.GetByExpressionAsync(t => t.Value == tagName);
 
                 if (tag == null)
                 {
@@ -95,7 +102,7 @@ namespace BookSpace.Services
                     };
 
                     tag = tagNew;
-                    await this.tagRepository.AddAsync(tag);
+                    await this.tagUpdateService.AddAsync(tag);
                 }
                 var tagId = tag.TagId;
 
@@ -104,7 +111,7 @@ namespace BookSpace.Services
                     BookId = bookId,
                     TagId = tagId
                 };
-                await this.bookTagRepository.AddAsync(bookTagRecord);
+                await this.bookTagUpdateService.AddAsync(bookTagRecord);
             }
         }
 

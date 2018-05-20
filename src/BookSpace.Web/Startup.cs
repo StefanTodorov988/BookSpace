@@ -56,8 +56,8 @@ namespace BookSpace.Web
 
 
             //Repositories
-
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
+            services.AddScoped(typeof(IUpdateService<>), typeof(UpdateService<>));
 
             //bookservices
             services.AddScoped<BookDataServices>();
