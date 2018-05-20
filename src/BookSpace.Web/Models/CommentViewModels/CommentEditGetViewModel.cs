@@ -1,8 +1,10 @@
-﻿namespace BookSpace.Web.Models.CommentViewModels
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BookSpace.Web.Models.CommentViewModels
 {
     public class CommentEditGetViewModel
     {
-        [Requred]
+        [Required]
         public string CommentId { get; set; }
     }
 }

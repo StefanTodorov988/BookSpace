@@ -27,6 +27,8 @@ namespace BookSpace.Web.Controllers
         private readonly IRepository<Comment> commentRepository;
         private readonly IRepository<BookUser> bookUserRepository;
 
+        private readonly IUpdateService<Book> bookUpdateService;
+        private readonly IUpdateService<Comment> commentUpdateService;
 
         private readonly IMapper objectMapper;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -42,6 +44,8 @@ namespace BookSpace.Web.Controllers
                               IRepository<Tag> tagRepository,
                               IRepository<Comment> commentRepository,
                               IRepository<BookUser> bookUserRepository,
+                              IUpdateService<Book> bookUpdateService,
+                              IUpdateService<Comment> commentUpdateService,
                               UserManager<ApplicationUser> userManager,
                               IFactory<Comment, CommentResponseModel> commentFactory,
                               BookDataServices dataService,
@@ -54,6 +58,8 @@ namespace BookSpace.Web.Controllers
             this.tagRepository = tagRepository;
             this.bookUserRepository = bookUserRepository;
             this.commentRepository = commentRepository;
+            this.bookUpdateService = bookUpdateService;
+            this.commentUpdateService = commentUpdateService;
             this._userManager = userManager;
             this.commentFactory = commentFactory;
             this.dataService = dataService;
@@ -121,7 +127,7 @@ namespace BookSpace.Web.Controllers
                                                        bg => bg.BookTags,
                                                        g => g.Tag);
 
-            var bookUser = await this.bookUserRepository.GetAsync(bu => bu.BookId == id);
+            var bookUser = await this.bookUserRepository.GetByExpressionAsync(bu => bu.BookId == id);
 
             var bookViewModel = this.objectMapper.Map<Book, BookViewModel>(book);
             var commentsViewModel = this.objectMapper.Map<IEnumerable<Comment>, IEnumerable<CommentViewModel>>(comments);
@@ -141,7 +147,7 @@ namespace BookSpace.Web.Controllers
                     var isAdmin = this.User.IsInRole("Admin");
 
                     var commentCreatorId = comment.UserId;
-                    var currentUser = await this.applicationUserRepository.GetAsync(u => u.UserName == this.User.Identity.Name);
+                    var currentUser = await this.applicationUserRepository.GetByExpressionAsync(u => u.UserName == this.User.Identity.Name);
                     var isCreator = commentCreatorId == currentUser.Id;
 
                     comment.CanEdit = isAdmin || isCreator;
@@ -184,7 +190,7 @@ namespace BookSpace.Web.Controllers
                 book.Rating = ((book.Rating * (ratesCount - 1)) + int.Parse(rate)) / ratesCount;
             }
 
-            await this.bookRepository.UpdateAsync(book);
+            await this.bookUpdateService.UpdateAsync(book);
             return RedirectToAction("BookDetails", "Book", new { id });
         }
 
@@ -213,7 +219,7 @@ namespace BookSpace.Web.Controllers
                 Date = DateTime.Now
             });
 
-            await this.commentRepository.AddAsync(commentResponse);
+            await this.commentUpdateService.AddAsync(commentResponse);
 
             return Ok();
         }
