@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -14,7 +12,6 @@ using BookSpace.Web.Areas.Admin.Models;
 using BookSpace.Web.Areas.Admin.Models.ApplicationUserViewModels;
 using BookSpace.Web.Models.BookViewModels;
 using BookSpace.Web.Models.GenreViewModels;
-using BookSpace.Web.Services.SmtpService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -27,8 +24,11 @@ namespace BookSpace.Web.Areas.Admin.Controllers
     {
         private readonly IRepository<ApplicationUser> userRepository;
         private readonly IRepository<Book> bookRepository;
-        private readonly IRepository<Tag> tagRepository;
-        private readonly IRepository<Genre> genreRepository;
+
+        private readonly IUpdateService<Book> bookUpdateService;
+        private readonly IUpdateService<Genre> genreUpdateService;
+        private readonly IUpdateService<Tag> tagUpdateService;
+
         private readonly IMapper objectMapper;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly BookDataServices bookServices;
@@ -42,6 +42,9 @@ namespace BookSpace.Web.Areas.Admin.Controllers
                                IRepository<Book> bookRepository, 
                                IRepository<Tag> tagRepository,
                                IRepository<Genre> genreRepository,
+                               IUpdateService<Book> bookUpdateService,
+                               IUpdateService<Genre> genreUpdateService,
+                               IUpdateService<Tag> tagUpdateService,
                                IFactory<Book, BookResponseModel> bookFactory, 
                                IFactory<Genre, GenreResponseModel> genreFactory, 
                                IFactory<Tag, TagResponseModel> tagFactory,
@@ -51,8 +54,10 @@ namespace BookSpace.Web.Areas.Admin.Controllers
         {
             this.userRepository = userRepository;
             this.bookRepository = bookRepository;
-            this.tagRepository = tagRepository;
-            this.genreRepository = genreRepository;
+
+            this.bookUpdateService = bookUpdateService;
+            this.genreUpdateService = genreUpdateService;
+            this.tagUpdateService = tagUpdateService;
             this.objectMapper = objectMapper;
             this.userManager = userManager;
             this.bookServices = bookServices;
@@ -140,7 +145,7 @@ namespace BookSpace.Web.Areas.Admin.Controllers
 
             var book = this.objectMapper.Map(bookViewModel, dbModel);
 
-            await this.bookRepository.UpdateAsync(book);
+            await this.bookUpdateService.UpdateAsync(book);
 
             return this.RedirectToAction("AllBooks");
         }
@@ -160,7 +165,7 @@ namespace BookSpace.Web.Areas.Admin.Controllers
         {
             var dbModel = await this.bookRepository.GetByIdAsync(bookViewModel.BookId);
 
-            await this.bookRepository.DeleteAsync(dbModel);
+            await this.bookUpdateService.DeleteAsync(dbModel);
 
             return this.RedirectToAction("AllBooks");
         }
@@ -182,7 +187,7 @@ namespace BookSpace.Web.Areas.Admin.Controllers
             var bookResponse = this.objectMapper.Map<BookResponseModel>(bookViewModel);
             var book = this.bookFactory.Create(bookResponse);
 
-            await this.bookRepository.AddAsync(book);
+            await this.bookUpdateService.AddAsync(book);
 
             var genres = this.bookServices.FormatStringResponse(bookViewModel.Genres);
             var tags = this.bookServices.FormatStringResponse(bookViewModel.Tags);
@@ -209,7 +214,7 @@ namespace BookSpace.Web.Areas.Admin.Controllers
 
             var tag = this.tagFactory.Create(tagResponse);
 
-            await this.tagRepository.AddAsync(tag);
+            await this.tagUpdateService.AddAsync(tag);
 
             return RedirectToAction("CreateTag");
         }
@@ -228,7 +233,7 @@ namespace BookSpace.Web.Areas.Admin.Controllers
 
             var genre = this.genreFactory.Create(genreResponse);
 
-            await this.genreRepository.AddAsync(genre);
+            await this.genreUpdateService.AddAsync(genre);
 
             return RedirectToAction("CreateGenre");
         }
