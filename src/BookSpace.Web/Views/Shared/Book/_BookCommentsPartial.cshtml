@@ -29,7 +29,7 @@
                         @if (comment.CanEdit)
                         {
                             <div class="comment">
-                                <a onclick="deleteComment('@comment.CommentId', '@comment.BookId', '@comment.UserId')">
+                                <a onclick="deleteComment('@comment.CommentId')">
                                     <i class="fa fa-trash" aria-hidden="true" title="Delete comment"></i>
                                 </a>
                                 <a asp-action="EditCommentAsync" asp-controller="Comment" asp-route-commentId="@comment.CommentId"><i class="fa fa-eraser" aria-hidden="true" title="Edit comment"></i></a>
@@ -60,11 +60,14 @@
 
 <script>
 
-    function deleteComment(commentId, bookId, userId) {
+    function deleteComment(commentId) {
+        let commentData = {};
+        commentData.CommentId = commentId;
+
         $.ajax({
             type: "POST",
             url: "/Comment/DeleteCommentAsync",
-            data: { commentId: commentId, bookId: bookId, userId: userId },
+            data: commentData,
             success: (htmlData) => {
                 $('#commentsDiv').html(htmlData);
             },

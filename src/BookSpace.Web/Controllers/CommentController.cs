@@ -63,9 +63,9 @@ namespace BookSpace.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteCommentAsync(string commentId, string bookId, string userId)
+        public async Task<IActionResult> DeleteCommentAsync(CommentDeleteViewModel commentDeleteData)
         {
-            if (commentId == null || bookId == null || userId == null)
+            if (!this.ModelState.IsValid)
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -75,21 +75,28 @@ namespace BookSpace.Web.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
+            var commentToDelete = await this.commentRepository.GetByIdAsync(commentDeleteData.CommentId);
+
+            if(commentToDelete == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             var isAdmin = this.User.IsInRole("Admin");
 
-            var currentLoggedUser = await this.applicationUserRepository.GetAsync(u => u.Id == userId);
+            var currentLoggedUser = await this.applicationUserRepository.GetAsync(u => u.Id == commentToDelete.UserId);
 
-            var isOwner = currentLoggedUser.Id == userId;
+            var isOwner = currentLoggedUser.Id == commentToDelete.UserId;
 
             if (!isAdmin && !isOwner)
             {
                 return RedirectToAction("Index", "Home");
             }
 
-            var commentToDelete = await this.commentRepository.GetAsync(c => c.CommentId == commentId);
             await this.commentRepository.DeleteAsync(commentToDelete);
 
-            var comments = await this.bookRepository.GetBookCommentsAsync(bookId);
+            var comments = await this.bookRepository.GetBookCommentsAsync(commentToDelete.BookId);
+
             var commentsViewModel = this.objectMapper.Map<IEnumerable<CommentViewModel>>(comments);
 
             foreach (var comment in commentsViewModel)
@@ -100,11 +107,12 @@ namespace BookSpace.Web.Controllers
 
                 comment.CanEdit = isAdmin || isCreator;
 
-                var user = await this.applicationUserRepository.GetByIdAsync(comment.UserId);
-                comment.Author = user.UserName;
+                var comemntCreator = await this.applicationUserRepository.GetByIdAsync(comment.UserId);
+                comment.Author = comemntCreator.UserName;
+                comment.AuthorPicUrl = comemntCreator.ProfilePictureUrl;
             }
 
-            return PartialView("Book/_BookCommentsPartial", new KeyValuePair<string, IEnumerable<CommentViewModel>>(bookId, commentsViewModel));
+            return PartialView("Book/_BookCommentsPartial", new KeyValuePair<string, IEnumerable<CommentViewModel>>(commentToDelete.BookId, commentsViewModel));
         }
     }
 }
