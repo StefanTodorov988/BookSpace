@@ -27,6 +27,11 @@
             <span asp-validation-for="Title" class="text-danger"></span>
         </div>
         <div class="form-group  user-form-input">
+            <label asp-for="Author" class="control-label"></label>
+            <input asp-for="Author" class="form-control user-input-field" type="text" />
+            <span asp-validation-for="Author" class="text-danger"></span>
+        </div>
+        <div class="form-group  user-form-input">
             <label asp-for="PublicationYear" class="control-label"></label>
             <input asp-for="PublicationYear" class="form-control user-input-field" />
             <span asp-validation-for="PublicationYear" class="text-danger"></span>
