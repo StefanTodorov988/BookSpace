@@ -8,8 +8,6 @@ using BookSpace.Web.Services;
 using BookSpace.Data;
 using BookSpace.Data.Contracts;
 using BookSpace.Models;
-using BookSpace.Repositories;
-using BookSpace.Repositories.Contracts;
 using Microsoft.Extensions.Logging;
 using AutoMapper;
 using BookSpace.BlobStorage.Contracts;
@@ -60,14 +58,6 @@ namespace BookSpace.Web
             //Repositories
 
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
-            services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
-            services.AddScoped<IBookRepository, BookRepository>();
-            services.AddScoped<IGenreRepository, GenreRepository>();
-            services.AddScoped<ITagRepository, TagRepository>();
-            services.AddScoped<IBookUserRepository, BookUserRepository>();
-            services.AddScoped<IBookTagRepository, BookTagRepository>();
-            services.AddScoped<IBookGenreRepository, BookGenreRepository>();
-            services.AddScoped<ICommentRepository, CommentRepository>();
 
             //bookservices
             services.AddScoped<BookDataServices>();

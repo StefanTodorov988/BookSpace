@@ -2,8 +2,6 @@
 using BookSpace.Data.Contracts;
 using BookSpace.Factories;
 using BookSpace.Models;
-using BookSpace.Repositories;
-using BookSpace.Repositories.Contracts;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -19,23 +17,23 @@ namespace BookSpace.Services
 
 
         private readonly BookSpaceContext dbCtx;
-        private readonly IBookRepository bookRepository;
-        private readonly IGenreRepository genreRepository;
-        private readonly ITagRepository tagRepository;
-        private readonly IBookGenreRepository bookGenreRepository;
-        private readonly IBookTagRepository bookTagRepository;
-        private readonly ICommentRepository commentRepository;
+        private readonly IRepository<Genre> genreRepository;
+        private readonly IRepository<Tag> tagRepository;
+        private readonly IRepository<BookGenre> bookGenreRepository;
+        private readonly IRepository<BookTag> bookTagRepository;
 
-        public BookDataServices(BookSpaceContext dbCtx, IBookRepository bookRepository, IGenreRepository genreRepository, ITagRepository tagRepository,
-            IBookGenreRepository bookGenreRepository, IBookTagRepository bookTagRepository, ICommentRepository commentRepository, UserManager<ApplicationUser> user)
+        public BookDataServices(BookSpaceContext dbCtx,
+                                IRepository<Genre> genreRepository,
+                                IRepository<Tag> tagRepository,
+                                IRepository<BookGenre> bookGenreRepository,
+                                IRepository<BookTag> bookTagRepository, 
+                                UserManager<ApplicationUser> user)
         {
             this.dbCtx = dbCtx ?? throw new ArgumentNullException(nameof(dbCtx));
-            this.bookRepository = bookRepository;
             this.genreRepository = genreRepository;
             this.tagRepository = tagRepository;
             this.bookGenreRepository = bookGenreRepository;
             this.bookTagRepository = bookTagRepository;
-            this.commentRepository = commentRepository;
         }
 
         //splitting tags genres response to seperate entities
@@ -57,7 +55,7 @@ namespace BookSpace.Services
         {
             foreach (var genreName in genres)
             {
-                var genre = await this.genreRepository.GetGenreByNameAsync(genreName);
+                var genre = await this.genreRepository.GetAsync(g => g.Name == genreName);
 
                 if (genre == null)
                 {
@@ -86,7 +84,7 @@ namespace BookSpace.Services
         {
             foreach (var tagName in tags)
             {
-                var tag = await this.tagRepository.GetTagByNameAsync(tagName);
+                var tag = await this.tagRepository.GetAsync(t => t.Value == tagName);
 
                 if (tag == null)
                 {
