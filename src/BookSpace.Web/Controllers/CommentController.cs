@@ -4,10 +4,12 @@ using AutoMapper;
 using BookSpace.Data.Contracts;
 using BookSpace.Models;
 using BookSpace.Web.Models.CommentViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookSpace.Web.Controllers
 {
+    [Authorize]
     public class CommentController : Controller
     {
         private readonly IRepository<ApplicationUser> applicationUserRepository;
@@ -27,19 +29,22 @@ namespace BookSpace.Web.Controllers
             this.commentRepository = commentRepository;
             this.commentUpdateService = commentUpdateService;
             this.objectMapper = objectMapper;
-      
         }
 
         [HttpPost]
         public async Task<IActionResult> EditCommentAsync(CommentEditViewModel commentEditViewModel)
         {
-            if (commentEditViewModel == null || !this.ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
                  return RedirectToAction("BookDetails", "Book", new { id = commentEditViewModel.BookId });
             }
 
             var comment = await this.commentRepository.GetByIdAsync(commentEditViewModel.CommentId);
-            comment.Content = commentEditViewModel.Content;
+
+            if (comment == null)
+            {
+                return RedirectToAction("BookDetails", "Book", new { id = commentEditViewModel.BookId });
+            }
 
             var isAdmin = this.User.IsInRole("Admin");
             var currentLoggedUser = await this.applicationUserRepository.GetByExpressionAsync(u => u.Id == comment.UserId);
@@ -50,6 +55,7 @@ namespace BookSpace.Web.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
+            comment.Content = commentEditViewModel.Content;
             await this.commentUpdateService.UpdateAsync(comment);
 
             return RedirectToAction("BookDetails", "Book", new { id = commentEditViewModel.BookId });
@@ -64,6 +70,11 @@ namespace BookSpace.Web.Controllers
             }
 
             var comment = await this.commentRepository.GetByIdAsync(commentData.CommentId);
+
+            if (comment == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
             var isAdmin = this.User.IsInRole("Admin");
             var currentLoggedUser = await this.applicationUserRepository.GetByExpressionAsync(u => u.Id == comment.UserId);
@@ -82,12 +93,17 @@ namespace BookSpace.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteCommentAsync(CommentDeleteViewModel commentDeleteData)
         {
-            if (!this.ModelState.IsValid || !this.User.Identity.IsAuthenticated)
+            if (!this.ModelState.IsValid)
             {
                 return RedirectToAction("Index", "Home");
             }
 
             var commentToDelete = await this.commentRepository.GetByIdAsync(commentDeleteData.CommentId);
+
+            if(commentToDelete == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
             var isAdmin = this.User.IsInRole("Admin");
             var currentLoggedUser = await this.applicationUserRepository.GetByExpressionAsync(u => u.Id == commentToDelete.UserId);
