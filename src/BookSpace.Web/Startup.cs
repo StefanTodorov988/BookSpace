@@ -20,6 +20,10 @@ using BookSpace.Services;
 using BookSpace.Web.Services.SmtpService;
 using BookSpace.Web.Services.SmtpService.Contract;
 using BookSpace.Factories.DTO;
+using BookSpace.Web.Logic.Core.EmotionManage;
+using BookSpace.Web.Logic.Core.EmotionManage.Contract;
+using BookSpace.Web.Logic.Core.EmotionStrategy;
+using BookSpace.Web.Logic.Core.EmotionStrategy.Contract;
 using BookSpace.Web.Logic.Interfaces;
 using BookSpace.Web.Logic.Core.Strategy;
 using Neleus.DependencyInjection.Extensions;
@@ -108,6 +112,15 @@ namespace BookSpace.Web
                 .Add<GenreSearchStrategy>("Genre")
                 .Add<TagSearchStrategy>("Tag").Build();
 
+           //Emotions
+            services.AddSingleton<IEmotionStrategyFactory,EmotionStrategyFatory>();
+            services.AddSingleton<IEmotionStrategy, HappyEmotionStrategy>();
+            services.AddSingleton<IEmotionStrategy, SadEmotionStrategy>();
+            services.AddSingleton<IEmotionStrategy, AngryEmotionStrategy>();
+            services.AddSingleton<IEmotionStrategy, SuprisedEmotionStrategy>();
+            services.AddSingleton<IEmotionManager, EmotionManager>();
+            
+           
             services.AddAutoMapper();
             services.AddMvc();
 

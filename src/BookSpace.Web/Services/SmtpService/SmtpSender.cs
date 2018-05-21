@@ -13,7 +13,7 @@ namespace BookSpace.Web.Services.SmtpService
         private readonly SmtpClient smtpClient;
         private const string appEmail = "bookspaceteam@gmail.com";
         private const string appEmailPassword = "bookspace123";
-        private const string newProfilePictureSubject = "New profile picture";
+        private const string host = "smtp.gmail.com";
         public SmtpSender()
         {
             var AuthenticationDetails = new NetworkCredential(appEmail, appEmailPassword);
@@ -22,18 +22,18 @@ namespace BookSpace.Web.Services.SmtpService
                 Port = 587,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 UseDefaultCredentials = false,
-                Host = "smtp.gmail.com",
+                Host = host,
                 EnableSsl = true,
                 Credentials = AuthenticationDetails
             };
         }
 
-        public void SendMail(string mail, string message)
+        public void SendMail(string mail, string subject ,string message)
         {
             MailMessage msg = new MailMessage();
             msg.To.Add(mail);
             msg.From = new MailAddress(appEmail);
-            msg.Subject = newProfilePictureSubject;
+            msg.Subject = subject;
             msg.Body = message;
             smtpClient.Send(msg);
         }

@@ -7,6 +7,6 @@ namespace BookSpace.Web.Services.SmtpService.Contract
 {
     public interface ISmtpSender
     {
-        void SendMail(string mail, string message);
+        void SendMail(string mail,string subject, string message);
     }
 }

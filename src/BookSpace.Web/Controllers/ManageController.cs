@@ -13,6 +13,7 @@ using BookSpace.BlobStorage.Contracts;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using BookSpace.CognitiveServices.Contract;
+using BookSpace.Web.Logic.Core.EmotionManage.Contract;
 using BookSpace.Web.Services.SmtpService.Contract;
 using Microsoft.ProjectOxford.Face.Contract;
 
@@ -27,6 +28,7 @@ namespace BookSpace.Web.Controllers
         private readonly IFaceService faceService;
         private readonly ISmtpSender smtpSender;
         private readonly IBlobStorageService blobStorageService;
+        private readonly IEmotionManager _emotionManager;
         private const string blobContainer = "bookspace";
 
         private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
@@ -39,13 +41,13 @@ namespace BookSpace.Web.Controllers
           UrlEncoder urlEncoder,
           IBlobStorageService blobService,
           IFaceService faceService,
-          ISmtpSender smtpSender)
+          IEmotionManager emotionManager )
         {
             this._userManager = userManager;
             this._signInManager = signInManager;
             this.blobStorageService = blobService;
             this.faceService = faceService;
-            this.smtpSender = smtpSender;
+            this._emotionManager = emotionManager;
         }
 
         [TempData]
@@ -115,30 +117,19 @@ namespace BookSpace.Web.Controllers
         public async Task<IActionResult> UploadPicture(IFormFile file)
         {
             var user = await this._userManager.GetUserAsync(HttpContext.User);
-            string currentUserEmail = user.Email;
-            string userId = user.Id;
-          
             using (var stream = new MemoryStream())
             {
                 await file.CopyToAsync(stream);
                 await this.blobStorageService.UploadAsync(user.Id, blobContainer, stream.ToArray());
             }
 
-
-            var pictureUri = await this.blobStorageService.GetAsync(userId, blobContainer);
+            var pictureUri = await this.blobStorageService.GetAsync(user.Id, blobContainer);
             user.ProfilePictureUrl = pictureUri.Url.ToString();
             var updated = await this._userManager.UpdateAsync(user);
 
-            var faceAtributes = await faceService.DetectFaceAtribytesAsync(blobStorageService.GetAsync(userId, blobContainer).Result.Url);
+            var faceAtributes = await faceService.DetectFaceAtribytesAsync(blobStorageService.GetAsync(user.Id, blobContainer).Result.Url);
 
-            try
-            {
-                smtpSender.SendMail(user.Email, GenerateMessageByEmotion(faceAtributes[0], user.UserName));
-            }
-            catch (IndexOutOfRangeException e)
-            {
-                smtpSender.SendMail(currentUserEmail, "No face on picture");
-            }
+            _emotionManager.ProcessSendingMessage(faceAtributes,user.Email, user.UserName); 
 
             StatusMessage = "Your profile picture has been updated. Check your email!";
             var model = new IndexViewModel { StatusMessage = StatusMessage };
@@ -197,48 +188,6 @@ namespace BookSpace.Web.Controllers
             }
         }
 
-        private string GenerateMessageByEmotion(FaceAttributes faceAttributes, string userName)
-        {
-            string emotion;
-
-            if (faceAttributes.Emotion.Happiness > 0.5f && faceAttributes.Emotion.Sadness < 0.2f)
-            {
-                emotion = "happy";
-            }
-            else if (faceAttributes.Emotion.Happiness < 0.2f && faceAttributes.Emotion.Sadness > 0.4f)
-            {
-                emotion = "sad";
-            }
-            else if (faceAttributes.Emotion.Anger > 0.34f)
-            {
-                emotion = "angry";
-            }
-            else if (faceAttributes.Emotion.Surprise > 0.40f)
-            {
-                emotion = "suprised";
-            }
-            else
-            {
-                emotion = "not detected";
-            }
-
-            if (emotion != "not detected")
-            {
-                return $"Greetings {userName}, \n" + Environment.NewLine + Environment.NewLine +
-                        "We see that you have uploaded a profile picture!\n" +
-                       $"Our face recognition service recognized you as being {emotion}. \n" + Environment.NewLine + Environment.NewLine +
-                        "Best regards, \n" +
-                        "Bookster Team";
-            }
-            else
-            {
-                return $"Greetings {userName}, \n" + Environment.NewLine + Environment.NewLine +
-                       "We see that you have uploaded a profile picture!\n" +
-                       $"Unfortunately our face recognition service didn't recognize your emotions \n" + Environment.NewLine + Environment.NewLine +
-                       "Best regards, \n" +
-                       "Bookster Team";
-            }
-        }
         #endregion
     }
 }
